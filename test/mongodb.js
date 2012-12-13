@@ -1,8 +1,9 @@
 var jdb = require('jugglingdb'),
     Schema = jdb.Schema,
-    test = jdb.test;
-
-var schema = new Schema(__dirname + '/..', {});
+    test = jdb.test,
+    schema = new Schema(__dirname + '/..', {
+        mongodb:   { url: 'mongodb://travis:test@localhost:27017/myapp' },
+    });
 schema.name = 'mongodb';
 
 test(module.exports, schema);
