@@ -28,3 +28,13 @@ test.it('hasMany should support additional conditions', function (test) {
     });
 
 });
+
+test.it('should allow to find by id string', function (test) {
+    Post.create(function (err, post) {
+        Post.find(post.id.toString(), function (err, post) {
+            test.ok(!err);
+            test.ok(post);
+            test.done();
+        });
+    });
+});
