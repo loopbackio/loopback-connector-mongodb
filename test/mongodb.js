@@ -38,3 +38,13 @@ test.it('should allow to find by id string', function (test) {
         });
     });
 });
+
+test.it('find should return an object with an id, which is instanceof ObjectId', function (test) {
+    Post.create(function (err, post) {
+        Post.find(post.id.toString(), function (err, post) {
+            test.ok(!err)
+            test.ok(post.id instanceof ObjectID);
+            test.done();
+        })
+    })
+})
