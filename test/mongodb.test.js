@@ -1,15 +1,6 @@
-var jdb = require('jugglingdb'),
-    Schema = jdb.Schema,
-    test = jdb.test,
-    schema = new Schema(__dirname + '/..', {
-        url: 'mongodb://travis:test@localhost:27017/myapp'
-    });
+require('jugglingdb/test/common.batch.js');
 
-var ObjectID = require('mongodb').ObjectID;
-
-schema.name = 'mongodb';
-
-test(module.exports, schema);
+return;
 
 test.it('hasMany should support additional conditions', function (test) {
 

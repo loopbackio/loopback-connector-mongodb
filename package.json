@@ -4,14 +4,15 @@
   "description": "MongoDB adapter for jugglingdb",
   "main": "index.js",
   "scripts": {
-    "test": "nodeunit test/mongodb.js"
+    "test": "make test"
   },
   "dependencies": {
     "mongodb": ">= 0.9.9"
   },
   "devDependencies": {
     "jugglingdb": "= 0.2.x",
-    "nodeunit": "latest"
+    "should": "~1.2.2",
+    "mocha": "~1.8.2"
   },
   "repository": "",
   "author": "Anatoliy Chakkaev <mail@anatoliy.in>",
