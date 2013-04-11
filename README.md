@@ -1,4 +1,4 @@
-## JugglingDB-MongoDB [![Build Status](https://travis-ci.org/1602/jugglingdb-mongodb.png)](https://travis-ci.org/1602/jugglingdb-mongodb)
+## JugglingDB-MongoDB [![Build Status](https://travis-ci.org/jugglingdb/mongodb-adapter.png)](https://travis-ci.org/jugglingdb/mongodb-adapter)
 
 MongoDB adapter for jugglingdb.
 
