@@ -1,11 +1,11 @@
-require('jugglingdb/test/common.batch.js');
-
 // This test written in mocha+should.js
-var should = require('./init.js'), User, Post, db;
+var should = require('./init.js');
 
-describe('test', function(){
+var User, Post, db;
 
-    before(function(done) {
+describe('mongodb', function(){
+
+    before(function() {
         db = getSchema();
 
         User = db.define('User', {
@@ -21,8 +21,14 @@ describe('test', function(){
 
         User.hasMany(Post);
         Post.belongsTo(User);
+    });
 
-        done();
+    beforeEach(function(done) {
+        User.destroyAll(function() {
+            Post.destroyAll(function() {
+                done();
+            });
+        });
     });
 
     it('hasMany should support additional conditions', function (done) {
