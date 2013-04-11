@@ -22,8 +22,6 @@ describe('test', function(){
         User.hasMany(Post);
         Post.belongsTo(User);
 
-        db.automigrate(done);
-
         done();
     });
 
@@ -55,8 +53,8 @@ describe('test', function(){
         Post.create(function (err, post) {
             Post.find(post.id, function (err, post) {
                 should.not.exist(err);
-                (post.id instanceof db.ObjectID).should.be.ok;
-                (post._id instanceof db.ObjectID).should.be.ok;
+                post.id.should.be.an.instanceOf(db.ObjectID);
+                post._id.should.be.an.instanceOf(db.ObjectID);
 
                 done();
             });
@@ -71,8 +69,8 @@ describe('test', function(){
                 should.not.exist(err);
                 posts.should.have.lengthOf(1);
                 post = posts[0];
-                (post.id instanceof db.ObjectID).should.be.ok;
-                (post._id instanceof db.ObjectID).should.be.ok;
+                post.id.should.be.an.instanceOf(db.ObjectID);
+                post._id.should.be.an.instanceOf(db.ObjectID);
 
                 done();
             });
