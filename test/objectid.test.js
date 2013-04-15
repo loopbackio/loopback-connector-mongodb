@@ -2,7 +2,8 @@ var should = require('./init.js');
 
 var db, Book, Chapter;
 
-describe.only('ObjectID', function() {
+describe('ObjectID', function() {
+
     before(function() {
         db = getSchema();
         Book = db.define('Book');
