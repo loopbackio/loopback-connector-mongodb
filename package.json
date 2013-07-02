@@ -10,7 +10,7 @@
     "mongodb": ">= 0.9.9"
   },
   "devDependencies": {
-    "jugglingdb": "https://github.com/1602/jugglingdb/archive/master.tar.gz",
+    "jugglingdb": "git+ssh://git@github.com:strongloop/jugglingdb.git",
     "should": "~1.2.2",
     "mocha": "~1.8.2",
     "semicov": "~0.1.1"
