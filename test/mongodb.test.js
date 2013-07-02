@@ -57,7 +57,7 @@ describe('mongodb', function(){
 
     it('find should return an object with an id, which is instanceof ObjectId', function (done) {
         Post.create(function (err, post) {
-            Post.find(post.id, function (err, post) {
+            Post.findById(post.id, function (err, post) {
                 should.not.exist(err);
                 post.id.should.be.an.instanceOf(db.ObjectID);
                 post._id.should.be.an.instanceOf(db.ObjectID);
