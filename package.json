@@ -1,5 +1,5 @@
 {
-  "name": "asteroid-connector-mongodb",
+  "name": "loopback-connector-mongodb",
   "version": "0.0.4-3",
   "description": "MongoDB adapter for jugglingdb",
   "main": "index.js",
