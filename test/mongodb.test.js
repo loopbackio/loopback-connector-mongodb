@@ -69,15 +69,32 @@ describe('mongodb', function(){
     });
 
     it('all should return object with an id, which is instanceof ObjectID', function (done) {
-        var post = new Post({title: 'a'})
+        var post = new Post({title: 'a', content: 'AAA'})
         post.save(function (err, post) {
             Post.all({where: {title: 'a'}}, function (err, posts) {
                 should.not.exist(err);
                 posts.should.have.lengthOf(1);
                 post = posts[0];
+                post.should.have.property('title', 'a');
+                post.should.have.property('content', 'AAA');
                 post.id.should.be.an.instanceOf(db.ObjectID);
                 post._id.should.be.an.instanceOf(db.ObjectID);
 
+                done();
+            });
+
+        });
+    });
+
+    it('all should return honor filter.fields', function (done) {
+        var post = new Post({title: 'b', content: 'BBB'})
+        post.save(function (err, post) {
+            Post.all({fields: ['title'], where: {title: 'b'}}, function (err, posts) {
+                should.not.exist(err);
+                posts.should.have.lengthOf(1);
+                post = posts[0];
+                post.should.have.property('title', 'b');
+                post.should.not.have.property('content');
                 done();
             });
 
