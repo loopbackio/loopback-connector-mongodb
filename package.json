@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-mongodb",
-  "version": "0.0.4-3",
+  "version": "0.0.1",
   "description": "MongoDB adapter for loopback-data",
   "main": "index.js",
   "scripts": {
