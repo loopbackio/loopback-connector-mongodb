@@ -4,7 +4,7 @@ describe('mongodb imported features', function() {
         require('./init.js');
     });
 
-    require('jugglingdb/test/common.batch.js');
-    // require('jugglingdb/test/include.test.js');
+    require('loopback-data/test/common.batch.js');
+    // require('loopback-data/test/include.test.js');
 
 });

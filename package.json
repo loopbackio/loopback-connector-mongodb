@@ -1,7 +1,7 @@
 {
   "name": "loopback-connector-mongodb",
   "version": "0.0.4-3",
-  "description": "MongoDB adapter for jugglingdb",
+  "description": "MongoDB adapter for loopback-data",
   "main": "index.js",
   "scripts": {
     "test": "make test"
@@ -10,7 +10,7 @@
     "mongodb": ">= 0.9.9"
   },
   "devDependencies": {
-    "jugglingdb": "git+ssh://git@github.com:strongloop/jugglingdb.git",
+    "loopback-data": "git+ssh://git@github.com:strongloop/loopback-data.git",
     "should": "~1.2.2",
     "mocha": "~1.8.2",
     "semicov": "~0.1.1"
