@@ -1,10 +1,10 @@
-## JugglingDB-MongoDB [![Build Status](https://travis-ci.org/jugglingdb/mongodb-adapter.png)](https://travis-ci.org/jugglingdb/mongodb-adapter)
+## JugglingDB-MongoDB [![Build Status](https://travis-ci.org/loopback-data/mongodb-adapter.png)](https://travis-ci.org/loopback-data/mongodb-adapter)
 
-MongoDB adapter for jugglingdb.
+MongoDB adapter for loopback-data.
 
 ## Usage
 
-To use it you need `jugglingdb@0.2.x`.
+To use it you need `loopback-data@0.2.x`.
 
 1. Setup dependencies in `package.json`:
 
@@ -12,8 +12,8 @@ To use it you need `jugglingdb@0.2.x`.
     {
       ...
       "dependencies": {
-        "jugglingdb": "0.2.x",
-        "jugglingdb-mongodb": "latest"
+        "loopback-data": "0.2.x",
+        "loopback-data-mongodb": "latest"
       },
       ...
     }
