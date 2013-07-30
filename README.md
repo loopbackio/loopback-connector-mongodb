@@ -1,10 +1,10 @@
-## JugglingDB-MongoDB [![Build Status](https://travis-ci.org/loopback-data/mongodb-adapter.png)](https://travis-ci.org/loopback-data/mongodb-adapter)
+## loopback-connector-mongodb
 
-MongoDB adapter for loopback-data.
+MongoDB connector for loopback-datasource-juggler.
 
 ## Usage
 
-To use it you need `loopback-data@0.2.x`.
+To use it you need `loopback-datasource-juggler@latest`.
 
 1. Setup dependencies in `package.json`:
 
@@ -12,8 +12,8 @@ To use it you need `loopback-data@0.2.x`.
     {
       ...
       "dependencies": {
-        "loopback-data": "0.2.x",
-        "loopback-data-mongodb": "latest"
+        "loopback-datasource-juggler": "latest",
+        "loopback-connector-mongodb": "latest"
       },
       ...
     }
@@ -22,15 +22,14 @@ To use it you need `loopback-data@0.2.x`.
 2. Use:
 
     ```javascript
-        var Schema = require('jugglingbd').Schema;
+        var Schema = require('loopback-datasource-juggler').Schema;
         var schema = new Schema('mongodb');
         ...
     ```
 
 ## Running tests
 
-Make sure you have mongodb server running on default port, username: `travis`,
-password: `test`, database: `myapp`
+Make sure you have mongodb server running on default port.
 
     npm test
 
