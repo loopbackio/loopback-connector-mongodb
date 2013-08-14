@@ -8,7 +8,7 @@
     "blanket": {
       "pattern": "//^((?!(node_modules|test)).)*$/"
     },
-    "coverage": "mocha -r blanket -R html-cov > coverage_strong-task-emitter.html"
+    "coverage": "mocha -r blanket -R html-cov > coverage_loopback-connector-mongodb.html"
   },
   "dependencies": {
     "mongodb": ">= 0.9.9"
