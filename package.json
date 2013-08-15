@@ -1,7 +1,7 @@
 {
   "name": "loopback-connector-mongodb",
   "version": "0.0.1",
-  "description": "MongoDB adapter for loopback-datasource-juggler",
+  "description": "MongoDB connector for loopback-datasource-juggler",
   "main": "index.js",
   "scripts": {
     "test": "make test",
@@ -17,10 +17,12 @@
     "loopback-datasource-juggler": "git+ssh://git@github.com:strongloop/loopback-datasource-juggler.git",
     "should": "~1.2.2",
     "mocha": "~1.8.2",
-    "semicov": "~0.1.1",
     "blanket": "latest"
   },
-  "repository": "",
-  "author": "Anatoliy Chakkaev <mail@anatoliy.in>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/strongloop/loopback-connector-mongodb"
+  },
+
   "license": "MIT"
 }
