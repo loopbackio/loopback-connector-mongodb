@@ -6,10 +6,10 @@ var ds = new DataSource({
     database: 'connector'
 });
 
-var Customer = ds.createModel('customer', {id: {type: Number, id: true}, name: String, emails: [String], age: Number});
+var Customer = ds.createModel('customer', {seq: {type: Number, id: true}, name: String, emails: [String], age: Number});
 
 Customer.create({
-    // id: '1',
+    seq: 1,
     name: 'John1',
     emails: ['john@x.com', 'john@y.com'],
     age: 30
@@ -20,7 +20,7 @@ Customer.create({
     customer.updateAttributes({name: 'John'}, function(err, result) {
         console.log(err, result);
     });
-    */
+
 
     customer.delete(function(err, result) {
         customer.updateAttributes({name: 'JohnX'}, function(err, result) {
@@ -28,9 +28,9 @@ Customer.create({
         });
 
     });
+     */
 
-    /*
-    Customer.findById(customer.id, function(err, customer) {
+    Customer.findById(customer.seq, function(err, customer) {
         console.log(customer.toObject());
 
         customer.name = 'John';
@@ -38,7 +38,6 @@ Customer.create({
             console.log(customer.toObject());
         });
     });
-    */
 });
 
 /*
