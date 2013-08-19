@@ -22,36 +22,22 @@ To use it you need `loopback-datasource-juggler@latest`.
 2. Use:
 
     ```javascript
-        var Schema = require('loopback-datasource-juggler').Schema;
-        var schema = new Schema('mongodb');
+        var DataSource = require('loopback-datasource-juggler').DataSource;
+        var dataSource = new DataSource('mongodb', {
+            url: 'mongodb://localhost:27017/test
+        });
         ...
     ```
 
+Settings:
+
+- url: MongoDB connection string, see http://docs.mongodb.org/manual/reference/connection-string/
+- other options, see http://docs.mongodb.org/manual/reference/connection-string/#connections-connection-options
+- debug: true|false
+
 ## Running tests
 
-Make sure you have mongodb server running on default port.
+Make sure you have mongodb server running. Update test/init.js to set the options.
 
     npm test
-
-## MIT License
-
-    Copyright (C) 2012 by Anatoliy Chakkaev
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in
-    all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE.
 

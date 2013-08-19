@@ -1,0 +1,9 @@
+{
+"content": [
+    "README.md",
+    {"title": "LoopBack MongoDB Connector API", "depth": 2},
+    "lib/mongodb.js"
+  ],
+  "codeSectionDepth": 3
+}
+
