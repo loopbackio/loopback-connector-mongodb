@@ -1,11 +1,12 @@
 module.exports = require('should');
 
-var Schema = require('loopback-datasource-juggler').Schema;
+var DataSource = require('loopback-datasource-juggler').DataSource;
+
+var config = require('rc')('loopback');
+config = (config.test && config.test.mongodb) || {};
 
 global.getSchema = function() {
-    var db = new Schema(require('../'), {
-        url: 'mongodb://test:str0ng100pjs@166.78.158.45:27017/test'
-    });
+    var db = new DataSource(require('../'), config);
     db.log = function (a) { console.log(a); };
 
     return db;

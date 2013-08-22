@@ -1,10 +1,10 @@
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
-var ds = new DataSource({
-    connector: require('../'),
-    host: 'localhost',
-    database: 'connector'
-});
+var config = require('rc')('loopback');
+config = (config.dev && config.dev.mongodb) || {};
+
+console.log(config);
+var ds = new DataSource(require('../'), config);
 
 var Customer = ds.createModel('customer', {seq: {type: Number, id: true}, name: String, emails: [String], age: Number});
 

@@ -17,12 +17,12 @@
     "loopback-datasource-juggler": "git+ssh://git@github.com:strongloop/loopback-datasource-juggler.git",
     "should": "~1.2.2",
     "mocha": "~1.8.2",
-    "blanket": "latest"
+    "blanket": "latest",
+    "rc": "~0.3.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/strongloop/loopback-connector-mongodb"
   },
-
   "license": "MIT"
 }
