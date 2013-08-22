@@ -36,6 +36,7 @@ Customer.create({
         customer.name = 'John';
         customer.save(function(err, customer) {
             console.log(customer.toObject());
+            ds.connector.close();
         });
     });
 });
