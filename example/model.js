@@ -1,6 +1,6 @@
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
-var config = require('rc')('loopback', {dev: {mongodb:{}}});
+var config = require('rc')('loopback', {dev: {mongodb:{}}}).dev.mongodb;
 
 var ds = new DataSource(require('../'), config);
 
