@@ -6,7 +6,7 @@ var User, Post, db;
 describe('mongodb', function(){
 
     before(function() {
-        db = getSchema();
+        db = getDataSource();
 
         User = db.define('User', {
             name:      { type: String, index: true },

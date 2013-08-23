@@ -1,7 +1,5 @@
-var should = require('./init.js');
-var DataSource = require('loopback-datasource-juggler').DataSource;
-
-var ds = getSchema();
+require('./init.js');
+var ds = getDataSource();
 
 describe('mongodb custom id name', function () {
     var Customer = ds.createModel('customer', {seq: {type: Number, id: true}, name: String, emails: [String], age: Number});
