@@ -1,11 +1,11 @@
-var should = require('./init.js');
+require('./init.js');
 
 var db, Book, Chapter;
 
 describe('ObjectID', function() {
 
     before(function() {
-        db = getSchema();
+        db = getDataSource();
         Book = db.define('Book');
         Chapter = db.define('Chapter');
         Book.hasMany('chapters');
