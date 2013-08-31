@@ -4,7 +4,7 @@ MongoDB connector for loopback-datasource-juggler.
 
 ## Usage
 
-To use it you need `loopback-datasource-juggler@latest`.
+To use it you need `loopback-datasource-juggler@1.0.x`.
 
 1. Setup dependencies in `package.json`:
 
@@ -12,8 +12,8 @@ To use it you need `loopback-datasource-juggler@latest`.
     {
       ...
       "dependencies": {
-        "loopback-datasource-juggler": "latest",
-        "loopback-connector-mongodb": "latest"
+        "loopback-datasource-juggler": "1.0.x",
+        "loopback-connector-mongodb": "1.0.x"
       },
       ...
     }
@@ -23,21 +23,44 @@ To use it you need `loopback-datasource-juggler@latest`.
 
     ```javascript
         var DataSource = require('loopback-datasource-juggler').DataSource;
-        var dataSource = new DataSource('mongodb', {
-            url: 'mongodb://localhost:27017/test
-        });
+        var ds = new DataSource('mongodb');
         ...
     ```
 
-Settings:
+## Customizing MongoDB configuration for tests/examples
 
-- url: MongoDB connection string, see http://docs.mongodb.org/manual/reference/connection-string/
-- other options, see http://docs.mongodb.org/manual/reference/connection-string/#connections-connection-options
-- debug: true|false
+By default, examples and tests from this module assume there is a MongoDB server
+instance running on localhost at port 27017.
+
+To customize the settings, you can drop in a `.loopbackrc` file to the root directory
+of the project or the home folder.
+
+The .loopbackrc file should be in JSON format, for example:
+
+    {
+        "dev": {
+            "mongodb": {
+                "host": "127.0.0.1",
+                "database": "test",
+                "username": "youruser",
+                "password": "yourpass",
+                "port": 27017
+            }
+        },
+        "test": {
+            "mongodb": {
+                "host": "127.0.0.1",
+                "database": "test",
+                "username": "youruser",
+                "password": "yourpass",
+                "port": 27017
+            }
+        }
+    }
+
+**Note**: username/password is only required if the MongoDB server has
+authentication enabled.
 
 ## Running tests
 
-Make sure you have mongodb server running. Update test/init.js to set the options.
-
     npm test
-
