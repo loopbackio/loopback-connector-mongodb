@@ -17,7 +17,7 @@
   "devDependencies": {
     "loopback-datasource-juggler": "git+ssh://git@github.com:strongloop/loopback-datasource-juggler.git",
     "should": "~1.2.2",
-    "mocha": "~1.8.2",
+    "mocha": "~1.12.1",
     "blanket": "~1.1.5",
     "rc": "~0.3.0"
   },
