@@ -12,10 +12,10 @@
     "coverage": "mocha -r blanket -R html-cov > coverage_loopback-connector-mongodb.html"
   },
   "dependencies": {
+    "loopback-datasource-juggler": "git+ssh://git@github.com:strongloop/loopback-datasource-juggler.git",
     "mongodb": "~1.3.19"
   },
   "devDependencies": {
-    "loopback-datasource-juggler": "git+ssh://git@github.com:strongloop/loopback-datasource-juggler.git",
     "should": "~1.2.2",
     "mocha": "~1.12.1",
     "blanket": "~1.1.5",
