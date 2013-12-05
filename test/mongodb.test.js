@@ -1,7 +1,7 @@
 // This test written in mocha+should.js
 var should = require('./init.js');
 
-var User, Post, db;
+var User, Post, Post1, db;
 
 describe('mongodb', function(){
 
@@ -17,6 +17,12 @@ describe('mongodb', function(){
         Post = db.define('Post', {
             title:     { type: String, length: 255, index: true },
             content:   { type: String }
+        });
+
+        Post1 = db.define('Post1', {
+          id: {type: String, id: true},
+          title:     { type: String, length: 255, index: true },
+          content:   { type: String }
         });
 
         User.hasMany(Post);
@@ -99,6 +105,18 @@ describe('mongodb', function(){
             });
 
         });
+    });
+
+    it('create should convert id from string to ObjectID if format matches',
+      function(done) {
+      var oid = new db.ObjectID().toString();
+      Post1.create({id: oid, title: 'c', content: 'CCC'}, function (err, post) {
+        Post1.findById(oid, function (err, post) {
+          should.not.exist(err);
+          post.id.should.be.equal(oid);
+          done();
+        });
+      });
     });
 
     after(function(done){
