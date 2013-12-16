@@ -1,7 +1,7 @@
 // This test written in mocha+should.js
 var should = require('./init.js');
 
-var User, Post, Post1, db;
+var User, Post, PostWithStringId, db;
 
 describe('mongodb', function(){
 
@@ -19,7 +19,7 @@ describe('mongodb', function(){
             content:   { type: String }
         });
 
-        Post1 = db.define('Post1', {
+        PostWithStringId = db.define('PostWithStringId', {
           id: {type: String, id: true},
           title:     { type: String, length: 255, index: true },
           content:   { type: String }
@@ -110,8 +110,8 @@ describe('mongodb', function(){
     it('create should convert id from string to ObjectID if format matches',
       function(done) {
       var oid = new db.ObjectID().toString();
-      Post1.create({id: oid, title: 'c', content: 'CCC'}, function (err, post) {
-        Post1.findById(oid, function (err, post) {
+      PostWithStringId.create({id: oid, title: 'c', content: 'CCC'}, function (err, post) {
+        PostWithStringId.findById(oid, function (err, post) {
           should.not.exist(err);
           post.id.should.be.equal(oid);
           done();
