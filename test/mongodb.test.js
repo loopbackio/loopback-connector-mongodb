@@ -3,112 +3,131 @@ var should = require('./init.js');
 
 var User, Post, PostWithStringId, db;
 
-describe('mongodb', function(){
+describe('mongodb', function () {
 
-    before(function() {
-        db = getDataSource();
+  before(function () {
+    db = getDataSource();
 
-        User = db.define('User', {
-            name:      { type: String, index: true },
-            email:     { type: String, index: true },
-            age:          Number,
-        });
-
-        Post = db.define('Post', {
-            title:     { type: String, length: 255, index: true },
-            content:   { type: String }
-        });
-
-        PostWithStringId = db.define('PostWithStringId', {
-          id: {type: String, id: true},
-          title:     { type: String, length: 255, index: true },
-          content:   { type: String }
-        });
-
-        User.hasMany(Post);
-        Post.belongsTo(User);
+    User = db.define('User', {
+      name: { type: String, index: true },
+      email: { type: String, index: true },
+      age: Number,
     });
 
-    beforeEach(function(done) {
-        User.destroyAll(function() {
-            Post.destroyAll(function() {
-                done();
-            });
-        });
+    Post = db.define('Post', {
+      title: { type: String, length: 255, index: true },
+      content: { type: String }
     });
 
-    it('hasMany should support additional conditions', function (done) {
-        User.create(function (e, u) {
-            u.posts.create({}, function (e, p) {
-                u.posts({where: {_id: p.id}}, function (err, posts) {
-                    should.not.exist(err);
-                    posts.should.have.lengthOf(1);
-
-                    done();
-                });
-            });
-        });
+    PostWithStringId = db.define('PostWithStringId', {
+      id: {type: String, id: true},
+      title: { type: String, length: 255, index: true },
+      content: { type: String }
     });
 
-    it('should allow to find by id string', function (done) {
-        Post.create(function (err, post) {
-            Post.find(post.id.toString(), function (err, post) {
-                should.not.exist(err);
-                should.exist(post);
+    User.hasMany(Post);
+    Post.belongsTo(User);
+  });
 
-                done();
-            });
-        });
+  beforeEach(function (done) {
+    User.destroyAll(function () {
+      Post.destroyAll(function () {
+        done();
+      });
     });
+  });
 
-    it('find should return an object with an id, which is instanceof ObjectId', function (done) {
-        Post.create(function (err, post) {
-            Post.findById(post.id, function (err, post) {
-                should.not.exist(err);
-                post.id.should.be.an.instanceOf(db.ObjectID);
-                post._id.should.be.an.instanceOf(db.ObjectID);
+  it('hasMany should support additional conditions', function (done) {
+    User.create(function (e, u) {
+      u.posts.create({}, function (e, p) {
+        u.posts({where: {_id: p.id}}, function (err, posts) {
+          should.not.exist(err);
+          posts.should.have.lengthOf(1);
 
-                done();
-            });
-
+          done();
         });
+      });
     });
+  });
 
-    it('all should return object with an id, which is instanceof ObjectID', function (done) {
-        var post = new Post({title: 'a', content: 'AAA'})
-        post.save(function (err, post) {
-            Post.all({where: {title: 'a'}}, function (err, posts) {
-                should.not.exist(err);
-                posts.should.have.lengthOf(1);
-                post = posts[0];
-                post.should.have.property('title', 'a');
-                post.should.have.property('content', 'AAA');
-                post.id.should.be.an.instanceOf(db.ObjectID);
-                post._id.should.be.an.instanceOf(db.ObjectID);
+  it('should allow to find by id string', function (done) {
+    Post.create(function (err, post) {
+      Post.find(post.id.toString(), function (err, post) {
+        should.not.exist(err);
+        should.exist(post);
 
-                done();
-            });
+        done();
+      });
+    });
+  });
 
+  it('find should return an object with an id, which is instanceof ObjectId', function (done) {
+    Post.create(function (err, post) {
+      Post.findById(post.id, function (err, post) {
+        should.not.exist(err);
+        post.id.should.be.an.instanceOf(db.ObjectID);
+        post._id.should.be.an.instanceOf(db.ObjectID);
+
+        done();
+      });
+
+    });
+  });
+
+  it('should update the instance', function (done) {
+    Post.create({title: 'a', content: 'AAA'}, function (err, post) {
+      post.title = 'b';
+      Post.updateOrCreate(post, function (err, p) {
+        should.not.exist(err);
+        p.id.should.be.equal(post.id);
+        p.content.should.be.equal(post.content);
+
+        Post.findById(post.id, function (err, p) {
+          p.id.should.be.equal(post.id);
+          p.content.should.be.equal(post.content);
+          p.title.should.be.equal('b');
+          done();
         });
+      });
+
     });
+  });
 
-    it('all should return honor filter.fields', function (done) {
-        var post = new Post({title: 'b', content: 'BBB'})
-        post.save(function (err, post) {
-            Post.all({fields: ['title'], where: {title: 'b'}}, function (err, posts) {
-                should.not.exist(err);
-                posts.should.have.lengthOf(1);
-                post = posts[0];
-                post.should.have.property('title', 'b');
-                post.should.not.have.property('content');
-                done();
-            });
+  it('all should return object with an id, which is instanceof ObjectID', function (done) {
+    var post = new Post({title: 'a', content: 'AAA'})
+    post.save(function (err, post) {
+      Post.all({where: {title: 'a'}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.lengthOf(1);
+        post = posts[0];
+        post.should.have.property('title', 'a');
+        post.should.have.property('content', 'AAA');
+        post.id.should.be.an.instanceOf(db.ObjectID);
+        post._id.should.be.an.instanceOf(db.ObjectID);
 
-        });
+        done();
+      });
+
     });
+  });
 
-    it('create should convert id from string to ObjectID if format matches',
-      function(done) {
+  it('all should return honor filter.fields', function (done) {
+    var post = new Post({title: 'b', content: 'BBB'})
+    post.save(function (err, post) {
+      Post.all({fields: ['title'], where: {title: 'b'}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.lengthOf(1);
+        post = posts[0];
+        post.should.have.property('title', 'b');
+        post.should.not.have.property('content');
+        done();
+      });
+
+    });
+  });
+
+  it('create should convert id from string to ObjectID if format matches',
+    function (done) {
       var oid = new db.ObjectID().toString();
       PostWithStringId.create({id: oid, title: 'c', content: 'CCC'}, function (err, post) {
         PostWithStringId.findById(oid, function (err, post) {
@@ -119,10 +138,10 @@ describe('mongodb', function(){
       });
     });
 
-    after(function(done){
-        User.destroyAll(function(){
-            Post.destroyAll(done);
-        });
+  after(function (done) {
+    User.destroyAll(function () {
+      Post.destroyAll(done);
     });
+  });
 });
 
