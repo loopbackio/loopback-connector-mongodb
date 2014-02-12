@@ -74,6 +74,25 @@ describe('mongodb', function () {
     });
   });
 
+  it('should update the instance', function (done) {
+    Post.create({title: 'a', content: 'AAA'}, function (err, post) {
+      post.title = 'b';
+      Post.updateOrCreate(post, function (err, p) {
+        should.not.exist(err);
+        p.id.should.be.equal(post.id);
+        p.content.should.be.equal(post.content);
+
+        Post.findById(post.id, function (err, p) {
+          p.id.should.be.equal(post.id);
+          p.content.should.be.equal(post.content);
+          p.title.should.be.equal('b');
+          done();
+        });
+      });
+
+    });
+  });
+
   it('all should return object with an id, which is instanceof ObjectID', function (done) {
     var post = new Post({title: 'a', content: 'AAA'})
     post.save(function (err, post) {
