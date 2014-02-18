@@ -23,5 +23,8 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-connector-mongodb"
   },
-  "license": "MIT"
+  "license": {
+    "name": "Dual MIT/StrongLoop",
+    "url": "https://github.com/strongloop/loopback-connector-mongodb/blob/master/LICENSE"
+  }
 }
