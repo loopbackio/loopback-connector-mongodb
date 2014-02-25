@@ -138,6 +138,15 @@ describe('mongodb', function () {
       });
     });
 
+  it('should report error on duplicate keys', function (done) {
+    Post.create({title: 'd', content: 'DDD'}, function (err, post) {
+      Post.create({id: post.id, title: 'd', content: 'DDD'}, function (err, post) {
+        should.exist(err);
+        done();
+      });
+    });
+  });
+
   after(function (done) {
     User.destroyAll(function () {
       Post.destroyAll(done);
