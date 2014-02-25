@@ -138,6 +138,55 @@ describe('mongodb', function () {
       });
     });
 
+  it('should report error on duplicate keys', function (done) {
+    Post.create({title: 'd', content: 'DDD'}, function (err, post) {
+      Post.create({id: post.id, title: 'd', content: 'DDD'}, function (err, post) {
+        should.exist(err);
+        done();
+      });
+    });
+  });
+
+  it('should allow to find using like', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {title: {like: 'M.+st'}}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 1);
+        done();
+      });
+    });
+  });
+
+  it('should support like for no match', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {title: {like: 'M.+XY'}}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 0);
+        done();
+      });
+    });
+  });
+
+  it('should allow to find using nlike', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {title: {nlike: 'M.+st'}}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 0);
+        done();
+      });
+    });
+  });
+
+  it('should support nlike for no match', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {title: {nlike: 'M.+XY'}}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 1);
+        done();
+      });
+    });
+  });
+
   after(function (done) {
     User.destroyAll(function () {
       Post.destroyAll(done);
