@@ -31,6 +31,12 @@ describe('mongodb', function () {
       content: { type: String }
     });
 
+    PostWithNumberId = db.define('PostWithNumberId', {
+      _id: {type: Number, id: true},
+      title: { type: String, length: 255, index: true },
+      content: { type: String }
+    });
+
     User.hasMany(Post);
     Post.belongsTo(User);
   });
@@ -39,44 +45,35 @@ describe('mongodb', function () {
     User.destroyAll(function () {
       Post.destroyAll(function () {
         PostWithObjectId.destroyAll(function () {
-          done();
+          PostWithNumberId.destroyAll(function () {
+            done();
+          });
         });
       });
     });
   });
 
-
-  it('choosing _id as a model ID should throw an error if type is not MongoDBObjectID', function (done) {
-    (function() {
-      db.define('GoodModel', {_id: {type: db.ObjectID, id: true}})
-    }).should.not.throw();
-
-    (function() {
-      db.define('BadModel', {_id: {type: String, id: true}})
-    }).should.throw();
-    (function() {
-      db.define('BadModel', {_id: {type: Number, id: true}})
-    }).should.throw();
+  it('should have created models with correct _id types', function (done) {
+    PostWithObjectId.definition.properties._id.type.should.be.equal(db.ObjectID);
+    should.not.exist(PostWithObjectId.definition.properties.id);
+    PostWithNumberId.definition.properties._id.type.should.be.equal(Number);
+    should.not.exist(PostWithNumberId.definition.properties.id);
 
     done();
   });
 
-  it('should correctly define _is by model or property definition', function (done) {
-    Person = db.define('Person', {_id: {type: db.ObjectID, id: true}});
-    Animal = db.define('Animal');
-    Animal.defineProperty('_id', {type: db.ObjectID, id: true});
-    Person.definition.properties._id.type.should.be.equal(db.ObjectID);
-    Animal.definition.properties._id.type.should.be.equal(db.ObjectID);
-
-    done();
-  });
-
-  it('create with `_id` as defined id should return _id', function (done) {
-    PostWithObjectId.create(function (err, post) {
+  it('should handle correctly type Number for id field _id', function (done) {
+    PostWithNumberId.create({_id: 3, content: "test"}, function (err, person) {
       should.not.exist(err);
-      post._id.should.be.an.instanceOf(db.ObjectID);
-
-      done();
+      should.not.exist(person.id);
+      person._id.should.be.equal(3);
+      
+      PostWithNumberId.findById(person._id, function (err, p) {
+        should.not.exist(err);
+        p.content.should.be.equal("test");
+        
+        done();
+      });
     });
   });
 
@@ -309,7 +306,9 @@ describe('mongodb', function () {
   after(function (done) {
     User.destroyAll(function () {
       Post.destroyAll(function () {
-        PostWithObjectId.destroyAll(done);
+        PostWithObjectId.destroyAll(function () {
+          PostWithNumberId.destroyAll(done);
+        });
       });
     });
   });

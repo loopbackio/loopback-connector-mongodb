@@ -27,20 +27,28 @@ To use it you need `loopback-datasource-juggler@1.0.x`.
         ...
     ```
 
-## About MongoDB ID field
+
+### About MongoDB _id field
 
 MongoDB uses a specific ID field with BSON `ObjectID` type, named `_id`
 
-This connector does not expose this `_id` by default, to keep consistency with other connectors.
+This connector does not expose MongoDB `_id` by default, to keep consistency with other connectors. Instead, it is transparently mapped to the `id` field - which is declared by default in the model if you do not define any `id`. 
 
-Default ID field keeps MongoDB `ObjectID` type, but field name is `id`, or any other field name specified in the loopback model's definition.
-
-If you want to use the original MongoDB `_id` field in your loopback model, please explicitly specify the type **DataSource.ObjectID** / **MongoDB.ObjectID** type in your model's definition.
+If you wish to still be able to access `_id` property, you must define it explicitely as your model ID, along with its type.
 
 *Example :*
 
     var ds = app.dataSources.db;
-    MyModel = ds.createModel('mymodel', {_id: ds.ObjectID});
+    MyModel = ds.createModel('mymodel', {
+        _id: { type: ds.ObjectID, id: true }
+    });
+
+*Example with a Number _id :
+
+    MyModel = ds.createModel('mymodel', {
+        _id: { type: Number, id: true }
+    });
+
 
 ## Customizing MongoDB configuration for tests/examples
 
