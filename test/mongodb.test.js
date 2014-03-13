@@ -11,7 +11,14 @@ describe('mongodb', function () {
     User = db.define('User', {
       name: { type: String, index: true },
       email: { type: String, index: true },
-      age: Number,
+      age: Number
+    }, {
+      indexes: {
+        name_age_index: {
+          keys: {name: 1, age: -1}
+        }, // The value contains keys and optinally options
+        age_index: {age: -1} // The value itself is for keys
+      }
     });
 
     Post = db.define('Post', {
@@ -49,6 +56,23 @@ describe('mongodb', function () {
             done();
           });
         });
+      });
+    });
+  });
+
+  it('should create indexes', function (done) {
+    db.automigrate('User', function () {
+      db.connector.db.collection('User').indexInformation(function (err, result) {
+
+        var indexes =
+        { _id_: [ [ '_id', 1 ] ],
+          name_age_index: [ [ 'name', 1 ], [ 'age', -1 ] ],
+          age_index: [ [ 'age', -1 ] ],
+          name_1: [ [ 'name', 1 ] ],
+          email_1: [ [ 'email', 1 ] ] };
+
+        indexes.should.eql(result);
+        done(err, result);
       });
     });
   });

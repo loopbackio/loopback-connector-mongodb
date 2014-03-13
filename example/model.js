@@ -4,48 +4,64 @@ var config = require('rc')('loopback', {dev: {mongodb: {}}}).dev.mongodb;
 
 var ds = new DataSource(require('../'), config);
 
-var Customer = ds.createModel('customer', {seq: {type: Number, id: true}, name: String, emails: [String], age: Number});
+var Customer = ds.createModel('customer', {seq: {type: Number, id: true}, name: String, emails: [
+  {label: String, email: String}
+], age: Number});
 
-Customer.create({
-  seq: 1,
-  name: 'John1',
-  emails: ['john@x.com', 'john@y.com'],
-  age: 30
-}, function (err, customer) {
-  console.log(customer.toObject());
+Customer.destroyAll(function (err) {
+  Customer.create({
+    seq: 1,
+    name: 'John1',
+    emails: [
+      {label: 'work', email: 'john@x.com'},
+      {label: 'home', email: 'john@y.com'}
+    ],
+    age: 30
+  }, function (err, customer1) {
+    console.log(customer1.toObject());
 
-  /*
-   customer.updateAttributes({name: 'John'}, function(err, result) {
-   console.log(err, result);
-   });
+    Customer.create({
+      seq: 2,
+      name: 'John2',
+      emails: [
+        {label: 'work', email: 'john2@x.com'},
+        {label: 'home', email: 'john2@y.com'}
+      ],
+      age: 35
+    }, function (err, customer2) {
+
+      Customer.find({where: {'emails.email': 'john@x.com'}}, function(err, customers) {
+        console.log('Customers matched by emails.email', customers);
+      });
+
+      Customer.find({where: {'emails.0.label': 'work'}}, function(err, customers) {
+        console.log('Customers matched by emails.0.label', customers);
+      });
+      /*
+       customer1.updateAttributes({name: 'John'}, function(err, result) {
+       console.log(err, result);
+       });
 
 
-   customer.delete(function(err, result) {
-   customer.updateAttributes({name: 'JohnX'}, function(err, result) {
-   console.log(err, result);
-   });
+       customer1.delete(function(err, result) {
+       customer1.updateAttributes({name: 'JohnX'}, function(err, result) {
+       console.log(err, result);
+       });
 
-   });
-   */
+       });
+       */
 
-  Customer.findById(customer.seq, function (err, customer) {
-    console.log(customer.toObject());
+      Customer.findById(customer1.seq, function (err, customer1) {
+        console.log(customer1.toObject());
 
-    customer.name = 'John';
-    customer.save(function (err, customer) {
-      console.log(customer.toObject());
-      ds.connector.close();
+        customer1.name = 'John';
+        customer1.save(function (err, customer1) {
+          console.log(customer1.toObject());
+          ds.disconnect();
+        });
+      });
     });
   });
 });
 
-/*
- Customer.create({
- id: 2,
- name: 'John2',
- emails: ['john@x.com', 'jhon@y.com'],
- age: 30
- }, function(err, customer) {
- console.log(customer.toObject());
- });
- */
+
