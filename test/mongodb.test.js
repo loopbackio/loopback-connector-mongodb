@@ -10,7 +10,7 @@ describe('mongodb', function () {
 
     User = db.define('User', {
       name: { type: String, index: true },
-      email: { type: String, index: true },
+      email: { type: String, index: true, unique: true },
       age: Number
     }, {
       indexes: {
