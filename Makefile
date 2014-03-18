@@ -1,7 +1,7 @@
 ## TESTS
 
 TESTER = ./node_modules/.bin/mocha
-OPTS = -G
+OPTS = -G --timeout 5000
 TESTS = test/*.test.js
 
 test:
