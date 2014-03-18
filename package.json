@@ -1,14 +1,22 @@
 {
   "name": "loopback-connector-mongodb",
-  "version": "1.1.8",
+  "version": "1.2.0",
   "description": "LoopBack MongoDB Connector",
-  "keywords": [ "StrongLoop", "LoopBack", "MongoDB", "DataSource", "Connector" ],
+  "keywords": [
+    "StrongLoop",
+    "LoopBack",
+    "MongoDB",
+    "DataSource",
+    "Connector"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "make test"
   },
   "dependencies": {
-    "mongodb": "~1.3.19"
+    "mongodb": "~1.3.19",
+    "async": "~0.2.10",
+    "debug": "~0.7.4"
   },
   "peerDependencies": {
     "loopback-datasource-juggler": "1.x.x"
