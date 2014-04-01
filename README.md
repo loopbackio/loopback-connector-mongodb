@@ -4,7 +4,7 @@ MongoDB connector for loopback-datasource-juggler.
 
 ## Usage
 
-To use it you need `loopback-datasource-juggler@1.0.x`.
+To use it you need `loopback-datasource-juggler@1.x.x`.
 
 1. Setup dependencies in `package.json`:
 
@@ -12,8 +12,8 @@ To use it you need `loopback-datasource-juggler@1.0.x`.
     {
       ...
       "dependencies": {
-        "loopback-datasource-juggler": "1.0.x",
-        "loopback-connector-mongodb": "1.0.x"
+        "loopback-datasource-juggler": "1.x.x",
+        "loopback-connector-mongodb": "1.x.x"
       },
       ...
     }
@@ -83,6 +83,10 @@ The .loopbackrc file should be in JSON format, for example:
 
 **Note**: username/password is only required if the MongoDB server has
 authentication enabled.
+
+**Note**: If the connector is used as a dependency of LoopBack applications,
+please refer to LoopBack documents on how to configure it. The '.loopbackrc' way
+is only used by the tests and examples within this project.
 
 ## Running tests
 
