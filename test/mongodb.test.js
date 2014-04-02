@@ -11,7 +11,8 @@ describe('mongodb', function () {
     User = db.define('User', {
       name: { type: String, index: true },
       email: { type: String, index: true, unique: true },
-      age: Number
+      age: Number,
+      icon: Buffer
     }, {
       indexes: {
         name_age_index: {
@@ -188,7 +189,14 @@ describe('mongodb', function () {
     });
   });
 
-
+  it('should support Buffer type', function (done) {
+    User.create({name: 'John', icon: new Buffer('1a2')}, function (e, u) {
+      User.findById(u.id, function (e, user) {
+        user.icon.should.be.an.instanceOf(Buffer);
+        done();
+      });
+    });
+  });
 
   it('hasMany should support additional conditions', function (done) {
     User.create(function (e, u) {

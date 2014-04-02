@@ -2,53 +2,7 @@
 
 MongoDB connector for loopback-datasource-juggler.
 
-## Usage
-
-To use it you need `loopback-datasource-juggler@1.0.x`.
-
-1. Setup dependencies in `package.json`:
-
-    ```json
-    {
-      ...
-      "dependencies": {
-        "loopback-datasource-juggler": "1.0.x",
-        "loopback-connector-mongodb": "1.0.x"
-      },
-      ...
-    }
-    ```
-
-2. Use:
-
-    ```javascript
-        var DataSource = require('loopback-datasource-juggler').DataSource;
-        var ds = new DataSource('mongodb');
-        ...
-    ```
-
-
-### About MongoDB _id field
-
-MongoDB uses a specific ID field with BSON `ObjectID` type, named `_id`
-
-This connector does not expose MongoDB `_id` by default, to keep consistency with other connectors. Instead, it is transparently mapped to the `id` field - which is declared by default in the model if you do not define any `id`. 
-
-If you wish to still be able to access `_id` property, you must define it explicitely as your model ID, along with its type.
-
-*Example :*
-
-    var ds = app.dataSources.db;
-    MyModel = ds.createModel('mymodel', {
-        _id: { type: ds.ObjectID, id: true }
-    });
-
-*Example with a Number _id :
-
-    MyModel = ds.createModel('mymodel', {
-        _id: { type: Number, id: true }
-    });
-
+Please see the full documentation at [docs.strongloop.com](http://docs.strongloop.com/display/DOC/MongoDB+connector).
 
 ## Customizing MongoDB configuration for tests/examples
 
@@ -58,7 +12,11 @@ instance running on localhost at port 27017.
 To customize the settings, you can drop in a `.loopbackrc` file to the root directory
 of the project or the home folder.
 
-The .loopbackrc file should be in JSON format, for example:
+**Note**: Tests and examples in this project configure the data source using the deprecated '.loopbackrc' file method, 
+which is not suppored in general.
+For information on configuring the connector in a LoopBack application, please refer to [LoopBack documentation](http://docs.strongloop.com/display/DOC/MongoDB+connector).
+
+The .loopbackrc file is in JSON format, for example:
 
     {
         "dev": {
