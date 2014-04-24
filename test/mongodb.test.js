@@ -102,6 +102,21 @@ describe('mongodb', function () {
     });
   });
 
+  it('should handle correctly type Number for id field _id using string', function (done) {
+    PostWithNumberId.create({_id: 4, content: "test"}, function (err, person) {
+      should.not.exist(err);
+      should.not.exist(person.id);
+      person._id.should.be.equal(4);
+
+      PostWithNumberId.findById('4', function (err, p) {
+        should.not.exist(err);
+        p.content.should.be.equal("test");
+
+        done();
+      });
+    });
+  });
+
   it('should allow to find post by id string if `_id` is defined id', function (done) {
     PostWithObjectId.create(function (err, post) {
       PostWithObjectId.find(post._id.toString(), function (err, p) {
