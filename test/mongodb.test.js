@@ -399,6 +399,66 @@ describe('mongodb', function () {
     });
   });
 
+  it('should support and that matches', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {and: [{title: 'My Post'}, {content: 'Hello'}]}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 1);
+        done();
+      });
+    });
+  });
+
+  it('should support and that doesn\'t mismatch', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {and: [{title: 'My Post'}, {content: 'Hello1'}]}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 0);
+        done();
+      });
+    });
+  });
+
+  it('should support or that matches', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {or: [{title: 'My Post'}, {content: 'Hello1'}]}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 1);
+        done();
+      });
+    });
+  });
+
+  it('should support or that doesn\'t match', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {or: [{title: 'My Post1'}, {content: 'Hello1'}]}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 0);
+        done();
+      });
+    });
+  });
+
+  it('should support nor that matches', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {nor: [{title: 'My Post1'}, {content: 'Hello1'}]}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 1);
+        done();
+      });
+    });
+  });
+
+  it('should support nor that doesn\'t match', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {nor: [{title: 'My Post'}, {content: 'Hello1'}]}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 0);
+        done();
+      });
+    });
+  });
+
   after(function (done) {
     User.destroyAll(function () {
       Post.destroyAll(function () {
