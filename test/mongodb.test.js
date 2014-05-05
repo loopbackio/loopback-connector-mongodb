@@ -459,6 +459,40 @@ describe('mongodb', function () {
     });
   });
 
+  // The where object should be parsed by the connector
+  it('should support where for count', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.count({and: [{title: 'My Post'}, {content: 'Hello'}]}, function (err, count) {
+        should.not.exist(err);
+        count.should.be.equal(1);
+        Post.count({and: [{title: 'My Post1'}, {content: 'Hello'}]}, function (err, count) {
+          should.not.exist(err);
+          count.should.be.equal(0);
+          done();
+        });
+      });
+    });
+  });
+
+  // The where object should be parsed by the connector
+  it('should support where for destroyAll', function (done) {
+    Post.create({title: 'My Post1', content: 'Hello'}, function (err, post) {
+      Post.create({title: 'My Post2', content: 'Hello'}, function (err, post) {
+        Post.destroyAll({and: [
+          {title: 'My Post1'},
+          {content: 'Hello'}
+        ]}, function (err) {
+          should.not.exist(err);
+          Post.count(function (err, count) {
+            should.not.exist(err);
+            count.should.be.equal(1);
+            done();
+          });
+        });
+      });
+    });
+  });
+
   after(function (done) {
     User.destroyAll(function () {
       Post.destroyAll(function () {
