@@ -477,6 +477,16 @@ describe('mongodb', function () {
     });
   });
 
+  it('should allow to find using case insensitive like', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {title: {like: 'm.+st', options: 'i'}}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 1);
+        done();
+      });
+    });
+  });
+
   it('should support like for no match', function (done) {
     Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
       Post.find({where: {title: {like: 'M.+XY'}}}, function (err, posts) {
@@ -490,6 +500,16 @@ describe('mongodb', function () {
   it('should allow to find using nlike', function (done) {
     Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
       Post.find({where: {title: {nlike: 'M.+st'}}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 0);
+        done();
+      });
+    });
+  });
+
+  it('should allow to find using case insensitive nlike', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {title: {nlike: 'm.+st', options: 'i'}}}, function (err, posts) {
         should.not.exist(err);
         posts.should.have.property('length', 0);
         done();
