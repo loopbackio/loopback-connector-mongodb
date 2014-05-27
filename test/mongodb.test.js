@@ -54,7 +54,9 @@ describe('mongodb', function () {
       Post.destroyAll(function () {
         PostWithObjectId.destroyAll(function () {
           PostWithNumberId.destroyAll(function () {
-            done();
+            PostWithStringId.destroyAll(function () {
+              done();
+            });
           });
         });
       });
@@ -454,6 +456,32 @@ describe('mongodb', function () {
           post.id.should.be.equal(oid);
 
           done();
+        });
+      });
+    });
+
+  it('find should order by id if the order is not set for the query filter',
+    function (done) {
+      PostWithStringId.create({id: '2', title: 'c', content: 'CCC'}, function (err, post) {
+        PostWithStringId.create({id: '1', title: 'd', content: 'DDD'}, function (err, post) {
+          PostWithStringId.find(function (err, posts) {
+            should.not.exist(err);
+            posts.length.should.be.equal(2);
+            posts[0].id.should.be.equal('1');
+
+            PostWithStringId.find({limit: 1, offset: 0}, function (err, posts) {
+              should.not.exist(err);
+              posts.length.should.be.equal(1);
+              posts[0].id.should.be.equal('1');
+
+              PostWithStringId.find({limit: 1, offset: 1}, function (err, posts) {
+                should.not.exist(err);
+                posts.length.should.be.equal(1);
+                posts[0].id.should.be.equal('2');
+                done();
+              });
+            });
+          });
         });
       });
     });
