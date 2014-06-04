@@ -121,7 +121,7 @@ describe('mongodb', function () {
 
   it('should allow to find post by id string if `_id` is defined id', function (done) {
     PostWithObjectId.create(function (err, post) {
-      PostWithObjectId.find(post._id.toString(), function (err, p) {
+      PostWithObjectId.find({where: {_id: post._id.toString()}}, function (err, p) {
         should.not.exist(err);
         post = p[0];
         should.exist(post);
@@ -243,7 +243,7 @@ describe('mongodb', function () {
 
   it('should allow to find by id string', function (done) {
     Post.create(function (err, post) {
-      Post.find(post.id.toString(), function (err, p) {
+      Post.findById(post.id.toString(), function (err, p) {
         should.not.exist(err);
         should.exist(p);
 
