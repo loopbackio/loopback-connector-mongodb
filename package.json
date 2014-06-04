@@ -14,12 +14,10 @@
     "test": "make test"
   },
   "dependencies": {
+    "loopback-connector": "1.x",
     "mongodb": "~1.4.3",
     "async": "~0.9.0",
     "debug": "~0.8.1"
-  },
-  "peerDependencies": {
-    "loopback-datasource-juggler": "1.x.x"
   },
   "devDependencies": {
     "loopback-datasource-juggler": "1.x.x",
