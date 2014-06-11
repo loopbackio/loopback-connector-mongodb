@@ -253,6 +253,29 @@ describe('mongodb', function () {
     });
   });
 
+  it('should allow to find by id using where', function (done) {
+    Post.create(function (err, post) {
+      Post.find({where: {id: post.id}}, function (err, p) {
+        should.not.exist(err);
+        should.exist(p && p[0]);
+        // Not strict equal
+        p[0].id.should.be.eql(post.id);
+        done();
+      });
+    });
+  });
+
+  it('should allow to find by id using where inq', function (done) {
+    Post.create(function (err, post) {
+      Post.find({where: {id: {inq: [post.id]}}}, function (err, p) {
+        should.not.exist(err);
+        should.exist(p && p[0]);
+        // Not strict equal
+        p[0].id.should.be.eql(post.id);
+        done();
+      });
+    });
+  });
 
   it('save should not return mongodb _id', function (done) {
     Post.create(function (err, post) {
