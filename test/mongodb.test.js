@@ -26,6 +26,10 @@ describe('mongodb', function () {
       title: { type: String, length: 255, index: true },
       content: { type: String },
       comments: [String]
+    }, {
+      mongodb: {
+        collection: 'PostCollection' // Customize the collection name
+      }
     });
 
     PostWithStringId = db.define('PostWithStringId', {
@@ -251,6 +255,16 @@ describe('mongodb', function () {
   it('should allow to find by id string', function (done) {
     Post.create({title: 'Post1', content: 'Post content'}, function (err, post) {
       Post.findById(post.id.toString(), function (err, p) {
+        should.not.exist(err);
+        should.exist(p);
+        done();
+      });
+    });
+  });
+
+  it('should allow custom collection name', function (done) {
+    Post.create({title: 'Post1', content: 'Post content'}, function (err, post) {
+      Post.dataSource.connector.db.collection('PostCollection').findOne({_id: post.id}, function (err, p) {
         should.not.exist(err);
         should.exist(p);
         done();
