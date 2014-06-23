@@ -24,7 +24,12 @@ describe('mongodb', function () {
 
     Post = db.define('Post', {
       title: { type: String, length: 255, index: true },
-      content: { type: String }
+      content: { type: String },
+      comments: [String]
+    }, {
+      mongodb: {
+        collection: 'PostCollection' // Customize the collection name
+      }
     });
 
     PostWithStringId = db.define('PostWithStringId', {
@@ -39,8 +44,14 @@ describe('mongodb', function () {
       content: { type: String }
     });
 
-    PostWithNumberId = db.define('PostWithNumberId', {
+    PostWithNumberUnderscoreId = db.define('PostWithNumberUnderscoreId', {
       _id: {type: Number, id: true},
+      title: { type: String, length: 255, index: true },
+      content: { type: String }
+    });
+
+    PostWithNumberId = db.define('PostWithNumberId', {
+      id: {type: Number, id: true},
       title: { type: String, length: 255, index: true },
       content: { type: String }
     });
@@ -54,8 +65,10 @@ describe('mongodb', function () {
       Post.destroyAll(function () {
         PostWithObjectId.destroyAll(function () {
           PostWithNumberId.destroyAll(function () {
-            PostWithStringId.destroyAll(function () {
-              done();
+            PostWithNumberUnderscoreId.destroyAll(function () {
+              PostWithStringId.destroyAll(function () {
+                done();
+              });
             });
           });
         });
@@ -83,19 +96,19 @@ describe('mongodb', function () {
   it('should have created models with correct _id types', function (done) {
     PostWithObjectId.definition.properties._id.type.should.be.equal(db.ObjectID);
     should.not.exist(PostWithObjectId.definition.properties.id);
-    PostWithNumberId.definition.properties._id.type.should.be.equal(Number);
-    should.not.exist(PostWithNumberId.definition.properties.id);
+    PostWithNumberUnderscoreId.definition.properties._id.type.should.be.equal(Number);
+    should.not.exist(PostWithNumberUnderscoreId.definition.properties.id);
 
     done();
   });
 
   it('should handle correctly type Number for id field _id', function (done) {
-    PostWithNumberId.create({_id: 3, content: "test"}, function (err, person) {
+    PostWithNumberUnderscoreId.create({_id: 3, content: "test"}, function (err, person) {
       should.not.exist(err);
       should.not.exist(person.id);
       person._id.should.be.equal(3);
       
-      PostWithNumberId.findById(person._id, function (err, p) {
+      PostWithNumberUnderscoreId.findById(person._id, function (err, p) {
         should.not.exist(err);
         p.content.should.be.equal("test");
         
@@ -105,12 +118,12 @@ describe('mongodb', function () {
   });
 
   it('should handle correctly type Number for id field _id using string', function (done) {
-    PostWithNumberId.create({_id: 4, content: "test"}, function (err, person) {
+    PostWithNumberUnderscoreId.create({_id: 4, content: "test"}, function (err, person) {
       should.not.exist(err);
       should.not.exist(person.id);
       person._id.should.be.equal(4);
 
-      PostWithNumberId.findById('4', function (err, p) {
+      PostWithNumberUnderscoreId.findById('4', function (err, p) {
         should.not.exist(err);
         p.content.should.be.equal("test");
 
@@ -228,10 +241,8 @@ describe('mongodb', function () {
     });
   });
 
-
-
   it('create should return id field but not mongodb _id', function (done) {
-    Post.create(function (err, post) {
+    Post.create({title: 'Post1', content: 'Post content'}, function (err, post) {
       //console.log('create should', err, post);
       should.not.exist(err);
       should.exist(post.id);
@@ -242,19 +253,95 @@ describe('mongodb', function () {
   });
 
   it('should allow to find by id string', function (done) {
-    Post.create(function (err, post) {
+    Post.create({title: 'Post1', content: 'Post content'}, function (err, post) {
       Post.findById(post.id.toString(), function (err, p) {
         should.not.exist(err);
         should.exist(p);
-
         done();
       });
     });
   });
 
+  it('should allow custom collection name', function (done) {
+    Post.create({title: 'Post1', content: 'Post content'}, function (err, post) {
+      Post.dataSource.connector.db.collection('PostCollection').findOne({_id: post.id}, function (err, p) {
+        should.not.exist(err);
+        should.exist(p);
+        done();
+      });
+    });
+  });
+
+  it('should allow to find by id using where', function (done) {
+    Post.create({title: 'Post1', content: 'Post1 content'}, function (err, p1) {
+      Post.create({title: 'Post2', content: 'Post2 content'}, function (err, p2) {
+        Post.find({where: {id: p1.id}}, function (err, p) {
+          should.not.exist(err);
+          should.exist(p && p[0]);
+          p.length.should.be.equal(1);
+          // Not strict equal
+          p[0].id.should.be.eql(p1.id);
+          done();
+        });
+      });
+    });
+  });
+
+  it('should allow to find by id using where inq', function (done) {
+    Post.create({title: 'Post1', content: 'Post1 content'}, function (err, p1) {
+      Post.create({title: 'Post2', content: 'Post2 content'}, function (err, p2) {
+        Post.find({where: {id: {inq: [p1.id]}}}, function (err, p) {
+          should.not.exist(err);
+          should.exist(p && p[0]);
+          p.length.should.be.equal(1);
+          // Not strict equal
+          p[0].id.should.be.eql(p1.id);
+          done();
+        });
+      });
+    });
+  });
+
+  it('should allow to find by number id using where', function (done) {
+    PostWithNumberId.create({id: 1, title: 'Post1', content: 'Post1 content'}, function (err, p1) {
+      PostWithNumberId.create({id: 2, title: 'Post2', content: 'Post2 content'}, function (err, p2) {
+        PostWithNumberId.find({where: {id: p1.id}}, function (err, p) {
+          should.not.exist(err);
+          should.exist(p && p[0]);
+          p.length.should.be.equal(1);
+          p[0].id.should.be.eql(p1.id);
+          done();
+        });
+      });
+    });
+  });
+
+  it('should allow to find by number id using where inq', function (done) {
+    PostWithNumberId.create({id: 1, title: 'Post1', content: 'Post1 content'}, function (err, p1) {
+      PostWithNumberId.create({id: 2, title: 'Post2', content: 'Post2 content'}, function (err, p2) {
+        PostWithNumberId.find({where: {id: {inq: [1]}}}, function (err, p) {
+          should.not.exist(err);
+          should.exist(p && p[0]);
+          p.length.should.be.equal(1);
+          p[0].id.should.be.eql(p1.id);
+          PostWithNumberId.find({where: {id: {inq: [1, 2]}}}, function (err, p) {
+            should.not.exist(err);
+            p.length.should.be.equal(2);
+            p[0].id.should.be.eql(p1.id);
+            p[1].id.should.be.eql(p2.id);
+            PostWithNumberId.find({where: {id: {inq: [0]}}}, function (err, p) {
+              should.not.exist(err);
+              p.length.should.be.equal(0);
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
 
   it('save should not return mongodb _id', function (done) {
-    Post.create(function (err, post) {
+    Post.create({title: 'Post1', content: 'Post content'}, function (err, post) {
       post.content = 'AAA';
       post.save(function(err, p) {
         should.not.exist(err)
@@ -268,7 +355,7 @@ describe('mongodb', function () {
   });
 
   it('find should return an object with an id, which is instanceof ObjectID, but not mongodb _id', function (done) {
-    Post.create(function (err, post) {
+    Post.create({title: 'Post1', content: 'Post content'}, function (err, post) {
       Post.findById(post.id, function (err, post) {
         should.not.exist(err);
         post.id.should.be.an.instanceOf(db.ObjectID);
@@ -303,9 +390,10 @@ describe('mongodb', function () {
   });
 
   it('updateOrCreate should update the instance without removing existing properties', function (done) {
-    Post.create({title: 'a', content: 'AAA'}, function (err, post) {
+    Post.create({title: 'a', content: 'AAA', comments: ['Comment1']}, function (err, post) {
       post = post.toObject();
       delete post.title;
+      delete post.comments;
       Post.updateOrCreate(post, function (err, p) {
         should.not.exist(err);
         p.id.should.be.equal(post.id);
@@ -317,6 +405,7 @@ describe('mongodb', function () {
           should.not.exist(p._id);
           p.content.should.be.equal(post.content);
           p.title.should.be.equal('a');
+          p.comments[0].should.be.equal('Comment1');
 
           done();
         });
@@ -633,7 +722,9 @@ describe('mongodb', function () {
     User.destroyAll(function () {
       Post.destroyAll(function () {
         PostWithObjectId.destroyAll(function () {
-          PostWithNumberId.destroyAll(done);
+          PostWithNumberId.destroyAll(function () {
+            PostWithNumberUnderscoreId.destroyAll(done);
+          });
         });
       });
     });
