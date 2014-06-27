@@ -2,7 +2,7 @@
 
 MongoDB connector for loopback-datasource-juggler.
 
-Please see the full documentation at [docs.strongloop.com](http://docs.strongloop.com/display/DOC/MongoDB+connector).
+Please see the full documentation at [docs.strongloop.com](http://docs.strongloop.com/display/LB/MongoDB+connector).
 
 ## Customizing MongoDB configuration for tests/examples
 
@@ -14,7 +14,7 @@ of the project or the home folder.
 
 **Note**: Tests and examples in this project configure the data source using the deprecated '.loopbackrc' file method, 
 which is not suppored in general.
-For information on configuring the connector in a LoopBack application, please refer to [LoopBack documentation](http://docs.strongloop.com/display/DOC/MongoDB+connector).
+For information on configuring the connector in a LoopBack application, please refer to [LoopBack documentation](http://docs.strongloop.com/display/LB/MongoDB+connector).
 
 The .loopbackrc file is in JSON format, for example:
 
