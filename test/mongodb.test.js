@@ -76,6 +76,25 @@ describe('mongodb', function () {
     });
   });
 
+  describe('.ping(cb)', function() {
+    it('should return true for valid connection', function(done) {
+      db.ping(done);
+    });
+
+    it('should report connection errors', function(done) {
+      var ds = getDataSource({
+        host: 'localhost',
+        port: 4 // unassigned by IANA
+      });
+      ds.ping(function(err) {
+        (!!err).should.be.true;
+        err.message.should.be.equal('failed to connect to [localhost:4]');
+        done();
+      });
+    });
+  });
+
+
   it('should create indexes', function (done) {
     db.automigrate('User', function () {
       db.connector.db.collection('User').indexInformation(function (err, result) {
