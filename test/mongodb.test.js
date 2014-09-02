@@ -703,6 +703,26 @@ describe('mongodb', function () {
     });
   });
 
+  it('should support neq for match', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {title: {neq: 'XY'}}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 1);
+        done();
+      });
+    });
+  });
+
+  it('should support neq for no match', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {title: {neq: 'My Post'}}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 0);
+        done();
+      });
+    });
+  });
+
   // The where object should be parsed by the connector
   it('should support where for count', function (done) {
     Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
