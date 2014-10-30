@@ -396,7 +396,7 @@ describe('mongodb', function () {
         should.not.exist(p._id);
 
         Post.findById(post.id, function (err, p) {
-          p.id.should.be.equal(post.id);
+          p.id.should.be.eql(post.id);
           should.not.exist(p._id);
           p.content.should.be.equal(post.content);
           p.title.should.be.equal('b');
@@ -420,7 +420,7 @@ describe('mongodb', function () {
         should.not.exist(p._id);
 
         Post.findById(post.id, function (err, p) {
-          p.id.should.be.equal(post.id);
+          p.id.should.be.eql(post.id);
           should.not.exist(p._id);
           p.content.should.be.equal(post.content);
           p.title.should.be.equal('a');
@@ -439,7 +439,7 @@ describe('mongodb', function () {
       should.not.exist(err);
       p.title.should.be.equal(post.title);
       p.content.should.be.equal(post.content);
-      p.id.should.be.equal(post.id);
+      p.id.should.be.eql(post.id);
 
       Post.findById(p.id, function (err, p) {
         p.id.should.be.equal(post.id);
@@ -464,7 +464,7 @@ describe('mongodb', function () {
         should.not.exist(p._id);
 
         Post.findById(post.id, function (err, p) {
-          p.id.should.be.equal(post.id);
+          p.id.should.be.eql(post.id);
           should.not.exist(p._id);
           p.content.should.be.equal(post.content);
           p.title.should.be.equal('b');
@@ -486,7 +486,7 @@ describe('mongodb', function () {
         should.not.exist(p._id);
 
         Post.findById(post.id, function (err, p) {
-          p.id.should.be.equal(post.id);
+          p.id.should.be.eql(post.id);
           should.not.exist(p._id);
           p.content.should.be.equal(post.content);
           p.title.should.be.equal('a');
