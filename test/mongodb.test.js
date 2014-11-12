@@ -76,6 +76,47 @@ describe('mongodb', function () {
     });
   });
 
+  describe('custom defaultIdType', function(){
+    var CustomUser;
+
+    before(function () {
+      var dummyIdType = function macaco(id) {
+        return id;
+      };
+      db = getDataSource({defaultIdType: dummyIdType});
+      CustomUser = db.define('CustomUser', {
+        id: {type: String, id:true},
+        name: {type: String}
+      });
+    });
+
+
+    after(function(done) {
+      CustomUser.destroyAll(function() {
+        done();
+      });
+    });
+
+    it('save custom defaultId in database', function(done){
+      var customUser = new CustomUser({id: '54637b427ff88a00246e1154', name: 'Test'});
+      customUser.save(function(err, customUser) {
+        if (err) { return done(err); }
+
+        var cursor = db.connector.db.collection('CustomUser').find({_id: '54637b427ff88a00246e1154'});
+        cursor.toArray(function (err, data) {
+          if (err) { return done(err); }
+          should.not.exist(err);
+          should.exist(data[0]);
+
+          data[0]._id.should.not.be.an.instanceOf(db.ObjectID);
+          done();
+        });
+      });
+    });
+
+  });
+
+
   describe('.ping(cb)', function() {
     it('should return true for valid connection', function(done) {
       db.ping(done);
@@ -126,11 +167,11 @@ describe('mongodb', function () {
       should.not.exist(err);
       should.not.exist(person.id);
       person._id.should.be.equal(3);
-      
+
       PostWithNumberUnderscoreId.findById(person._id, function (err, p) {
         should.not.exist(err);
         p.content.should.be.equal("test");
-        
+
         done();
       });
     });
