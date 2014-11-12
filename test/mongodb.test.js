@@ -76,6 +76,51 @@ describe('mongodb', function () {
     });
   });
 
+  describe('Id property as string, when saved a 24 caracters string value', function(){
+    var CustomUser;
+
+    before(function (done) {
+      db = getDataSource();
+      CustomUser = db.define('CustomUser', {
+        id: {type: String, id:true},
+        name: {type: String}
+      });
+
+      var customUser = new CustomUser({id: '54637b427ff88a00246e1154', name: 'Test'});
+      customUser.save(function(err, customUser) {
+        if (err) { return done(err); }
+        done();
+      });
+    });
+
+    after(function(done) {
+      CustomUser.destroyAll(function() {
+        done();
+      });
+    });
+
+    it('should to store id in string format', function(done){
+      var cursor = db.connector.db.collection('CustomUser').find({_id: '54637b427ff88a00246e1154'});
+      cursor.toArray(function (err, data) {
+        if (err) { return done(err); }
+        should.not.exist(err);
+        should.exist(data[0]);
+
+        data[0]._id.should.not.be.an.instanceOf(db.ObjectID);
+        done();
+      });
+    });
+
+    it('should find by string', function(done){
+      CustomUser.findById('54637b427ff88a00246e1154', function(err, item) {
+        if (err) { return done(err); }
+        should.not.exist(err);
+        should.exist(item);
+        done();
+      });
+    });
+  });
+
   describe('.ping(cb)', function() {
     it('should return true for valid connection', function(done) {
       db.ping(done);
@@ -126,11 +171,11 @@ describe('mongodb', function () {
       should.not.exist(err);
       should.not.exist(person.id);
       person._id.should.be.equal(3);
-      
+
       PostWithNumberUnderscoreId.findById(person._id, function (err, p) {
         should.not.exist(err);
         p.content.should.be.equal("test");
-        
+
         done();
       });
     });
