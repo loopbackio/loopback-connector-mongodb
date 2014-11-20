@@ -1,6 +1,10 @@
 // This test written in mocha+should.js
 var semver = require('semver');
 var should = require('./init.js');
+var testUtils = require('../lib/test-utils');
+var async = require('async');
+
+var GeoPoint = require('loopback-datasource-juggler').GeoPoint;
 
 var Superhero, User, Post, PostWithStringId, db;
 
@@ -1322,6 +1326,87 @@ describe('mongodb connector', function() {
         });
       });
     });
+
+  describe('geo queries', function() {
+    var geoDb, PostWithLocation;
+
+    before(function() {
+      var config = JSON.parse(JSON.stringify(global.config)); // clone config
+      config.enableGeoIndexing = true;
+
+      geoDb = getDataSource(config);
+
+      PostWithLocation = geoDb.define('PostWithLocation', {
+        _id: { type: geoDb.ObjectID, id: true },
+        location: { type: GeoPoint, index: true },
+      });
+    });
+
+    beforeEach(function(done) {
+      PostWithLocation.destroyAll(done);
+    });
+
+    it('create should convert geopoint to geojson', function(done) {
+      var point = new GeoPoint({ lat: 1.243, lng: 20.40 });
+
+      PostWithLocation.create({ location: point }, function(err, post) {
+        should.not.exist(err);
+        point.lat.should.be.equal(post.location.lat);
+        point.lng.should.be.equal(post.location.lng);
+
+        done();
+      });
+    });
+
+    it('find should be able to query by location', function(done) {
+      var coords = { lat: 1.25, lng: 20.20 };
+
+      geoDb.autoupdate(function(err) {
+        var createPost = function(callback) {
+          var point = new GeoPoint({
+            lat: (Math.random() * 180) - 90,
+            lng: (Math.random() * 360) - 180,
+          });
+
+          PostWithLocation.create({ location: point }, callback);
+        };
+
+        async.parallel([
+          createPost.bind(null),
+          createPost.bind(null),
+          createPost.bind(null),
+          createPost.bind(null),
+        ], function(err) {
+          should.not.exist(err);
+
+          PostWithLocation.find({
+            where: {
+              location: {
+                near: new GeoPoint(coords),
+              },
+            },
+          }, function(err, results) {
+            should.not.exist(err);
+            should.exist(results);
+
+            var dist = 0;
+            results.forEach(function(result) {
+              var currentDist = testUtils.getDistanceBetweenPoints(coords, result.location);
+              currentDist.should.be.aboveOrEqual(dist);
+
+              dist = currentDist;
+            });
+
+            done();
+          });
+        });
+      });
+    });
+
+    afterEach(function(done) {
+      PostWithLocation.destroyAll(done);
+    });
+  });
 
   it('find should order by id if the order is not set for the query filter',
     function(done) {
