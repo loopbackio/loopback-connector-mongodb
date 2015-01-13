@@ -15,15 +15,15 @@
   },
   "dependencies": {
     "loopback-connector": "1.x",
-    "mongodb": "~1.4.7",
-    "async": "~0.9.0",
-    "debug": "~1.0.2"
+    "mongodb": "^2.0.13",
+    "async": "^0.9.0",
+    "debug": "^2.1.1"
   },
   "devDependencies": {
-    "loopback-datasource-juggler": "^2.10.2",
+    "loopback-datasource-juggler": "^2.13.0",
     "should": "~1.2.2",
-    "mocha": "~1.20.1",
-    "rc": "~0.4.0"
+    "mocha": "^2.1.0",
+    "rc": "^0.5.5"
   },
   "repository": {
     "type": "git",

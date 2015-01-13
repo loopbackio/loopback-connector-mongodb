@@ -88,7 +88,7 @@ describe('mongodb', function () {
       });
       ds.ping(function(err) {
         (!!err).should.be.true;
-        err.message.should.be.equal('failed to connect to [localhost:4]');
+        err.message.should.be.equal('connect ECONNREFUSED');
         done();
       });
     });
