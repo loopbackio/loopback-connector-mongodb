@@ -124,7 +124,6 @@ describe('mongodb', function () {
   it('should handle correctly type Number for id field _id', function (done) {
     PostWithNumberUnderscoreId.create({_id: 3, content: "test"}, function (err, person) {
       should.not.exist(err);
-      should.not.exist(person.id);
       person._id.should.be.equal(3);
       
       PostWithNumberUnderscoreId.findById(person._id, function (err, p) {
@@ -139,7 +138,6 @@ describe('mongodb', function () {
   it('should handle correctly type Number for id field _id using string', function (done) {
     PostWithNumberUnderscoreId.create({_id: 4, content: "test"}, function (err, person) {
       should.not.exist(err);
-      should.not.exist(person.id);
       person._id.should.be.equal(4);
 
       PostWithNumberUnderscoreId.findById('4', function (err, p) {
