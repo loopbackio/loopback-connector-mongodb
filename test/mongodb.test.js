@@ -1,7 +1,7 @@
 // This test written in mocha+should.js
 var should = require('./init.js');
 
-var User, Post, PostWithStringId, db;
+var Superhero, User, Post, PostWithStringId, db;
 
 describe('mongodb', function () {
 
@@ -20,6 +20,16 @@ describe('mongodb', function () {
         }, // The value contains keys and optinally options
         age_index: {age: -1} // The value itself is for keys
       }
+    });
+
+    Superhero = db.define('Superhero', {
+      name: { type: String, index: true },
+      power: { type: String, index: true, unique: true },
+      address: { type: String, required: false, index: { mongodb: { unique: false, sparse: true } } },
+      description: { type: String, required: false },
+      geometry: { type: Object, required: false, index: { mongodb: { kind: "2dsphere" } } },
+      age: Number,
+      icon: Buffer
     });
 
     Post = db.define('Post', {
@@ -105,6 +115,23 @@ describe('mongodb', function () {
           age_index: [ [ 'age', -1 ] ],
           name_1: [ [ 'name', 1 ] ],
           email_1: [ [ 'email', 1 ] ] };
+
+        indexes.should.eql(result);
+        done(err, result);
+      });
+    });
+  });
+
+  it('should create complex indexes', function (done) {
+    db.automigrate('Superhero', function () {
+      db.connector.db.collection('Superhero').indexInformation(function (err, result) {
+
+        var indexes =
+        { _id_: [ [ '_id', 1 ] ],
+          geometry_2dsphere: [ [ 'geometry', '2dsphere' ] ],
+          power_1: [ [ 'power', 1 ] ],
+          name_1: [ [ 'name', 1 ] ],
+          address_1: [ [ 'address', 1 ] ] };
 
         indexes.should.eql(result);
         done(err, result);
