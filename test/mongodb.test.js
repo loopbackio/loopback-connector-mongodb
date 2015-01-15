@@ -386,6 +386,224 @@ describe('mongodb', function () {
     });
   });
 
+  describe('updateAll', function () {
+    it('should update the instance matching criteria', function (done) {
+      User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
+        should.not.exist(err1);
+        User.create({name: 'Simon', age: 32,  email:'simon@strongloop'}, function (err2, createdusers2) {
+          should.not.exist(err2);
+          User.create({name: 'Ray', age: 31,  email:'ray@strongloop'}, function (err3, createdusers3) {
+            should.not.exist(err3);
+
+            User.updateAll({age:31},{company:'strongloop.com'},function(err,updatedusers) {
+              should.not.exist(err);
+              updatedusers.should.be.equal(2);
+
+              User.find({where:{age:31}},function(err2,foundusers) {
+                should.not.exist(err2);
+                foundusers[0].company.should.be.equal('strongloop.com');
+                foundusers[1].company.should.be.equal('strongloop.com');
+
+                done();
+              });
+
+            });
+          });
+        });
+      });
+
+    });
+
+    it('should clean the data object and parse only the first operator', function (done) {
+
+      User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
+        should.not.exist(err1);
+        User.create({name: 'Simon', age: 32,  email:'simon@strongloop'}, function (err2, createdusers2) {
+          should.not.exist(err2);
+          User.create({name: 'Ray', age: 31,  email:'ray@strongloop'}, function (err3, createdusers3) {
+            should.not.exist(err3);
+
+            User.updateAll({}, {age: 40, '$set': {age: 39}},function(err,updatedusers) {
+              should.not.exist(err);
+              updatedusers.should.be.equal(3);
+
+              User.find({where:{age:40}},function(err2, foundusers) {
+                should.not.exist(err2);
+                foundusers.length.should.be.equal(0);
+
+                User.find({where:{age:39}}, function(err3, foundusers) {
+                  should.not.exist(err3);
+                  foundusers.length.should.be.equal(3);
+
+                  User.updateAll({}, {'$set': {age: 40}, age: 39}, function(err, updatedusers) {
+                    should.not.exist(err);
+                    updatedusers.should.be.equal(3);
+
+                    User.find({where:{age:40}},function(err2, foundusers) {
+                      should.not.exist(err2);
+                      foundusers.length.should.be.equal(3);
+
+                      User.find({where:{age:39}}, function(err3, foundusers) {
+                        should.not.exist(err3);
+                        foundusers.length.should.be.equal(0);
+
+                        done();
+                      });
+                    });
+                  });
+
+                });
+              });
+            });
+
+          });
+        });
+      });
+
+    });
+
+    it('should use $set by default if no operator is supplied', function (done) {
+      User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
+        should.not.exist(err1);
+        User.create({name: 'Simon', age: 32,  email:'simon@strongloop'}, function (err2, createdusers2) {
+          should.not.exist(err2);
+          User.create({name: 'Ray', age: 31,  email:'ray@strongloop'}, function (err3, createdusers3) {
+            should.not.exist(err3);
+
+            User.updateAll({name: 'Simon'}, {name: 'Alex'}, function(err, updatedusers) {
+              should.not.exist(err);
+              updatedusers.should.be.equal(1);
+
+              User.find({where: {name: 'Alex'}}, function (err, founduser) {
+                should.not.exist(err);
+                founduser.length.should.be.equal(1);
+                founduser[0].name.should.be.equal('Alex');
+
+                done();
+              });
+            });
+
+          });
+        });
+      });
+    });
+
+    it('should be possible to use the $inc operator', function (done) {
+      User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
+        should.not.exist(err1);
+        User.create({name: 'Simon', age: 32,  email:'simon@strongloop'}, function (err2, createdusers2) {
+          should.not.exist(err2);
+          User.create({name: 'Ray', age: 31,  email:'ray@strongloop'}, function (err3, createdusers3) {
+            should.not.exist(err3);
+
+            User.updateAll({name: 'Ray'}, {'$inc': {age: 2}}, function(err, updatedusers) {
+              should.not.exist(err);
+              updatedusers.should.be.equal(1);
+
+              User.find({where: {name: 'Ray'}}, function (err, foundusers) {
+                should.not.exist(err);
+                foundusers.length.should.be.equal(1);
+                foundusers[0].age.should.be.equal(33);
+
+                done();
+              });
+            })
+
+          });
+        });
+      });
+    });
+
+    it('should be possible to use the $min and $max operators', function (done) {
+      User.create({name: 'Simon', age: 32,  email:'simon@strongloop'}, function (err2, createdusers2) {
+        should.not.exist(err2);
+
+        User.updateAll({name: 'Simon'}, {'$max': {age: 33}}, function(err, updatedusers) {
+          should.not.exist(err);
+          updatedusers.should.be.equal(1);
+
+          User.updateAll({name: 'Simon'}, {'$min': {age: 31}}, function(err, updatedusers) {
+            should.not.exist(err);
+            updatedusers.should.be.equal(1);
+
+            User.find({where: {name: 'Simon'}}, function(err, foundusers) {
+              should.not.exist(err);
+              foundusers.length.should.be.equal(1);
+              foundusers[0].age.should.be.equal(31);
+
+              done();
+            });
+            
+          });
+        });
+
+      });
+    });
+    
+    it('should be possible to use the $mul operator', function (done) {
+      User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
+        should.not.exist(err1);
+        
+        User.updateAll({name: 'Al'}, {'$mul': {age: 2}}, function(err, updatedusers) {
+          should.not.exist(err);
+          updatedusers.should.be.equal(1);
+
+          User.find({where: {name: 'Al'}}, function(err, foundusers) {
+            should.not.exist(err);
+            foundusers.length.should.be.equal(1);
+            foundusers[0].age.should.be.equal(62);
+
+            done();
+          });
+            
+        });
+
+      });
+    });
+
+    it('should be possible to use the $rename operator', function (done) {
+      User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
+        should.not.exist(err1);
+        
+        User.updateAll({name: 'Al'}, {'$rename': {name: 'firstname'}}, function(err, updatedusers) {
+          should.not.exist(err);
+          updatedusers.should.be.equal(1);
+
+          User.find({where: {firstname: 'Al'}}, function(err, foundusers) {
+            should.not.exist(err);
+            foundusers.length.should.be.equal(1);
+
+            done();
+          });
+            
+        });
+      });
+
+    });
+
+    it('should be possible to use the $unset operator', function (done) {
+      User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
+        should.not.exist(err1);
+        
+        User.updateAll({name: 'Al'}, {'$unset': {email: ''}}, function(err, updatedusers) {
+          should.not.exist(err);
+          updatedusers.should.be.equal(1);
+
+          User.find({where: {name: 'Al'}}, function(err, foundusers) {
+            should.not.exist(err);
+            foundusers.length.should.be.equal(1);
+            should.not.exist(foundusers[0].email);
+
+            done();
+          });
+            
+        });
+      });
+
+    });
+
+  });
+
   it('updateOrCreate should update the instance', function (done) {
     Post.create({title: 'a', content: 'AAA'}, function (err, post) {
       post.title = 'b';
