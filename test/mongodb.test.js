@@ -1,7 +1,7 @@
 // This test written in mocha+should.js
 var should = require('./init.js');
 
-var User, Post, PostWithStringId, db;
+var Superhero, User, Post, PostWithStringId, db;
 
 describe('mongodb', function () {
 
@@ -20,6 +20,16 @@ describe('mongodb', function () {
         }, // The value contains keys and optinally options
         age_index: {age: -1} // The value itself is for keys
       }
+    });
+
+    Superhero = db.define('Superhero', {
+      name: { type: String, index: true },
+      power: { type: String, index: true, unique: true },
+      address: { type: String, required: false, index: { mongodb: { unique: false, sparse: true } } },
+      description: { type: String, required: false },
+      geometry: { type: Object, required: false, index: { mongodb: { kind: "2dsphere" } } },
+      age: Number,
+      icon: Buffer
     });
 
     Post = db.define('Post', {
@@ -88,7 +98,7 @@ describe('mongodb', function () {
       });
       ds.ping(function(err) {
         (!!err).should.be.true;
-        err.message.should.be.equal('failed to connect to [localhost:4]');
+        err.message.should.be.equal('connect ECONNREFUSED');
         done();
       });
     });
@@ -112,6 +122,23 @@ describe('mongodb', function () {
     });
   });
 
+  it('should create complex indexes', function (done) {
+    db.automigrate('Superhero', function () {
+      db.connector.db.collection('Superhero').indexInformation(function (err, result) {
+
+        var indexes =
+        { _id_: [ [ '_id', 1 ] ],
+          geometry_2dsphere: [ [ 'geometry', '2dsphere' ] ],
+          power_1: [ [ 'power', 1 ] ],
+          name_1: [ [ 'name', 1 ] ],
+          address_1: [ [ 'address', 1 ] ] };
+
+        indexes.should.eql(result);
+        done(err, result);
+      });
+    });
+  });
+
   it('should have created models with correct _id types', function (done) {
     PostWithObjectId.definition.properties._id.type.should.be.equal(db.ObjectID);
     should.not.exist(PostWithObjectId.definition.properties.id);
@@ -124,7 +151,6 @@ describe('mongodb', function () {
   it('should handle correctly type Number for id field _id', function (done) {
     PostWithNumberUnderscoreId.create({_id: 3, content: "test"}, function (err, person) {
       should.not.exist(err);
-      should.not.exist(person.id);
       person._id.should.be.equal(3);
       
       PostWithNumberUnderscoreId.findById(person._id, function (err, p) {
@@ -139,7 +165,6 @@ describe('mongodb', function () {
   it('should handle correctly type Number for id field _id using string', function (done) {
     PostWithNumberUnderscoreId.create({_id: 4, content: "test"}, function (err, person) {
       should.not.exist(err);
-      should.not.exist(person.id);
       person._id.should.be.equal(4);
 
       PostWithNumberUnderscoreId.findById('4', function (err, p) {
@@ -614,7 +639,7 @@ describe('mongodb', function () {
         should.not.exist(p._id);
 
         Post.findById(post.id, function (err, p) {
-          p.id.should.be.equal(post.id);
+          p.id.should.be.eql(post.id);
           should.not.exist(p._id);
           p.content.should.be.equal(post.content);
           p.title.should.be.equal('b');
@@ -638,7 +663,7 @@ describe('mongodb', function () {
         should.not.exist(p._id);
 
         Post.findById(post.id, function (err, p) {
-          p.id.should.be.equal(post.id);
+          p.id.should.be.eql(post.id);
           should.not.exist(p._id);
           p.content.should.be.equal(post.content);
           p.title.should.be.equal('a');
@@ -657,7 +682,7 @@ describe('mongodb', function () {
       should.not.exist(err);
       p.title.should.be.equal(post.title);
       p.content.should.be.equal(post.content);
-      p.id.should.be.equal(post.id);
+      p.id.should.be.eql(post.id);
 
       Post.findById(p.id, function (err, p) {
         p.id.should.be.equal(post.id);
@@ -682,7 +707,7 @@ describe('mongodb', function () {
         should.not.exist(p._id);
 
         Post.findById(post.id, function (err, p) {
-          p.id.should.be.equal(post.id);
+          p.id.should.be.eql(post.id);
           should.not.exist(p._id);
           p.content.should.be.equal(post.content);
           p.title.should.be.equal('b');
@@ -704,7 +729,7 @@ describe('mongodb', function () {
         should.not.exist(p._id);
 
         Post.findById(post.id, function (err, p) {
-          p.id.should.be.equal(post.id);
+          p.id.should.be.eql(post.id);
           should.not.exist(p._id);
           p.content.should.be.equal(post.content);
           p.title.should.be.equal('a');
