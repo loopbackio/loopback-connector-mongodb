@@ -440,6 +440,7 @@ describe('mongodb', function () {
     });
 
     it('should clean the data object and parse only the first operator', function (done) {
+      User.dataSource.settings.extended_operators = true;
 
       User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
         should.not.exist(err1);
@@ -514,6 +515,7 @@ describe('mongodb', function () {
     });
 
     it('should be possible to use the $inc operator', function (done) {
+      User.dataSource.settings.extended_operators = true;
       User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
         should.not.exist(err1);
         User.create({name: 'Simon', age: 32,  email:'simon@strongloop'}, function (err2, createdusers2) {
@@ -540,6 +542,7 @@ describe('mongodb', function () {
     });
 
     it('should be possible to use the $min and $max operators', function (done) {
+      User.dataSource.settings.extended_operators = true;
       User.create({name: 'Simon', age: 32,  email:'simon@strongloop'}, function (err2, createdusers2) {
         should.not.exist(err2);
 
@@ -566,6 +569,7 @@ describe('mongodb', function () {
     });
     
     it('should be possible to use the $mul operator', function (done) {
+      User.dataSource.settings.extended_operators = true;
       User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
         should.not.exist(err1);
         
@@ -587,6 +591,7 @@ describe('mongodb', function () {
     });
 
     it('should be possible to use the $rename operator', function (done) {
+      User.dataSource.settings.extended_operators = true;
       User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
         should.not.exist(err1);
         
@@ -607,6 +612,7 @@ describe('mongodb', function () {
     });
 
     it('should be possible to use the $unset operator', function (done) {
+      User.dataSource.settings.extended_operators = true;
       User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
         should.not.exist(err1);
         
