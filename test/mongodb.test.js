@@ -450,7 +450,7 @@ describe('mongodb', function () {
 
     });
 
-    it('should clean the data object and parse only the first operator', function (done) {
+    it('should clean the data object', function (done) {
       User.dataSource.settings.allowExtendedOperators = true;
 
       User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
