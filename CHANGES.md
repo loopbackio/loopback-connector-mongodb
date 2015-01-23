@@ -1,3 +1,33 @@
+2015-01-23, Version 1.6.0
+=========================
+
+ * Small optimisation on the loop in parseUpdateData (Alexandru Savin)
+
+ * Optimized the user data parser method (Alexandru Savin)
+
+ * Fixed bug where only the first operator was kept and refactored the parsing logic to be reused (Alexandru Savin)
+
+ * Allows array operators (Felipe Figueroa)
+
+ * Renamed datasource config var for exended parameters (Alexandru Savin)
+
+ * set extended operators to true for the tests where they are needed (Alexandru Savin)
+
+ * added configuration switch extended_operators and more update operators (Alexandru Savin)
+
+ * Added tests (Alexandru Savin)
+
+ * Check for valid operators and disregard any other properties (Alexandru Savin)
+
+ * allow DB specific mappings for indexes (Felipe Figueroa)
+
+ * Changed the solution to use indexOf (Alexandru Savin)
+
+ * Give access to all update operators (Alexandru Savin)
+
+ * Enable additional update actions (other than $set) (Alexandru Savin)
+
+
 2015-01-14, Version 1.5.0
 =========================
 
