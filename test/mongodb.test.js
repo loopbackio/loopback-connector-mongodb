@@ -109,7 +109,7 @@ describe('mongodb', function () {
       });
       ds.ping(function(err) {
         (!!err).should.be.true;
-        err.message.should.be.equal('connect ECONNREFUSED');
+        err.message.should.match(/connect ECONNREFUSED/);
         done();
       });
     });
