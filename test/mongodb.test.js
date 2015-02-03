@@ -163,11 +163,11 @@ describe('mongodb', function () {
     PostWithNumberUnderscoreId.create({_id: 3, content: "test"}, function (err, person) {
       should.not.exist(err);
       person._id.should.be.equal(3);
-      
+
       PostWithNumberUnderscoreId.findById(person._id, function (err, p) {
         should.not.exist(err);
         p.content.should.be.equal("test");
-        
+
         done();
       });
     });
@@ -265,7 +265,7 @@ describe('mongodb', function () {
         posts.should.have.lengthOf(1);
         post = posts[0];
         post.should.have.property('title', 'a');
-        post.should.not.have.property('content');
+        post.should.have.property('content', undefined);
         should.not.exist(post._id);
 
         done();
@@ -572,18 +572,18 @@ describe('mongodb', function () {
 
               done();
             });
-            
+
           });
         });
 
       });
     });
-    
+
     it('should be possible to use the $mul operator', function (done) {
       User.dataSource.settings.allowExtendedOperators = true;
       User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
         should.not.exist(err1);
-        
+
         User.updateAll({name: 'Al'}, {'$mul': {age: 2}}, function(err, updatedusers) {
           should.not.exist(err);
           updatedusers.should.be.equal(1);
@@ -595,7 +595,7 @@ describe('mongodb', function () {
 
             done();
           });
-            
+
         });
 
       });
@@ -605,7 +605,7 @@ describe('mongodb', function () {
       User.dataSource.settings.allowExtendedOperators = true;
       User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
         should.not.exist(err1);
-        
+
         User.updateAll({name: 'Al'}, {'$rename': {name: 'firstname'}}, function(err, updatedusers) {
           should.not.exist(err);
           updatedusers.should.be.equal(1);
@@ -616,7 +616,7 @@ describe('mongodb', function () {
 
             done();
           });
-            
+
         });
       });
 
@@ -626,7 +626,7 @@ describe('mongodb', function () {
       User.dataSource.settings.allowExtendedOperators = true;
       User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
         should.not.exist(err1);
-        
+
         User.updateAll({name: 'Al'}, {'$unset': {email: ''}}, function(err, updatedusers) {
           should.not.exist(err);
           updatedusers.should.be.equal(1);
@@ -638,7 +638,7 @@ describe('mongodb', function () {
 
             done();
           });
-            
+
         });
       });
 
@@ -673,13 +673,13 @@ describe('mongodb', function () {
     Product.create({name: 'bread', price: 100, pricehistory:[{'2014-11-11':90}]}, function (err, product) {
 
       var newattributes= {$set : {description:'goes well with butter'}, $addToSet : { pricehistory: { '2014-12-12':110 } } };
-        
+
       product.updateAttributes(newattributes, function (err1, inst) {
         should.not.exist(err1);
 
         Product.findById(product.id, function (err2, updatedproduct) {
           should.not.exist(err2);
-          should.not.exist(updatedproduct._id); 
+          should.not.exist(updatedproduct._id);
           updatedproduct.id.should.be.eql(product.id);
           updatedproduct.name.should.be.equal(product.name);
           updatedproduct.description.should.be.equal('goes well with butter');
@@ -697,10 +697,10 @@ describe('mongodb', function () {
 
       product.$set = {description:'goes well with butter'};
       product.$addToSet = { pricehistory: { '2014-12-12':110 } };
-        
+
       Product.updateOrCreate(product, function (err, updatedproduct) {
         should.not.exist(err);
-        should.not.exist(updatedproduct._id); 
+        should.not.exist(updatedproduct._id);
         updatedproduct.id.should.be.eql(product.id);
         updatedproduct.name.should.be.equal(product.name);
         updatedproduct.description.should.be.equal('goes well with butter');
@@ -708,7 +708,7 @@ describe('mongodb', function () {
         updatedproduct.pricehistory[1]['2014-12-12'].should.be.equal(110);
 
         done();
-          
+
       });
     });
   });
@@ -720,10 +720,10 @@ describe('mongodb', function () {
 
       product.$set = {description:'goes well with butter'};
       product.$addToSet = { pricehistory: { '2014-10-10':80 } };
-        
+
       Product.updateOrCreate(product, function (err, updatedproduct) {
         should.not.exist(err);
-        should.not.exist(updatedproduct._id); 
+        should.not.exist(updatedproduct._id);
         updatedproduct.id.should.be.eql(product.id);
         updatedproduct.name.should.be.equal(product.name);
         updatedproduct.description.should.be.equal('goes well with butter');
@@ -731,23 +731,23 @@ describe('mongodb', function () {
         updatedproduct.pricehistory[1]['2014-10-10'].should.be.equal(80);
 
         done();
-          
+
       });
     });
-  });  
+  });
 
   it('updateAttributes: $addToSet should not append item to an Array if it does already exist', function (done) {
     Product.dataSource.settings.allowExtendedOperators = true;
     Product.create({name: 'bread', price: 100, pricehistory:[{'2014-11-11':90},{ '2014-10-10':80 }]}, function (err, product) {
 
       var newattributes= {$set : {description:'goes well with butter'}, $addToSet : { pricehistory: { '2014-12-12':110 } } };
-        
+
       product.updateAttributes(newattributes, function (err1, inst) {
         should.not.exist(err1);
 
         Product.findById(product.id, function (err2, updatedproduct) {
           should.not.exist(err2);
-          should.not.exist(updatedproduct._id); 
+          should.not.exist(updatedproduct._id);
           updatedproduct.id.should.be.eql(product.id);
           updatedproduct.name.should.be.equal(product.name);
           updatedproduct.description.should.be.equal('goes well with butter');
@@ -757,7 +757,7 @@ describe('mongodb', function () {
         });
       });
     });
-  });   
+  });
 
 
   it('updateAttributes: $pop should remove first or last item from an Array', function (done) {
@@ -765,13 +765,13 @@ describe('mongodb', function () {
     Product.create({name: 'bread', price: 100, pricehistory:[{'2014-11-11':90},{'2014-10-10':80},{'2014-09-09':70}]}, function (err, product) {
 
       var newattributes= {$set : {description:'goes well with butter'}, $addToSet : { pricehistory: 1 } };
-        
+
       product.updateAttributes(newattributes, function (err1, inst) {
         should.not.exist(err1);
 
         Product.findById(product.id, function (err2, updatedproduct) {
           should.not.exist(err2);
-          should.not.exist(updatedproduct._id); 
+          should.not.exist(updatedproduct._id);
           updatedproduct.id.should.be.eql(product.id);
           updatedproduct.name.should.be.equal(product.name);
           updatedproduct.description.should.be.equal('goes well with butter');
@@ -781,7 +781,7 @@ describe('mongodb', function () {
         });
       });
     });
-  }); 
+  });
 
   it('updateOrCreate: $pop should remove first or last item from an Array', function (done) {
     Product.dataSource.settings.allowExtendedOperators = true;
@@ -789,10 +789,10 @@ describe('mongodb', function () {
 
       product.$set = {description:'goes well with butter'};
       product.$pop = { pricehistory: 1 };
-        
+
       Product.updateOrCreate(product, function (err, updatedproduct) {
         should.not.exist(err);
-        should.not.exist(updatedproduct._id); 
+        should.not.exist(updatedproduct._id);
         updatedproduct.id.should.be.eql(product.id);
         updatedproduct.name.should.be.equal(product.name);
         updatedproduct.description.should.be.equal('goes well with butter');
@@ -802,25 +802,25 @@ describe('mongodb', function () {
         updatedproduct.$pop = { pricehistory: -1 };
         Product.updateOrCreate(product, function (err, p) {
           should.not.exist(err);
-          should.not.exist(p._id); 
+          should.not.exist(p._id);
           updatedproduct.pricehistory[0]['2014-10-10'].should.be.equal(80);
           done();
         });
       });
     });
-  }); 
+  });
 
   it('updateAttributes: $pull should remove items from an Array if they match a criteria', function (done) {
     Product.dataSource.settings.allowExtendedOperators = true;
     Product.create({name: 'bread', price: 100, pricehistory:[70,80,90,100]}, function (err, product) {
 
       var newattributes= {$set : {description:'goes well with butter'}, $pull: { pricehistory: {$gte:90 } } };
-        
+
       product.updateAttributes(newattributes, function (err1, updatedproduct) {
         should.not.exist(err1);
         Product.findById(product.id, function (err2, updatedproduct) {
           should.not.exist(err1);
-          should.not.exist(updatedproduct._id); 
+          should.not.exist(updatedproduct._id);
           updatedproduct.id.should.be.eql(product.id);
           updatedproduct.name.should.be.equal(product.name);
           updatedproduct.description.should.be.equal('goes well with butter');
@@ -839,10 +839,10 @@ describe('mongodb', function () {
 
       product.$set = {description:'goes well with butter'};
       product.$pull = { pricehistory: {$gte:90 }};
-        
+
       Product.updateOrCreate(product, function (err, updatedproduct) {
         should.not.exist(err);
-        should.not.exist(updatedproduct._id); 
+        should.not.exist(updatedproduct._id);
         updatedproduct.id.should.be.eql(product.id);
         updatedproduct.name.should.be.equal(product.name);
         updatedproduct.description.should.be.equal('goes well with butter');
@@ -852,32 +852,32 @@ describe('mongodb', function () {
         done();
       });
     });
-  }); 
+  });
 
   it('updateAttributes: $pullAll should remove items from an Array if they match a value from a list', function (done) {
     Product.dataSource.settings.allowExtendedOperators = true;
     Product.create({name: 'bread', price: 100, pricehistory:[70,80,90,100]}, function (err, product) {
 
       var newattributes= {$set : {description:'goes well with butter'}, $pullAll : { pricehistory: [80,100]} };
-        
+
       product.updateAttributes(newattributes, function (err1, inst) {
         should.not.exist(err1);
 
         Product.findById(product.id, function (err2, updatedproduct) {
           should.not.exist(err2);
-          should.not.exist(updatedproduct._id); 
+          should.not.exist(updatedproduct._id);
           updatedproduct.id.should.be.eql(product.id);
           updatedproduct.name.should.be.equal(product.name);
           updatedproduct.description.should.be.equal('goes well with butter');
           updatedproduct.pricehistory[0].should.be.equal(70);
           updatedproduct.pricehistory[1].should.be.equal(90);
-          
+
           done();
         });
 
       });
     });
-  }); 
+  });
 
   it('updateOrCreate: $pullAll should remove items from an Array if they match a value from a list', function (done) {
     Product.dataSource.settings.allowExtendedOperators = true;
@@ -885,10 +885,10 @@ describe('mongodb', function () {
 
       product.$set = {description:'goes well with butter'};
       product.$pullAll = { pricehistory: [80,100]};
-        
+
       Product.updateOrCreate(product, function (err, updatedproduct) {
         should.not.exist(err);
-        should.not.exist(updatedproduct._id); 
+        should.not.exist(updatedproduct._id);
         updatedproduct.id.should.be.eql(product.id);
         updatedproduct.name.should.be.equal(product.name);
         updatedproduct.description.should.be.equal('goes well with butter');
@@ -898,21 +898,21 @@ describe('mongodb', function () {
         done();
       });
     });
-  });  
+  });
 
 
   it('updateAttributes: $push should append item to an Array even if it does already exist', function (done) {
     Product.dataSource.settings.allowExtendedOperators = true;
     Product.create({name: 'bread', price: 100, pricehistory:[{'2014-11-11':90},{ '2014-10-10':80 }]}, function (err, product) {
-      
+
       var newattributes= {$set : {description:'goes well with butter'}, $push : { pricehistory: { '2014-10-10':80 } } };
-        
+
       product.updateAttributes(newattributes, function (err1, inst) {
         should.not.exist(err1);
 
         Product.findById(product.id, function (err2, updatedproduct) {
           should.not.exist(err2);
-          should.not.exist(updatedproduct._id); 
+          should.not.exist(updatedproduct._id);
           updatedproduct.id.should.be.eql(product.id);
           updatedproduct.name.should.be.equal(product.name);
           updatedproduct.description.should.be.equal('goes well with butter');
@@ -924,7 +924,7 @@ describe('mongodb', function () {
         });
       });
     });
-  });  
+  });
 
   it('updateOrCreate: $push should append item to an Array even if it does already exist', function (done) {
     Product.dataSource.settings.allowExtendedOperators = true;
@@ -932,10 +932,10 @@ describe('mongodb', function () {
 
       product.$set = {description:'goes well with butter'};
       product.$push = { pricehistory: { '2014-10-10':80 } };
-        
+
       Product.updateOrCreate(product, function (err, updatedproduct) {
         should.not.exist(err);
-        should.not.exist(updatedproduct._id); 
+        should.not.exist(updatedproduct._id);
         updatedproduct.id.should.be.eql(product.id);
         updatedproduct.name.should.be.equal(product.name);
         updatedproduct.description.should.be.equal('goes well with butter');
@@ -944,7 +944,7 @@ describe('mongodb', function () {
         updatedproduct.pricehistory[2]['2014-10-10'].should.be.equal(80);
 
         done();
-          
+
       });
     });
   });
@@ -957,10 +957,10 @@ describe('mongodb', function () {
       product.$push = { ingredients: 'water' };
       product.$addToSet = { pricehistory: { '2014-09-09':70 } };
       product.description = 'alternative description';
-        
+
       Product.updateOrCreate(product, function (err, updatedproduct) {
         should.not.exist(err);
-        should.not.exist(updatedproduct._id); 
+        should.not.exist(updatedproduct._id);
         updatedproduct.id.should.be.eql(product.id);
         updatedproduct.name.should.be.equal(product.name);
         updatedproduct.description.should.be.equal('goes well with butter');
@@ -971,12 +971,12 @@ describe('mongodb', function () {
         updatedproduct.pricehistory[2]['2014-09-09'].should.be.equal(70);
 
         done();
-          
+
       });
     });
   });
 
- 
+
   it('updateOrCreate should update the instance without removing existing properties', function (done) {
     Post.create({title: 'a', content: 'AAA', comments: ['Comment1']}, function (err, post) {
       post = post.toObject();
@@ -1113,7 +1113,7 @@ describe('mongodb', function () {
         posts.should.have.lengthOf(1);
         post = posts[0];
         post.should.have.property('title', 'b');
-        post.should.not.have.property('content');
+        post.should.have.property('content', undefined);
         should.not.exist(post._id);
         should.not.exist(post.id);
 
