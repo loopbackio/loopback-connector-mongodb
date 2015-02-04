@@ -20,7 +20,7 @@
     "debug": "^2.1.1"
   },
   "devDependencies": {
-    "loopback-datasource-juggler": "^2.13.0",
+    "loopback-datasource-juggler": "^2.15.0",
     "mocha": "^2.1.0",
     "rc": "^0.5.5",
     "should": "^4.6.3"
