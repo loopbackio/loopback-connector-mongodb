@@ -3,7 +3,7 @@ var should = require('./init.js');
 
 var Superhero, User, Post, PostWithStringId, db;
 
-describe('mongodb', function () {
+describe('mongodb connector', function () {
 
   before(function () {
     db = getDataSource();
@@ -499,76 +499,129 @@ describe('mongodb', function () {
 
     });
 
-    it('should use $set by default if no operator is supplied', function (done) {
-      User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
-        should.not.exist(err1);
-        User.create({name: 'Simon', age: 32,  email:'simon@strongloop'}, function (err2, createdusers2) {
-          should.not.exist(err2);
-          User.create({name: 'Ray', age: 31,  email:'ray@strongloop'}, function (err3, createdusers3) {
-            should.not.exist(err3);
+    var describeMongo26 = describe;
+    if (process.env.MONGODB_VERSION &&
+      require('semver').satisfies('2.6.0', '>' +
+        process.env.MONGODB_VERSION)) {
+      describeMongo26 = describe.skip;
+    }
 
-            User.updateAll({name: 'Simon'}, {name: 'Alex'}, function(err, updatedusers) {
-              should.not.exist(err);
-              updatedusers.should.be.equal(1);
+    describeMongo26('extended operators', function() {
 
-              User.find({where: {name: 'Alex'}}, function (err, founduser) {
+      it('should use $set by default if no operator is supplied', function(done) {
+        User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(err1, createdusers1) {
+          should.not.exist(err1);
+          User.create({name: 'Simon', age: 32, email: 'simon@strongloop'}, function(err2, createdusers2) {
+            should.not.exist(err2);
+            User.create({name: 'Ray', age: 31, email: 'ray@strongloop'}, function(err3, createdusers3) {
+              should.not.exist(err3);
+
+              User.updateAll({name: 'Simon'}, {name: 'Alex'}, function(err, updatedusers) {
                 should.not.exist(err);
-                founduser.length.should.be.equal(1);
-                founduser[0].name.should.be.equal('Alex');
+                updatedusers.should.be.equal(1);
 
-                done();
+                User.find({where: {name: 'Alex'}}, function(err, founduser) {
+                  should.not.exist(err);
+                  founduser.length.should.be.equal(1);
+                  founduser[0].name.should.be.equal('Alex');
+
+                  done();
+                });
               });
+
             });
-
           });
         });
       });
-    });
 
-    it('should be possible to use the $inc operator', function (done) {
-      User.dataSource.settings.allowExtendedOperators = true;
-      User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
-        should.not.exist(err1);
-        User.create({name: 'Simon', age: 32,  email:'simon@strongloop'}, function (err2, createdusers2) {
-          should.not.exist(err2);
-          User.create({name: 'Ray', age: 31,  email:'ray@strongloop'}, function (err3, createdusers3) {
-            should.not.exist(err3);
+      it('should be possible to use the $inc operator', function(done) {
+        User.dataSource.settings.allowExtendedOperators = true;
+        User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(err1, createdusers1) {
+          should.not.exist(err1);
+          User.create({name: 'Simon', age: 32, email: 'simon@strongloop'}, function(err2, createdusers2) {
+            should.not.exist(err2);
+            User.create({name: 'Ray', age: 31, email: 'ray@strongloop'}, function(err3, createdusers3) {
+              should.not.exist(err3);
 
-            User.updateAll({name: 'Ray'}, {'$inc': {age: 2}}, function(err, updatedusers) {
-              should.not.exist(err);
-              updatedusers.should.be.equal(1);
-
-              User.find({where: {name: 'Ray'}}, function (err, foundusers) {
+              User.updateAll({name: 'Ray'}, {'$inc': {age: 2}}, function(err, updatedusers) {
                 should.not.exist(err);
-                foundusers.length.should.be.equal(1);
-                foundusers[0].age.should.be.equal(33);
+                updatedusers.should.be.equal(1);
 
-                done();
-              });
-            })
+                User.find({where: {name: 'Ray'}}, function(err, foundusers) {
+                  should.not.exist(err);
+                  foundusers.length.should.be.equal(1);
+                  foundusers[0].age.should.be.equal(33);
 
+                  done();
+                });
+              })
+
+            });
           });
         });
       });
-    });
 
-    it('should be possible to use the $min and $max operators', function (done) {
-      User.dataSource.settings.allowExtendedOperators = true;
-      User.create({name: 'Simon', age: 32,  email:'simon@strongloop'}, function (err2, createdusers2) {
-        should.not.exist(err2);
+      it('should be possible to use the $min and $max operators', function(done) {
+        User.dataSource.settings.allowExtendedOperators = true;
+        User.create({name: 'Simon', age: 32, email: 'simon@strongloop'}, function(err2, createdusers2) {
+          should.not.exist(err2);
 
-        User.updateAll({name: 'Simon'}, {'$max': {age: 33}}, function(err, updatedusers) {
-          should.not.exist(err);
-          updatedusers.should.be.equal(1);
-
-          User.updateAll({name: 'Simon'}, {'$min': {age: 31}}, function(err, updatedusers) {
+          User.updateAll({name: 'Simon'}, {'$max': {age: 33}}, function(err, updatedusers) {
             should.not.exist(err);
             updatedusers.should.be.equal(1);
 
-            User.find({where: {name: 'Simon'}}, function(err, foundusers) {
+            User.updateAll({name: 'Simon'}, {'$min': {age: 31}}, function(err, updatedusers) {
+              should.not.exist(err);
+              updatedusers.should.be.equal(1);
+
+              User.find({where: {name: 'Simon'}}, function(err, foundusers) {
+                should.not.exist(err);
+                foundusers.length.should.be.equal(1);
+                foundusers[0].age.should.be.equal(31);
+
+                done();
+              });
+
+            });
+          });
+
+        });
+      });
+
+      it('should be possible to use the $mul operator', function(done) {
+        User.dataSource.settings.allowExtendedOperators = true;
+        User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(err1, createdusers1) {
+          should.not.exist(err1);
+
+          User.updateAll({name: 'Al'}, {'$mul': {age: 2}}, function(err, updatedusers) {
+            should.not.exist(err);
+            updatedusers.should.be.equal(1);
+
+            User.find({where: {name: 'Al'}}, function(err, foundusers) {
               should.not.exist(err);
               foundusers.length.should.be.equal(1);
-              foundusers[0].age.should.be.equal(31);
+              foundusers[0].age.should.be.equal(62);
+
+              done();
+            });
+
+          });
+
+        });
+      });
+
+      it('should be possible to use the $rename operator', function(done) {
+        User.dataSource.settings.allowExtendedOperators = true;
+        User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(err1, createdusers1) {
+          should.not.exist(err1);
+
+          User.updateAll({name: 'Al'}, {'$rename': {name: 'firstname'}}, function(err, updatedusers) {
+            should.not.exist(err);
+            updatedusers.should.be.equal(1);
+
+            User.find({where: {firstname: 'Al'}}, function(err, foundusers) {
+              should.not.exist(err);
+              foundusers.length.should.be.equal(1);
 
               done();
             });
@@ -577,71 +630,28 @@ describe('mongodb', function () {
         });
 
       });
-    });
 
-    it('should be possible to use the $mul operator', function (done) {
-      User.dataSource.settings.allowExtendedOperators = true;
-      User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
-        should.not.exist(err1);
+      it('should be possible to use the $unset operator', function(done) {
+        User.dataSource.settings.allowExtendedOperators = true;
+        User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(err1, createdusers1) {
+          should.not.exist(err1);
 
-        User.updateAll({name: 'Al'}, {'$mul': {age: 2}}, function(err, updatedusers) {
-          should.not.exist(err);
-          updatedusers.should.be.equal(1);
-
-          User.find({where: {name: 'Al'}}, function(err, foundusers) {
+          User.updateAll({name: 'Al'}, {'$unset': {email: ''}}, function(err, updatedusers) {
             should.not.exist(err);
-            foundusers.length.should.be.equal(1);
-            foundusers[0].age.should.be.equal(62);
+            updatedusers.should.be.equal(1);
 
-            done();
+            User.find({where: {name: 'Al'}}, function(err, foundusers) {
+              should.not.exist(err);
+              foundusers.length.should.be.equal(1);
+              should.not.exist(foundusers[0].email);
+
+              done();
+            });
+
           });
-
         });
 
       });
-    });
-
-    it('should be possible to use the $rename operator', function (done) {
-      User.dataSource.settings.allowExtendedOperators = true;
-      User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
-        should.not.exist(err1);
-
-        User.updateAll({name: 'Al'}, {'$rename': {name: 'firstname'}}, function(err, updatedusers) {
-          should.not.exist(err);
-          updatedusers.should.be.equal(1);
-
-          User.find({where: {firstname: 'Al'}}, function(err, foundusers) {
-            should.not.exist(err);
-            foundusers.length.should.be.equal(1);
-
-            done();
-          });
-
-        });
-      });
-
-    });
-
-    it('should be possible to use the $unset operator', function (done) {
-      User.dataSource.settings.allowExtendedOperators = true;
-      User.create({name: 'Al', age: 31, email:'al@strongloop'}, function (err1, createdusers1) {
-        should.not.exist(err1);
-
-        User.updateAll({name: 'Al'}, {'$unset': {email: ''}}, function(err, updatedusers) {
-          should.not.exist(err);
-          updatedusers.should.be.equal(1);
-
-          User.find({where: {name: 'Al'}}, function(err, foundusers) {
-            should.not.exist(err);
-            foundusers.length.should.be.equal(1);
-            should.not.exist(foundusers[0].email);
-
-            done();
-          });
-
-        });
-      });
-
     });
 
   });
