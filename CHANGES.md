@@ -1,3 +1,21 @@
+2015-02-08, Version 1.7.0
+=========================
+
+ * Check if result is null (Raymond Feng)
+
+ * Disable extended tests if mongodb version is lower than 2.6 (Raymond Feng)
+
+ * Include tests of persistence hooks from juggler. (Miroslav Bajtoš)
+
+ * Update `should` to the latest version `4.6.3` (Miroslav Bajtoš)
+
+ * Fix unit-tests on iojs 1.0 (Miroslav Bajtoš)
+
+ * Tidy up the null check (Raymond Feng)
+
+ * Added options to like/nlike operator to allow for regex flags (Andrew Burgess)
+
+
 2015-01-23, Version 1.6.0
 =========================
 
@@ -248,79 +266,5 @@
 
 2013-12-06, Version 1.1.3
 =========================
-
- * Bump version (Raymond Feng)
-
- * Use peer dep for loopback-datasource-juggler (Raymond Feng)
-
- * Remove blanket (Raymond Feng)
-
- * Update docs.json (Rand McKinney)
-
- * Bump the version and remove the blanket dep (Raymond Feng)
-
- * Bump version (Ritchie Martori)
-
- * Add peer dep and bump version (Ritchie Martori)
-
- * Pass name/settings to super class (Raymond Feng)
-
- * Inherit from Connector (Raymond Feng)
-
- * Finalize package.json for sls-1.0.0 (Raymond Feng)
-
- * Update mongodb driver dependency (Raymond Feng)
-
- * Add error information if connection fails (Raymond Feng)
-
- * Add debug info for connection (Raymond Feng)
-
- * Add error reporting (Raymond Feng)
-
- * Connect to MongoDB before a CRUD operation is requested (Raymond Feng)
-
- * Add keywords to package.json (Raymond Feng)
-
-
-2013-09-12, Version strongloopsuite-1.0.0-5
-===========================================
-
-
-
-2013-09-12, Version strongloopsuite-1.0.0-4
-===========================================
-
- * Update mongodb driver dependency (Raymond Feng)
-
- * Add error information if connection fails (Raymond Feng)
-
- * Add debug info for connection (Raymond Feng)
-
- * Add error reporting (Raymond Feng)
-
- * Connect to MongoDB before a CRUD operation is requested (Raymond Feng)
-
-
-2013-09-11, Version strongloopsuite-1.0.0-3
-===========================================
-
- * Add keywords to package.json (Raymond Feng)
-
-
-2013-09-10, Version strongloopsuite-1.0.0-2
-===========================================
-
- * Finalize package.json for sls-1.0.0 (Raymond Feng)
-
- * Changed tag to strongloopsuite-1.0.0-2 (cgole)
-
-
-2013-09-05, Version strongloopsuite-1.0.0-1
-===========================================
-
-
-
-2013-09-05, Version strongloopsuite-1.0.0-0
-===========================================
 
  * First release!
