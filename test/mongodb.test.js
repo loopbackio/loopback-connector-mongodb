@@ -1202,6 +1202,16 @@ describe('mongodb connector', function () {
     });
   });
 
+  it('should allow to find using case insensitive like', function (done) {
+    Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      Post.find({where: {content: {like: 'HELLO', options: 'i'}}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 1);
+        done();
+      });
+    });
+  });
+
   it('should support like for no match', function (done) {
     Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
       Post.find({where: {title: {like: 'M.+XY'}}}, function (err, posts) {
