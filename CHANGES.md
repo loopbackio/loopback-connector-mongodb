@@ -1,3 +1,11 @@
+2015-02-21, Version 1.8.0
+=========================
+
+ * Update deps (Raymond Feng)
+
+ * Re-enable the inclusion tests (Raymond Feng)
+
+
 2015-02-08, Version 1.7.0
 =========================
 

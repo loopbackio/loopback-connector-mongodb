@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-mongodb",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "LoopBack MongoDB Connector",
   "keywords": [
     "StrongLoop",
@@ -20,11 +20,12 @@
     "debug": "^2.1.1"
   },
   "devDependencies": {
+    "bluebird": "^2.9.12",
     "loopback-datasource-juggler": "^2.15.0",
     "mocha": "^2.1.0",
-    "rc": "^0.5.5",
+    "rc": "^0.6.0",
     "semver": "^4.2.0",
-    "should": "^4.6.3"
+    "should": "^5.0.0"
   },
   "repository": {
     "type": "git",
