@@ -37,6 +37,10 @@ Customer.destroyAll(function (err) {
       Customer.find({where: {'emails.0.label': 'work'}}, function(err, customers) {
         console.log('Customers matched by emails.0.label', customers);
       });
+
+      Customer.find({where: {$or: [{name:'John1'}, {name:'John2'}]}}, function(err, customers) {
+        console.log('Customers matched by native MongoDB operator syntax', customers);
+      });
       /*
        customer1.updateAttributes({name: 'John'}, function(err, result) {
        console.log(err, result);
