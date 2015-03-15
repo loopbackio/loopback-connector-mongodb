@@ -44,7 +44,12 @@ authentication enabled.
 
 ## Running tests
 
-    npm test
+The tests in this repository are mainly integration tests, meaning you will need
+to run them using our preconfigured test server.
+
+1. Ask a core developer for instructions on how to set up test server
+   credentials on your machine
+2. `npm test`
 
 ## Release notes
 
