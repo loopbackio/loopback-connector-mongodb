@@ -433,7 +433,7 @@ describe('mongodb connector', function () {
 
             User.updateAll({age:31},{company:'strongloop.com'},function(err,updatedusers) {
               should.not.exist(err);
-              updatedusers.should.be.equal(2);
+              updatedusers.count.should.be.equal(2);
 
               User.find({where:{age:31}},function(err2,foundusers) {
                 should.not.exist(err2);
@@ -462,7 +462,7 @@ describe('mongodb connector', function () {
 
             User.updateAll({}, {age: 40, '$set': {age: 39}},function(err,updatedusers) {
               should.not.exist(err);
-              updatedusers.should.be.equal(3);
+              updatedusers.count.should.be.equal(3);
 
               User.find({where:{age:40}},function(err2, foundusers) {
                 should.not.exist(err2);
@@ -474,7 +474,7 @@ describe('mongodb connector', function () {
 
                   User.updateAll({}, {'$set': {age: 40}, age: 39}, function(err, updatedusers) {
                     should.not.exist(err);
-                    updatedusers.should.be.equal(3);
+                    updatedusers.count.should.be.equal(3);
 
                     User.find({where:{age:40}},function(err2, foundusers) {
                       should.not.exist(err2);
@@ -518,7 +518,7 @@ describe('mongodb connector', function () {
 
               User.updateAll({name: 'Simon'}, {name: 'Alex'}, function(err, updatedusers) {
                 should.not.exist(err);
-                updatedusers.should.be.equal(1);
+                updatedusers.count.should.be.equal(1);
 
                 User.find({where: {name: 'Alex'}}, function(err, founduser) {
                   should.not.exist(err);
@@ -545,7 +545,7 @@ describe('mongodb connector', function () {
 
               User.updateAll({name: 'Ray'}, {'$inc': {age: 2}}, function(err, updatedusers) {
                 should.not.exist(err);
-                updatedusers.should.be.equal(1);
+                updatedusers.count.should.be.equal(1);
 
                 User.find({where: {name: 'Ray'}}, function(err, foundusers) {
                   should.not.exist(err);
@@ -568,11 +568,11 @@ describe('mongodb connector', function () {
 
           User.updateAll({name: 'Simon'}, {'$max': {age: 33}}, function(err, updatedusers) {
             should.not.exist(err);
-            updatedusers.should.be.equal(1);
+            updatedusers.count.should.be.equal(1);
 
             User.updateAll({name: 'Simon'}, {'$min': {age: 31}}, function(err, updatedusers) {
               should.not.exist(err);
-              updatedusers.should.be.equal(1);
+              updatedusers.count.should.be.equal(1);
 
               User.find({where: {name: 'Simon'}}, function(err, foundusers) {
                 should.not.exist(err);
@@ -595,7 +595,7 @@ describe('mongodb connector', function () {
 
           User.updateAll({name: 'Al'}, {'$mul': {age: 2}}, function(err, updatedusers) {
             should.not.exist(err);
-            updatedusers.should.be.equal(1);
+            updatedusers.count.should.be.equal(1);
 
             User.find({where: {name: 'Al'}}, function(err, foundusers) {
               should.not.exist(err);
@@ -617,7 +617,7 @@ describe('mongodb connector', function () {
 
           User.updateAll({name: 'Al'}, {'$rename': {name: 'firstname'}}, function(err, updatedusers) {
             should.not.exist(err);
-            updatedusers.should.be.equal(1);
+            updatedusers.count.should.be.equal(1);
 
             User.find({where: {firstname: 'Al'}}, function(err, foundusers) {
               should.not.exist(err);
@@ -638,7 +638,7 @@ describe('mongodb connector', function () {
 
           User.updateAll({name: 'Al'}, {'$unset': {email: ''}}, function(err, updatedusers) {
             should.not.exist(err);
-            updatedusers.should.be.equal(1);
+            updatedusers.count.should.be.equal(1);
 
             User.find({where: {name: 'Al'}}, function(err, foundusers) {
               should.not.exist(err);
