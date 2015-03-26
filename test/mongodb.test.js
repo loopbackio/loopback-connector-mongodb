@@ -678,6 +678,29 @@ describe('mongodb connector', function () {
     });
   });
 
+  it('updateAttributes: handle empty data', function (done) {
+    Product.create({name: 'bread', price: 100, pricehistory:[{'2014-11-11':90}]}, function (err, product) {
+      product.updateAttributes({}, function (err1, inst) {
+        should.not.exist(err1);
+        should.not.exist(inst._id);
+        inst.id.should.be.eql(product.id);
+        inst.name.should.be.equal(product.name);
+        inst.pricehistory.should.have.length(1);
+        inst.pricehistory[0]['2014-11-11'].should.be.equal(90);
+        
+        Product.findById(product.id, function (err2, updatedproduct) {
+          should.not.exist(err2);
+          should.not.exist(updatedproduct._id);
+          updatedproduct.id.should.be.eql(product.id);
+          updatedproduct.name.should.be.equal(product.name);
+          updatedproduct.pricehistory.should.have.length(1);
+          updatedproduct.pricehistory[0]['2014-11-11'].should.be.equal(90);
+          done();
+        });
+      });
+    });
+  });
+
   it('updateAttributes: $addToSet should append item to an Array if it doesn\'t already exist', function (done) {
     Product.dataSource.settings.allowExtendedOperators = true;
     Product.create({name: 'bread', price: 100, pricehistory:[{'2014-11-11':90}]}, function (err, product) {
