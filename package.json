@@ -23,7 +23,7 @@
     "bluebird": "^2.9.12",
     "loopback-datasource-juggler": "^2.15.0",
     "mocha": "^2.1.0",
-    "rc": "^0.6.0",
+    "rc": "^1.0.0",
     "semver": "^4.2.0",
     "should": "^5.0.0"
   },
