@@ -37,6 +37,10 @@ Customer.destroyAll(function (err) {
       Customer.find({where: {'emails.0.label': 'work'}}, function(err, customers) {
         console.log('Customers matched by emails.0.label', customers);
       });
+
+      Customer.find({where: {'name': {like: '(?i)john'}}, function(err, customers) {
+        console.log('Customers matched case insensitively by name', customers);
+      });
       /*
        customer1.updateAttributes({name: 'John'}, function(err, result) {
        console.log(err, result);
