@@ -12,6 +12,7 @@
   "main": "index.js",
   "scripts": {
     "benchmarks": "make benchmarks",
+    "leak-detection": "make leak-detection",
     "test": "make test"
   },
   "dependencies": {
@@ -24,10 +25,12 @@
     "benchmark": "^1.0.0",
     "bluebird": "^2.9.12",
     "loopback-datasource-juggler": "^2.15.0",
+    "memwatch": "^0.2.2",
     "mocha": "^2.1.0",
     "rc": "^1.0.0",
     "semver": "^4.2.0",
-    "should": "^5.0.0"
+    "should": "^5.0.0",
+    "sinon": "^1.14.1"
   },
   "repository": {
     "type": "git",
