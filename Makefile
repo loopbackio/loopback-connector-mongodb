@@ -11,3 +11,7 @@ test-verbose:
 testing:
 	$(TESTER) $(OPTS) --watch $(TESTS)
 .PHONY: test docs
+
+b benchmark benchmarks:
+	@node benchmarks >> $(CURDIR)/benchmarks/results.md \
+		&& echo 'Done. See ./benchmarks/results.md'
