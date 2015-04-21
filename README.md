@@ -51,6 +51,16 @@ to run them using our preconfigured test server.
    credentials on your machine
 2. `npm test`
 
+## Running benchmarks
+
+**Benchmarks must be run on a Unix-like operating system.**
+
+```
+make benchmarks
+```
+
+The results will be output in `./benchmarks/results.md`.
+
 ## Release notes
 
   * 1.1.7 - Do not return MongoDB-specific _id to client API, except if specifically specified in the model definition

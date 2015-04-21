@@ -11,6 +11,7 @@
   ],
   "main": "index.js",
   "scripts": {
+    "benchmarks": "make benchmarks",
     "test": "make test"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
     "debug": "^2.1.1"
   },
   "devDependencies": {
+    "benchmark": "^1.0.0",
     "bluebird": "^2.9.12",
     "loopback-datasource-juggler": "^2.15.0",
     "mocha": "^2.1.0",
