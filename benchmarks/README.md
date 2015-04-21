@@ -15,7 +15,7 @@ and adjusts accordingly.
 Todo.find x 46.07 ops/sec ±1.82% (74 runs sampled)
 ```
 
-46.07 operations per second with ±1.82% [relative margin of error](https://github.com/bestiejs/benchmark.js/blob/master/benchmark.js#L1970-L197) when run 74 times.
+46.07 operations per second with ±1.82% [relative margin of error](https://github.com/bestiejs/benchmark.js/blob/master/benchmark.js#L1970-L1971) when run 74 times.
 
 
 ## Resources
