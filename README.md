@@ -61,6 +61,21 @@ make benchmarks
 
 The results will be output in `./benchmarks/results.md`.
 
+## Leak detection
+
+Tests run for 100 iterations by default, but can be increased by setting the
+env var `ITERATIONS`.
+
+```
+make leak-detection # run 100 iterations (default)
+```
+
+or
+
+```
+ITERATIONS=1000 make leak-detection # run 1000 iterations
+```
+
 ## Release notes
 
   * 1.1.7 - Do not return MongoDB-specific _id to client API, except if specifically specified in the model definition
