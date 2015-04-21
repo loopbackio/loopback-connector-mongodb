@@ -20,6 +20,6 @@ Todo.find x 46.07 ops/sec ±1.82% (74 runs sampled)
 
 ## Resources
 
-http://monsur.hossa.in/2012/12/11/benchmarkjs.html
-http://calendar.perfplanet.com/2010/bulletproof-javascript-benchmarks/
-http://stackoverflow.com/questions/4986245/how-does-jsperf-work
+- http://monsur.hossa.in/2012/12/11/benchmarkjs.html
+- http://calendar.perfplanet.com/2010/bulletproof-javascript-benchmarks/
+- http://stackoverflow.com/questions/4986245/how-does-jsperf-work
