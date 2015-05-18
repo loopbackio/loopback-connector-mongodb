@@ -42,6 +42,13 @@ The .loopbackrc file is in JSON format, for example:
 **Note**: username/password is only required if the MongoDB server has
 authentication enabled.
 
+###Additional Settings 
+
+allowExtendedOperators - ```false``` by default, ```true``` allows to use mongo operators like 
+```$currentDate, $inc, $max, $min, $mul, $rename, $setOnInsert, $set, $unset, $addToSet, 
+$pop, $pullAll, $pull, $pushAll, $push,  $bit ```.
+
+
 ## Running tests
 
 The tests in this repository are mainly integration tests, meaning you will need
