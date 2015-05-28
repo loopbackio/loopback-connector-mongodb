@@ -1,4 +1,30 @@
-2015-02-21, Version 1.8.0
+2015-05-28, Version 1.9.0
+=========================
+
+ * Add options (Raymond Feng)
+
+ * Update README.md (Simon Ho)
+
+ * Add leak detection (Simon Ho)
+
+ * Add benchmarks (Simon Ho)
+
+ * Support `ctx.isNewInstance` (Miroslav Bajtoš)
+
+ * Update deps (Raymond Feng)
+
+ * Cleanup for returning count on update/delete (Simon Ho)
+
+ * Default to `undefined` instead of `0` (Simon Ho)
+
+ * Return info object with affected items count (Simon Ho)
+
+ * added doc about allowExtendedOperators (Pasindu De Silva)
+
+ * Make test instructions more meaningful (Simon Ho)
+
+
+2015-02-20, Version 1.8.0
 =========================
 
  * Update deps (Raymond Feng)
