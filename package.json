@@ -25,7 +25,7 @@
     "benchmark": "^1.0.0",
     "bluebird": "^2.9.12",
     "loopback-datasource-juggler": "^2.28.0",
-    "memwatch": "^0.2.2",
+    "memwatch-next": "^0.2.6",
     "mocha": "^2.1.0",
     "rc": "^1.0.0",
     "semver": "^4.2.0",

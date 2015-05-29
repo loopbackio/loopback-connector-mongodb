@@ -1,4 +1,4 @@
-var memwatch = require('memwatch');
+var memwatch = require('memwatch-next');
 var Todo = require('./fixtures/todo');
 
 describe('mongodb', function() {

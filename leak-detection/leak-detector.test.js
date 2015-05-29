@@ -1,4 +1,4 @@
-var memwatch = require('memwatch');
+var memwatch = require('memwatch-next');
 
 describe('leak detector', function() {
   before(function() {
