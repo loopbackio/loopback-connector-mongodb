@@ -1,3 +1,9 @@
+2015-05-29, Version 1.9.2
+=========================
+
+ * Update to memwatch-next for node 0.12 compatibility (Raymond Feng)
+
+
 2015-05-28, Version 1.9.1
 =========================
 
