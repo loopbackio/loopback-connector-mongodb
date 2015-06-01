@@ -357,6 +357,31 @@ describe('mongodb connector', function () {
     });
   });
 
+  it('should invoke hooks', function(done) {
+    var events = [];
+    var connector = Post.getDataSource().connector;
+    connector.observe('before execute', function(ctx, next) {
+      ctx.req.command.should.be.string;
+      ctx.req.params.should.be.array;
+      events.push('before execute ' + ctx.req.command);
+      next();
+    });
+    connector.observe('after execute', function(ctx, next) {
+      ctx.res.should.be.object;
+      events.push('after execute ' + ctx.req.command);
+      next();
+    });
+    Post.create({title: 'Post1', content: 'Post1 content'}, function(err, p1) {
+      Post.find(function(err, results) {
+        events.should.eql(['before execute insert', 'after execute insert',
+          'before execute find', 'after execute find']);
+        connector.clearObservers('before execute');
+        connector.clearObservers('after execute');
+        done(err, results);
+      });
+    });
+  });
+
   it('should allow to find by number id using where', function (done) {
     PostWithNumberId.create({id: 1, title: 'Post1', content: 'Post1 content'}, function (err, p1) {
       PostWithNumberId.create({id: 2, title: 'Post2', content: 'Post2 content'}, function (err, p2) {
