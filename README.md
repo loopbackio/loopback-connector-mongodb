@@ -42,6 +42,13 @@ The .loopbackrc file is in JSON format, for example:
 **Note**: username/password is only required if the MongoDB server has
 authentication enabled.
 
+###Additional Settings 
+
+allowExtendedOperators - ```false``` by default, ```true``` allows to use mongo operators like 
+```$currentDate, $inc, $max, $min, $mul, $rename, $setOnInsert, $set, $unset, $addToSet, 
+$pop, $pullAll, $pull, $pushAll, $push,  $bit ```.
+
+
 ## Running tests
 
 The tests in this repository are mainly integration tests, meaning you will need
@@ -50,6 +57,31 @@ to run them using our preconfigured test server.
 1. Ask a core developer for instructions on how to set up test server
    credentials on your machine
 2. `npm test`
+
+## Running benchmarks
+
+**Benchmarks must be run on a Unix-like operating system.**
+
+```
+make benchmarks
+```
+
+The results will be output in `./benchmarks/results.md`.
+
+## Leak detection
+
+Tests run for 100 iterations by default, but can be increased by setting the
+env var `ITERATIONS`.
+
+```
+make leak-detection # run 100 iterations (default)
+```
+
+or
+
+```
+ITERATIONS=1000 make leak-detection # run 1000 iterations
+```
 
 ## Release notes
 
