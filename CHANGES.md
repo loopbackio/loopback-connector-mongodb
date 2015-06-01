@@ -1,3 +1,49 @@
+2015-05-29, Version 1.9.2
+=========================
+
+ * Update to memwatch-next for node 0.12 compatibility (Raymond Feng)
+
+
+2015-05-28, Version 1.9.1
+=========================
+
+ * Update deps (Raymond Feng)
+
+
+2015-05-28, Version 1.9.0
+=========================
+
+ * Add options (Raymond Feng)
+
+ * Update README.md (Simon Ho)
+
+ * Add leak detection (Simon Ho)
+
+ * Add benchmarks (Simon Ho)
+
+ * Support `ctx.isNewInstance` (Miroslav Bajtoš)
+
+ * Update deps (Raymond Feng)
+
+ * Cleanup for returning count on update/delete (Simon Ho)
+
+ * Default to `undefined` instead of `0` (Simon Ho)
+
+ * Return info object with affected items count (Simon Ho)
+
+ * added doc about allowExtendedOperators (Pasindu De Silva)
+
+ * Make test instructions more meaningful (Simon Ho)
+
+
+2015-02-20, Version 1.8.0
+=========================
+
+ * Update deps (Raymond Feng)
+
+ * Re-enable the inclusion tests (Raymond Feng)
+
+
 2015-02-08, Version 1.7.0
 =========================
 
