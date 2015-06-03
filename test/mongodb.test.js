@@ -30,7 +30,7 @@ describe('mongodb connector', function () {
       geometry: { type: Object, required: false, index: { mongodb: { kind: "2dsphere" } } },
       age: Number,
       icon: Buffer
-    });
+    }, {mongodb: {collection: 'sh'}});
 
     Post = db.define('Post', {
       title: { type: String, length: 255, index: true },
@@ -135,7 +135,7 @@ describe('mongodb connector', function () {
 
   it('should create complex indexes', function (done) {
     db.automigrate('Superhero', function () {
-      db.connector.db.collection('Superhero').indexInformation(function (err, result) {
+      db.connector.db.collection('sh').indexInformation(function (err, result) {
 
         var indexes =
         { _id_: [ [ '_id', 1 ] ],
