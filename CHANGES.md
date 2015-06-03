@@ -1,3 +1,9 @@
+2015-06-03, Version 1.10.1
+==========================
+
+ * Make sure disconnect calls back (Raymond Feng)
+
+
 2015-06-01, Version 1.10.0
 ==========================
 
