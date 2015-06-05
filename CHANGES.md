@@ -1,3 +1,11 @@
+2015-06-05, Version 1.11.0
+==========================
+
+ * Add a workaround for auth with multiple mongos servers (Raymond Feng)
+
+ * Use custom collection name for migration (Raymond Feng)
+
+
 2015-06-03, Version 1.10.1
 ==========================
 
