@@ -1,3 +1,11 @@
+2015-06-15, Version 1.11.1
+==========================
+
+ * Fix the url (Raymond Feng)
+
+ * Replaced ensureIndex() with createIndex() (U-Zyn Chua)
+
+
 2015-06-05, Version 1.11.0
 ==========================
 
