@@ -1,3 +1,9 @@
+2015-06-25, Version 1.11.2
+==========================
+
+ * Revert "Add a workaround for auth with multiple mongos servers" (Raymond Feng)
+
+
 2015-06-15, Version 1.11.1
 ==========================
 
