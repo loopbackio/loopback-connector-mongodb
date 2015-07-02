@@ -1,3 +1,9 @@
+2015-07-02, Version 1.11.3
+==========================
+
+ * Restore data.id to avoid build breaks (Raymond Feng)
+
+
 2015-06-25, Version 1.11.2
 ==========================
 
