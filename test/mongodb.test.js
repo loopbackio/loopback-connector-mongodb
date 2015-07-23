@@ -610,6 +610,42 @@ describe('mongodb connector', function () {
           });
         });
       });
+      
+      it('should be possible to enable using options - even if globally disabled', function(done) {
+        User.dataSource.settings.allowExtendedOperators = false;
+        var options = { allowExtendedOperators: true };
+        User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(err1, createdusers1) {
+          should.not.exist(err1);
+          
+          User.updateAll({name: 'Al'}, {'$rename': {name: 'firstname'}}, options, function(err, updatedusers) {
+            should.not.exist(err);
+            updatedusers.should.have.property('count', 1);
+
+            User.find({where: {firstname: 'Al'}}, function(err, foundusers) {
+              should.not.exist(err);
+              foundusers.length.should.be.equal(1);
+
+              done();
+            });
+
+          });
+        });
+      });
+      
+      it('should be possible to disable using options - even if globally disabled', function(done) {
+        User.dataSource.settings.allowExtendedOperators = true;
+        var options = { allowExtendedOperators: false };
+        User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(err1, createdusers1) {
+          should.not.exist(err1);
+
+          User.updateAll({name: 'Al'}, {'$rename': {name: 'firstname'}}, options, function(err, updatedusers) {
+            should.exist(err);
+            err.name.should.equal('MongoError');
+            err.errmsg.should.equal('The dollar ($) prefixed field \'$rename\' in \'$rename\' is not valid for storage.');
+            done();
+          });
+        });
+      });
 
       it('should be possible to use the $inc operator', function(done) {
         User.dataSource.settings.allowExtendedOperators = true;
