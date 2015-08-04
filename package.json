@@ -30,7 +30,7 @@
     "rc": "^1.0.0",
     "semver": "^4.2.0",
     "should": "^5.0.0",
-    "sinon": "^1.14.1"
+    "sinon": "^1.15.4"
   },
   "repository": {
     "type": "git",
