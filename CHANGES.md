@@ -1,3 +1,15 @@
+2015-08-04, Version 1.12.0
+==========================
+
+ * Add regexp operator support (Simon Ho)
+
+ * Enable options.allowExtendedOperators (Fabien Franzen)
+
+ * Enable Model.settings.mongodb.allowExtendedOperators (Fabien Franzen)
+
+ * Update benchmarks (Simon Ho)
+
+
 2015-07-02, Version 1.11.3
 ==========================
 
