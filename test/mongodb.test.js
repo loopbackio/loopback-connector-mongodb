@@ -1479,6 +1479,140 @@ describe('mongodb connector', function () {
     });
   });
 
+  context('regexp operator', function() {
+    before(function deleteExistingTestFixtures(done) {
+      Post.destroyAll(done);
+    });
+    beforeEach(function createTestFixtures(done) {
+      Post.create([
+        {title: 'a', content: 'AAA'},
+        {title: 'b', content: 'BBB'}
+      ], done);
+    });
+    after(function deleteTestFixtures(done) {
+      Post.destroyAll(done);
+    });
+
+    context('with regex strings', function() {
+      context('using no flags', function() {
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: '^A'}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
+      });
+
+      context('using flags', function() {
+        beforeEach(function addSpy() {
+          sinon.stub(console, 'warn');
+        });
+        afterEach(function removeSpy() {
+          console.warn.restore();
+        });
+
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: '^a/i'}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
+
+        it('should print a warning when the global flag is set',
+            function(done) {
+          Post.find({where: {content: {regexp: '^a/g'}}}, function(err, posts) {
+            console.warn.calledOnce.should.be.ok;
+            done();
+          });
+        });
+      });
+    });
+
+    context('with regex literals', function() {
+      context('using no flags', function() {
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: /^A/}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
+      });
+
+
+      context('using flags', function() {
+        beforeEach(function addSpy() {
+          sinon.stub(console, 'warn');
+        });
+        afterEach(function removeSpy() {
+          console.warn.restore();
+        });
+
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: /^a/i}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
+
+        it('should print a warning when the global flag is set',
+            function(done) {
+          Post.find({where: {content: {regexp: /^a/g}}}, function(err, posts) {
+            console.warn.calledOnce.should.be.ok;
+            done();
+          });
+        });
+      });
+    });
+
+    context('with regex object', function() {
+      context('using no flags', function() {
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: new RegExp(/^A/)}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
+      });
+
+
+      context('using flags', function() {
+        beforeEach(function addSpy() {
+          sinon.stub(console, 'warn');
+        });
+        afterEach(function removeSpy() {
+          console.warn.restore();
+        });
+
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: new RegExp(/^a/i)}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
+
+        it('should print a warning when the global flag is set',
+            function(done) {
+          Post.find({where: {content: {regexp: new RegExp(/^a/g)}}}, function(err, posts) {
+            console.warn.calledOnce.should.be.ok;
+            done();
+          });
+        });
+      });
+    });
+  });
+
   after(function (done) {
     User.destroyAll(function () {
       Post.destroyAll(function () {
