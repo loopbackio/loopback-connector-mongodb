@@ -1,3 +1,17 @@
+2015-08-07, Version 1.13.0
+==========================
+
+ * Added a setting to enable optimsied findOrCreate method so that connector continues to work with mongodb < 2.6 (Mike Bissett)
+
+ * Fixed up merge conflicted dependencies in package.json (Mike Bissett)
+
+ * Update deps (Raymond Feng)
+
+ * implement optimized findOrCreate (Clark Wang)
+
+ * extract sort document building to method (Clark Wang)
+
+
 2015-08-04, Version 1.12.0
 ==========================
 
