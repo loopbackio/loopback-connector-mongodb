@@ -1,3 +1,55 @@
+2015-08-04, Version 1.12.0
+==========================
+
+ * Add regexp operator support (Simon Ho)
+
+ * Enable options.allowExtendedOperators (Fabien Franzen)
+
+ * Enable Model.settings.mongodb.allowExtendedOperators (Fabien Franzen)
+
+ * Update benchmarks (Simon Ho)
+
+
+2015-07-02, Version 1.11.3
+==========================
+
+ * Restore data.id to avoid build breaks (Raymond Feng)
+
+
+2015-06-25, Version 1.11.2
+==========================
+
+ * Revert "Add a workaround for auth with multiple mongos servers" (Raymond Feng)
+
+
+2015-06-15, Version 1.11.1
+==========================
+
+ * Fix the url (Raymond Feng)
+
+ * Replaced ensureIndex() with createIndex() (U-Zyn Chua)
+
+
+2015-06-05, Version 1.11.0
+==========================
+
+ * Add a workaround for auth with multiple mongos servers (Raymond Feng)
+
+ * Use custom collection name for migration (Raymond Feng)
+
+
+2015-06-03, Version 1.10.1
+==========================
+
+ * Make sure disconnect calls back (Raymond Feng)
+
+
+2015-06-01, Version 1.10.0
+==========================
+
+ * Add execute hooks (Raymond Feng)
+
+
 2015-05-29, Version 1.9.2
 =========================
 

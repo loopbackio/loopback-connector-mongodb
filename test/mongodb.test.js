@@ -30,7 +30,7 @@ describe('mongodb connector', function () {
       geometry: { type: Object, required: false, index: { mongodb: { kind: "2dsphere" } } },
       age: Number,
       icon: Buffer
-    });
+    }, {mongodb: {collection: 'sh'}});
 
     Post = db.define('Post', {
       title: { type: String, length: 255, index: true },
@@ -82,6 +82,7 @@ describe('mongodb connector', function () {
   });
 
   beforeEach(function (done) {
+    User.settings.mongodb = {};
     User.destroyAll(function () {
       Post.destroyAll(function () {
         PostWithObjectId.destroyAll(function () {
@@ -135,7 +136,7 @@ describe('mongodb connector', function () {
 
   it('should create complex indexes', function (done) {
     db.automigrate('Superhero', function () {
-      db.connector.db.collection('Superhero').indexInformation(function (err, result) {
+      db.connector.db.collection('sh').indexInformation(function (err, result) {
 
         var indexes =
         { _id_: [ [ '_id', 1 ] ],
@@ -357,6 +358,31 @@ describe('mongodb connector', function () {
     });
   });
 
+  it('should invoke hooks', function(done) {
+    var events = [];
+    var connector = Post.getDataSource().connector;
+    connector.observe('before execute', function(ctx, next) {
+      ctx.req.command.should.be.string;
+      ctx.req.params.should.be.array;
+      events.push('before execute ' + ctx.req.command);
+      next();
+    });
+    connector.observe('after execute', function(ctx, next) {
+      ctx.res.should.be.object;
+      events.push('after execute ' + ctx.req.command);
+      next();
+    });
+    Post.create({title: 'Post1', content: 'Post1 content'}, function(err, p1) {
+      Post.find(function(err, results) {
+        events.should.eql(['before execute insert', 'after execute insert',
+          'before execute find', 'after execute find']);
+        connector.clearObservers('before execute');
+        connector.clearObservers('after execute');
+        done(err, results);
+      });
+    });
+  });
+
   it('should allow to find by number id using where', function (done) {
     PostWithNumberId.create({id: 1, title: 'Post1', content: 'Post1 content'}, function (err, p1) {
       PostWithNumberId.create({id: 2, title: 'Post2', content: 'Post2 content'}, function (err, p2) {
@@ -530,6 +556,93 @@ describe('mongodb connector', function () {
               });
 
             });
+          });
+        });
+      });
+      
+      it('should be possible to enable per model settings', function(done) {
+        User.dataSource.settings.allowExtendedOperators = null;
+        User.settings.mongodb = { allowExtendedOperators: true };
+        User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(err1, createdusers1) {
+          should.not.exist(err1);
+
+          User.updateAll({name: 'Al'}, {'$rename': {name: 'firstname'}}, function(err, updatedusers) {
+            should.not.exist(err);
+            updatedusers.should.have.property('count', 1);
+
+            User.find({where: {firstname: 'Al'}}, function(err, foundusers) {
+              should.not.exist(err);
+              foundusers.length.should.be.equal(1);
+
+              done();
+            });
+
+          });
+        });
+      });
+
+      it('should not be possible to enable per model settings when globally disabled', function(done) {
+        User.dataSource.settings.allowExtendedOperators = false;
+        User.settings.mongodb = { allowExtendedOperators: true };
+        User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(err1, createdusers1) {
+          should.not.exist(err1);
+
+          User.updateAll({name: 'Al'}, {'$rename': {name: 'firstname'}}, function(err, updatedusers) {
+            should.exist(err);
+            err.name.should.equal('MongoError');
+            err.errmsg.should.equal('The dollar ($) prefixed field \'$rename\' in \'$rename\' is not valid for storage.');
+            done();
+          });
+        });
+      });
+
+      it('should not be possible to use when disabled per model settings', function(done) {
+        User.dataSource.settings.allowExtendedOperators = true;
+        User.settings.mongodb = { allowExtendedOperators: false };
+        User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(err1, createdusers1) {
+          should.not.exist(err1);
+
+          User.updateAll({name: 'Al'}, {'$rename': {name: 'firstname'}}, function(err, updatedusers) {
+            should.exist(err);
+            err.name.should.equal('MongoError');
+            err.errmsg.should.equal('The dollar ($) prefixed field \'$rename\' in \'$rename\' is not valid for storage.');
+            done();
+          });
+        });
+      });
+      
+      it('should be possible to enable using options - even if globally disabled', function(done) {
+        User.dataSource.settings.allowExtendedOperators = false;
+        var options = { allowExtendedOperators: true };
+        User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(err1, createdusers1) {
+          should.not.exist(err1);
+          
+          User.updateAll({name: 'Al'}, {'$rename': {name: 'firstname'}}, options, function(err, updatedusers) {
+            should.not.exist(err);
+            updatedusers.should.have.property('count', 1);
+
+            User.find({where: {firstname: 'Al'}}, function(err, foundusers) {
+              should.not.exist(err);
+              foundusers.length.should.be.equal(1);
+
+              done();
+            });
+
+          });
+        });
+      });
+      
+      it('should be possible to disable using options - even if globally disabled', function(done) {
+        User.dataSource.settings.allowExtendedOperators = true;
+        var options = { allowExtendedOperators: false };
+        User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(err1, createdusers1) {
+          should.not.exist(err1);
+
+          User.updateAll({name: 'Al'}, {'$rename': {name: 'firstname'}}, options, function(err, updatedusers) {
+            should.exist(err);
+            err.name.should.equal('MongoError');
+            err.errmsg.should.equal('The dollar ($) prefixed field \'$rename\' in \'$rename\' is not valid for storage.');
+            done();
           });
         });
       });
@@ -1359,6 +1472,140 @@ describe('mongodb connector', function () {
           Post.count(function (err, count) {
             should.not.exist(err);
             count.should.be.equal(1);
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  context('regexp operator', function() {
+    before(function deleteExistingTestFixtures(done) {
+      Post.destroyAll(done);
+    });
+    beforeEach(function createTestFixtures(done) {
+      Post.create([
+        {title: 'a', content: 'AAA'},
+        {title: 'b', content: 'BBB'}
+      ], done);
+    });
+    after(function deleteTestFixtures(done) {
+      Post.destroyAll(done);
+    });
+
+    context('with regex strings', function() {
+      context('using no flags', function() {
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: '^A'}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
+      });
+
+      context('using flags', function() {
+        beforeEach(function addSpy() {
+          sinon.stub(console, 'warn');
+        });
+        afterEach(function removeSpy() {
+          console.warn.restore();
+        });
+
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: '^a/i'}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
+
+        it('should print a warning when the global flag is set',
+            function(done) {
+          Post.find({where: {content: {regexp: '^a/g'}}}, function(err, posts) {
+            console.warn.calledOnce.should.be.ok;
+            done();
+          });
+        });
+      });
+    });
+
+    context('with regex literals', function() {
+      context('using no flags', function() {
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: /^A/}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
+      });
+
+
+      context('using flags', function() {
+        beforeEach(function addSpy() {
+          sinon.stub(console, 'warn');
+        });
+        afterEach(function removeSpy() {
+          console.warn.restore();
+        });
+
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: /^a/i}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
+
+        it('should print a warning when the global flag is set',
+            function(done) {
+          Post.find({where: {content: {regexp: /^a/g}}}, function(err, posts) {
+            console.warn.calledOnce.should.be.ok;
+            done();
+          });
+        });
+      });
+    });
+
+    context('with regex object', function() {
+      context('using no flags', function() {
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: new RegExp(/^A/)}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
+      });
+
+
+      context('using flags', function() {
+        beforeEach(function addSpy() {
+          sinon.stub(console, 'warn');
+        });
+        afterEach(function removeSpy() {
+          console.warn.restore();
+        });
+
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: new RegExp(/^a/i)}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
+
+        it('should print a warning when the global flag is set',
+            function(done) {
+          Post.find({where: {content: {regexp: new RegExp(/^a/g)}}}, function(err, posts) {
+            console.warn.calledOnce.should.be.ok;
             done();
           });
         });
