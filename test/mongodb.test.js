@@ -1481,7 +1481,7 @@ describe('mongodb connector', function () {
 
   context('id', function() {
     var Todo = getDataSource().define('Todo', {
-      content: {type: String}
+      content: {type: String, id: false}
     });
 
     before(function deleteExistingTestFixtures(done) {
