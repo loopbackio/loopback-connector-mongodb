@@ -1479,6 +1479,34 @@ describe('mongodb connector', function () {
     });
   });
 
+  context('id', function() {
+    var Todo = getDataSource().define('Todo', {
+      content: {type: String}
+    });
+
+    before(function deleteExistingTestFixtures(done) {
+      Todo.destroyAll(done);
+    });
+    beforeEach(function createTestFixtures(done) {
+      Todo.create([
+        {content: 'Buy eggs'},
+        {content: 'Buy milk'},
+        {content: 'Buy sausages'}
+      ], done);
+    });
+    after(function deleteTestFixtures(done) {
+      Todo.destroyAll(done);
+    });
+
+    it.only('should not be required when when performing a find query',
+        function(done) {
+      Todo.find(function(err, posts) {
+        console.log(arguments);
+        done();
+      })
+    });
+  });
+
   context('regexp operator', function() {
     before(function deleteExistingTestFixtures(done) {
       Post.destroyAll(done);
