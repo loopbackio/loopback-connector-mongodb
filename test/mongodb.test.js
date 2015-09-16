@@ -1286,6 +1286,35 @@ describe('mongodb connector', function () {
       });
     });
 
+  it('find should not order by id if the order is not set for the query filter and option useDefaultSort is false',
+    function (done) {
+      var options = {useDefaultSort: false};
+
+      PostWithStringId.create({id: '2', title: 'c', content: 'CCC'}, function (err, post) {
+        PostWithStringId.create({id: '1', title: 'd', content: 'DDD'}, function (err, post) {
+
+          PostWithStringId.find({}, options, function (err, posts) {
+            should.not.exist(err);
+            posts.length.should.be.equal(2);
+            posts[0].id.should.be.equal('2');
+
+            PostWithStringId.find({limit: 1, offset: 0}, options, function (err, posts) {
+              should.not.exist(err);
+              posts.length.should.be.equal(1);
+              posts[0].id.should.be.equal('2');
+
+              PostWithStringId.find({limit: 1, offset: 1}, options, function (err, posts) {
+                should.not.exist(err);
+                posts.length.should.be.equal(1);
+                posts[0].id.should.be.equal('1');
+                done();
+              });
+            });
+          });
+        });
+      });
+    });
+
   it('should report error on duplicate keys', function (done) {
     Post.create({title: 'd', content: 'DDD'}, function (err, post) {
       Post.create({id: post.id, title: 'd', content: 'DDD'}, function (err, post) {
