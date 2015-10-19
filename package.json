@@ -13,24 +13,25 @@
   "scripts": {
     "benchmarks": "make benchmarks",
     "leak-detection": "make leak-detection",
-    "test": "make test"
+    "test": "./node_modules/.bin/mocha --require test/globals"
   },
   "dependencies": {
+    "async": "^1.0.0",
+    "debug": "^2.1.1",
     "loopback-connector": "^2.2.0",
     "mongodb": "~2.0.35",
-    "async": "^1.0.0",
-    "debug": "^2.1.1"
+    "should": "^7.1.0"
   },
   "devDependencies": {
     "benchmark": "^1.0.0",
     "bluebird": "^2.9.12",
     "loopback-datasource-juggler": "^2.28.0",
     "memwatch-next": "^0.2.6",
-    "mocha": "^2.1.0",
+    "mocha": "^2.3.3",
     "rc": "^1.0.0",
     "semver": "^4.2.0",
-    "should": "^5.0.0",
-    "sinon": "^1.15.4"
+    "should": "^7.1.0",
+    "sinon": "^1.17.1"
   },
   "repository": {
     "type": "git",
