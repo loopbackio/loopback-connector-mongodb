@@ -22,6 +22,17 @@ describe('mongodb connector', function () {
       }
     });
 
+    UserWithRenamedColumns = db.define('UserWithRenamedColumns', {
+      renamedName: { type: String, index: true, mongodb: { column: 'name' } },
+      renamedEmail: { type: String, index: true, unique: true, mongodb: { column: 'email' }  },
+      age: Number,
+      icon: Buffer
+    }, {
+      mongodb: {
+        collection: 'User' // Overlay on the User collection
+      }      
+    });
+
     Superhero = db.define('Superhero', {
       name: { type: String, index: true },
       power: { type: String, index: true, unique: true },
@@ -553,6 +564,32 @@ describe('mongodb connector', function () {
               should.not.exist(err3);
 
               User.updateAll({name: 'Simon'}, {name: 'Alex'}, function(err, updatedusers) {
+                should.not.exist(err);
+                updatedusers.should.have.property('count', 1);
+
+                User.find({where: {name: 'Alex'}}, function(err, founduser) {
+                  should.not.exist(err);
+                  founduser.length.should.be.equal(1);
+                  founduser[0].name.should.be.equal('Alex');
+
+                  done();
+                });
+              });
+
+            });
+          });
+        });
+      });
+      
+      it('should use $set by default if no operator is supplied (using renamed columns)', function(done) {
+        User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(err1, createdusers1) {
+          should.not.exist(err1);
+          User.create({name: 'Simon', age: 32, email: 'simon@strongloop'}, function(err2, createdusers2) {
+            should.not.exist(err2);
+            User.create({name: 'Ray', age: 31, email: 'ray@strongloop'}, function(err3, createdusers3) {
+              should.not.exist(err3);
+
+              UserWithRenamedColumns.updateAll({name: 'Simon'}, {renamedName: 'Alex'}, function(err, updatedusers) {
                 should.not.exist(err);
                 updatedusers.should.have.property('count', 1);
 
