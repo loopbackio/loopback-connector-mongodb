@@ -77,6 +77,16 @@ describe('mongodb connector', function () {
       content: { type: String }
     });
 
+    PostWithStringIdAndRenamedColumns = db.define('PostWithStringIdAndRenamedColumns', {
+      id: {type: String, id: true},
+      renamedTitle: { type: String, length: 255, index: true, mongodb: { column: 'title' } },
+      renamedContent: { type: String, mongodb: { columnName: 'content' } }
+    }, {
+      mongodb: {
+        collection: 'PostWithStringId' // Overlay on the PostWithStringId collection
+      }      
+    });
+
     User.hasMany(Post);
     Post.belongsTo(User);
   });
@@ -1246,6 +1256,44 @@ describe('mongodb connector', function () {
     });
   });
 
+  it('create should support renamed column names (using property syntax first)',
+    function (done) {
+      var oid = new db.ObjectID().toString();
+      PostWithStringId.create({id: oid, title: 'c', content: 'CCC'}, function (err, post) {
+        PostWithStringIdAndRenamedColumns.findById(oid, function (err, post) {
+          should.not.exist(err);
+          should.not.exist(post._id);
+          post.id.should.be.equal(oid);
+
+          should.exist(post.renamedTitle);
+          should.exist(post.renamedContent);
+          post.renamedTitle.should.be.equal('c');
+          post.renamedContent.should.be.equal('CCC');
+
+          done();
+        });
+      });
+    });
+
+  it('create should support renamed column names (using db syntax first)',
+    function (done) {
+      var oid = new db.ObjectID().toString();
+      PostWithStringIdAndRenamedColumns.create({id: oid, renamedTitle: 'c', renamedContent: 'CCC'}, function (err, post) {
+        PostWithStringId.findById(oid, function (err, post) {
+          should.not.exist(err);
+          should.not.exist(post._id);
+          post.id.should.be.equal(oid);
+
+          should.exist(post.title);
+          should.exist(post.content);
+          post.title.should.be.equal('c');
+          post.content.should.be.equal('CCC');
+
+          done();
+        });
+      });
+    });
+
   it('create should convert id from string to ObjectID if format matches',
     function (done) {
       var oid = new db.ObjectID().toString();
@@ -1298,6 +1346,26 @@ describe('mongodb connector', function () {
   it('should allow to find using like', function (done) {
     Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
       Post.find({where: {title: {like: 'M.+st'}}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 1);
+        done();
+      });
+    });
+  });
+
+  it('should allow to find using like with renamed columns', function (done) {
+    PostWithStringId.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      PostWithStringIdAndRenamedColumns.find({where: { renamedTitle: {like: 'M.+st'}}}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 1);
+        done();
+      });
+    });
+  });
+
+  it('should allow to find using like with renamed columns (inverse create order)', function (done) {
+    PostWithStringIdAndRenamedColumns.create({renamedTitle: 'My Post', renamedContent: 'Hello'}, function (err, post) {
+      PostWithStringId.find({where: { title: {like: 'M.+st'}}}, function (err, posts) {
         should.not.exist(err);
         posts.should.have.property('length', 1);
         done();
@@ -1452,6 +1520,21 @@ describe('mongodb connector', function () {
         should.not.exist(err);
         count.should.be.equal(1);
         Post.count({and: [{title: 'My Post1'}, {content: 'Hello'}]}, function (err, count) {
+          should.not.exist(err);
+          count.should.be.equal(0);
+          done();
+        });
+      });
+    });
+  });
+
+  // The where object should be parsed by the connector
+  it('should support where for count (using renamed columns in deep filter criteria)', function (done) {
+    PostWithStringId.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+      PostWithStringIdAndRenamedColumns.count({and: [{renamedTitle: 'My Post'}, {renamedContent: 'Hello'}]}, function (err, count) {
+        should.not.exist(err);
+        count.should.be.equal(1);
+        PostWithStringIdAndRenamedColumns.count({and: [{renamedTitle: 'My Post1'}, {renamedContent: 'Hello'}]}, function (err, count) {
           should.not.exist(err);
           count.should.be.equal(0);
           done();
