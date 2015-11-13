@@ -7,6 +7,7 @@ var config = require('rc')('loopback', {test: {mongodb: {}}}).test.mongodb;
 if (process.env.CI) {
   config = {
     host: process.env.MONGODB_HOST || 'localhost',
+    port: process.env.MONGODB_PORT || 27017,
     database: 'lb-ds-mongodb-test-' + (
       process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER || '1'
     ),
