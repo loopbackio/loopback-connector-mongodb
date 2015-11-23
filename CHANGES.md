@@ -1,4 +1,24 @@
-2015-08-07, Version 1.13.0
+2015-11-23, Version 1.13.1
+==========================
+
+ * Fix the test set up (Raymond Feng)
+
+ * Added mongo port env var (cgole)
+
+ * Add env variable for mongodb server (cgole)
+
+ * Refer to licenses with a link (Sam Roberts)
+
+ * Fix repository field in package.json (Simon Ho)
+
+ * Use strongloop conventions for licensing (Sam Roberts)
+
+ * Enhance coercion of ids with inq/nin operators (Raymond Feng)
+
+ * Return deleted count (Raymond Feng)
+
+
+2015-08-06, Version 1.13.0
 ==========================
 
  * Added a setting to enable optimsied findOrCreate method so that connector continues to work with mongodb < 2.6 (Mike Bissett)
