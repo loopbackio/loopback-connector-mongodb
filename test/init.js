@@ -14,6 +14,8 @@ if (process.env.CI) {
   };
 }
 
+global.config = config;
+
 global.getDataSource = global.getSchema = function (customConfig) {
   var db = new DataSource(require('../'), customConfig || config);
   db.log = function (a) {
