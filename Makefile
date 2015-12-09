@@ -5,7 +5,9 @@ OPTS = -G --timeout 10000
 TESTS = test/*.test.js
 
 test:
-	$(TESTER) $(OPTS) $(TESTS)
+	TEST_ENV=local $(TESTER) $(OPTS) $(TESTS)
+test-dev:
+	TEST_ENV=dev $(TESTER) $(OPTS) $(TESTS)
 test-verbose:
 	$(TESTER) $(OPTS) --reporter spec $(TESTS)
 testing:
