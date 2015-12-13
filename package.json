@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-mongodb",
-  "version": "1.13.1",
+  "version": "1.13.2",
   "description": "LoopBack MongoDB Connector",
   "keywords": [
     "StrongLoop",

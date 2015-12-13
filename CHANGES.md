@@ -1,3 +1,13 @@
+2015-12-13, Version 1.13.2
+==========================
+
+ * Make sure null/undefined id is not coerced (Raymond Feng)
+
+ * Allow runtime configurable test environment (Simon Ho)
+
+ * changed env variable fortest servers (cgole)
+
+
 2015-11-23, Version 1.13.1
 ==========================
 
