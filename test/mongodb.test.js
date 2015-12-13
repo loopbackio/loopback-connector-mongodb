@@ -1072,27 +1072,27 @@ describe('mongodb connector', function () {
     });
   });
 
-  describe('replaceOrCreate', function () {
-    it('replaceOrCreate: should create a model instance even if it does already exist', function (done) {
-      Product.replaceOrCreate({name: 'newFoo'}, function (err, updatedProduct) {
+  describe('replaceOrCreate', function() {
+    it('should create a model instance even if it does already exist2', function(done) {
+      Product.replaceOrCreate({name: 'newFoo'}, function(err, updatedProduct) {
         should.not.exist(err);
         should.not.exist(updatedProduct._id);
         should.exist(updatedProduct.id);
-        Product.findById(updatedProduct.id, function (err, data) {
+        Product.findById(updatedProduct.id, function(err, data) {
           data.name.should.be.equal('newFoo');
           done();
         });
       });
     });
 
-    it('replaceOrCreate: should replace a model instance if it the passing key already exists', function (done) {
+    it('should replace a model instance if it the passing key already exists', function(done) {
       Product.create({name: 'foo', price: 100}, function (err, product) {
-        Product.replaceOrCreate({id: product.id, name: 'newFoo'}, function (err, updatedProduct) {
+        Product.replaceOrCreate({id: product.id, name: 'newFoo'}, function(err, updatedProduct) {
           should.not.exist(err);
           should.not.exist(updatedProduct._id);
           updatedProduct.name.should.be.equal('newFoo');
           should.exist(updatedProduct.id);
-          Product.findById(product.id, function (err, data) {
+          Product.findById(product.id, function(err, data) {
             data.name.should.be.equal('newFoo');
             should.not.exist(data.price);
             done();
@@ -1101,11 +1101,11 @@ describe('mongodb connector', function () {
       });
     });
 
-    it('replaceOrCreate: should remove extra properties not defined in the model', function (done) {
-      Product.create({name: 'foo', price: 100, 'bar': 'baz'}, function (err, product) {
-        Product.replaceOrCreate({id: product.id, name: 'newFoo'}, function (err, updatedProduct) {
+    it('should remove extra properties not defined in the model', function(done) {
+      Product.create({name: 'foo', price: 100, 'bar': 'baz'}, function(err, product) {
+        Product.replaceOrCreate({id: product.id, name: 'newFoo'}, function(err, updatedProduct) {
           should.not.exist(updatedProduct.bar);
-          Product.findById(product.id, function (err, data) {
+          Product.findById(product.id, function(err, data) {
             should.not.exist(data.bar);
             done();
           });
@@ -1114,15 +1114,15 @@ describe('mongodb connector', function () {
     });
   })  
   
-  describe('replaceAttributes', function () {
-    it('replaceAttributes: should replace a model instance if it the passing key already exists', function (done) {
-      Product.create({name: 'foo', price: 100}, function (err, product) {
-        product.replaceAttributes({name: 'newFoo'}, function (err, updatedProduct) {
+  describe('replaceAttributes', function() {
+    it('should replace a model instance if it the passing key already exists', function(done) {
+      Product.create({name: 'foo', price: 100}, function(err, product) {
+        product.replaceAttributes({name: 'newFoo'}, function(err, updatedProduct) {
           should.not.exist(err);
           should.not.exist(updatedProduct._id);
           updatedProduct.name.should.be.equal('newFoo');
           should.exist(updatedProduct.id);
-          Product.findById(product.id, function (err, data) {
+          Product.findById(product.id, function(err, data) {
             data.name.should.be.equal('newFoo');
             should.not.exist(data.price);
             done();
@@ -1131,10 +1131,11 @@ describe('mongodb connector', function () {
       });
     });
 
-    it('replaceAttributes: should remove extra properties not defined in the model', function (done) {
-      Product.create({name: 'foo', price: 100, bar: 'baz'}, function (err, product) {
-        product.replaceAttributes({name: 'newFoo'}, function (err, updatedProduct) {
-          Product.findById(product.id, function (err, data) {
+    it('should remove extra properties not defined in the model', function(done) {
+      Product.create({name: 'foo', price: 100, bar: 'baz'}, function(err, product) {        
+        product.replaceAttributes({name: 'newFoo'}, function(err, updatedProduct) {
+          should.not.exist(updatedProduct.bar);
+          Product.findById(product.id, function(err, data) {
             data.name.should.be.equal('newFoo');
             should.not.exist(data.bar);
             done();
@@ -1145,15 +1146,15 @@ describe('mongodb connector', function () {
 
   });
 
-  describe('replaceAttribute', function () {
-    it('replaceAttribute: should replace a model instance if it the passing key already exists', function (done) {
-      Product.create({name: 'foo', price: 100}, function (err, product) {
-        product.replaceAttribute('name', 'newFoo', function (err, updatedProduct) {
+  describe('replaceAttribute', function() {
+    it('should replace a model instance if it the passing key already exists', function(done) {
+      Product.create({name: 'foo', price: 100}, function(err, product) {
+        product.replaceAttribute('name', 'newFoo', function(err, updatedProduct) {
           should.not.exist(err);
           should.not.exist(updatedProduct._id);
           updatedProduct.name.should.be.equal('newFoo');
           should.exist(updatedProduct.id);
-          Product.findById(product.id, function (err, data) {
+          Product.findById(product.id, function(err, data) {
             data.name.should.be.equal('newFoo');
             should.not.exist(data.price);
             done();
@@ -1162,10 +1163,11 @@ describe('mongodb connector', function () {
       });
     });
 
-    it('replaceAttribute: should remove extra properties not defined in the model', function (done) {
-      Product.create({name: 'foo', price: 100, bar: 'baz'}, function (err, product) {
-        product.replaceAttribute('name', 'newFoo', function (err, updatedProduct) {
-          Product.findById(product.id, function (err, data) {
+    it('should remove extra properties not defined in the model', function(done) {
+      Product.create({name: 'foo', price: 100, bar: 'baz'}, function(err, product) {
+        product.replaceAttribute('name', 'newFoo', function(err, updatedProduct) {
+          should.not.exist(updatedProduct.bar);
+          Product.findById(product.id, function(err, data) {
             data.name.should.be.equal('newFoo');
             should.not.exist(data.bar);
             done();
