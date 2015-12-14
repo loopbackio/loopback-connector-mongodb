@@ -1073,7 +1073,7 @@ describe('mongodb connector', function () {
   });
 
   describe('replaceOrCreate', function() {
-    it('should create a model instance even if it does already exist2', function(done) {
+    it('should create a model instance even if it already exists', function(done) {
       Product.replaceOrCreate({name: 'newFoo'}, function(err, updatedProduct) {
         should.not.exist(err);
         should.not.exist(updatedProduct._id);
@@ -1085,7 +1085,7 @@ describe('mongodb connector', function () {
       });
     });
 
-    it('should replace a model instance if it the passing key already exists', function(done) {
+    it('should replace a model instance if the passing key already exists', function(done) {
       Product.create({name: 'foo', price: 100}, function (err, product) {
         Product.replaceOrCreate({id: product.id, name: 'newFoo'}, function(err, updatedProduct) {
           should.not.exist(err);
@@ -1101,7 +1101,7 @@ describe('mongodb connector', function () {
       });
     });
 
-    it('should remove extra properties not defined in the model', function(done) {
+    it('should remove extraneous properties that are not defined in the model', function(done) {
       Product.create({name: 'foo', price: 100, 'bar': 'baz'}, function(err, product) {
         Product.replaceOrCreate({id: product.id, name: 'newFoo'}, function(err, updatedProduct) {
           should.not.exist(updatedProduct.bar);
@@ -1115,7 +1115,7 @@ describe('mongodb connector', function () {
   })  
   
   describe('replaceAttributes', function() {
-    it('should replace a model instance if it the passing key already exists', function(done) {
+    it('should replace the model instance if the provided key already exists', function(done) {
       Product.create({name: 'foo', price: 100}, function(err, product) {
         product.replaceAttributes({name: 'newFoo'}, function(err, updatedProduct) {
           should.not.exist(err);
@@ -1147,7 +1147,7 @@ describe('mongodb connector', function () {
   });
 
   describe('replaceAttribute', function() {
-    it('should replace a model instance if it the passing key already exists', function(done) {
+    it('should replace the model instance if the provided key already exists', function(done) {
       Product.create({name: 'foo', price: 100}, function(err, product) {
         product.replaceAttribute('name', 'newFoo', function(err, updatedProduct) {
           should.not.exist(err);
