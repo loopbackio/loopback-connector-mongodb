@@ -1131,7 +1131,7 @@ describe('mongodb connector', function () {
       });
     });
 
-    it('should remove extra properties not defined in the model', function(done) {
+    it('should remove extraneous properties that are not defined in the model', function(done) {
       Product.create({name: 'foo', price: 100, bar: 'baz'}, function(err, product) {        
         product.replaceAttributes({name: 'newFoo'}, function(err, updatedProduct) {
           should.not.exist(updatedProduct.bar);
@@ -1163,7 +1163,7 @@ describe('mongodb connector', function () {
       });
     });
 
-    it('should remove extra properties not defined in the model', function(done) {
+    it('should remove extraneous properties that are not defined in the model', function(done) {
       Product.create({name: 'foo', price: 100, bar: 'baz'}, function(err, product) {
         product.replaceAttribute('name', 'newFoo', function(err, updatedProduct) {
           should.not.exist(updatedProduct.bar);
