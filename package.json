@@ -13,7 +13,7 @@
   "scripts": {
     "benchmarks": "make benchmarks",
     "leak-detection": "make leak-detection",
-    "test": "make test"
+    "test": "mocha -G --timeout 10000 test/*.test.js"
   },
   "dependencies": {
     "loopback-connector": "^2.2.0",
