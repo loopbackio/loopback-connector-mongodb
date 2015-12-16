@@ -102,25 +102,50 @@ describe('mongodb string id', function () {
 
 });
 
-describe('mongodb default id type', function () {
-  var Account = ds.createModel('account', {seq: {generated: true, id: true},
-    name: String, emails: [String], age: Number});
+describe('mongodb default id type', function() {
+  var Account = ds.createModel('account', {
+    seq: {generated: true, id: true},
+    name: String, emails: [String], age: Number
+  });
 
   before(function(done) {
     Account.deleteAll(done);
   });
 
-  it('should generate id value for create', function (done) {
+  var id;
+  it('should generate id value for create', function(done) {
     Account.create({
       name: 'John1',
       emails: ['john@x.com', 'john@y.com'],
       age: 30
-    }, function (err, account) {
+    }, function(err, account) {
+      if (err) return done(err);
       account.should.have.property('seq');
-      Account.findById(account.seq, function (err, account1) {
+      id = account.seq;
+      Account.findById(id, function(err, account1) {
+        if (err) return done(err);
         account1.seq.should.eql(account.seq);
-        done(err, account);
+        account.should.have.property('seq');
+        done(err, account1);
       });
+    });
+  });
+
+  it('should be able to find by string id', function(done) {
+    // Try to look up using string
+    Account.findById(id.toString(), function(err, account1) {
+      if (err) return done(err);
+      account1.seq.should.eql(id);
+      done(err, account1);
+    });
+  });
+
+  it('should be able to delete by string id', function(done) {
+    // Try to look up using string
+    Account.destroyById(id.toString(), function(err, info) {
+      if (err) return done(err);
+      info.count.should.eql(1);
+      done(err);
     });
   });
 
