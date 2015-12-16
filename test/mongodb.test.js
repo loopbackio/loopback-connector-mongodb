@@ -1,4 +1,5 @@
 // This test written in mocha+should.js
+var semver = require('semver');
 var should = require('./init.js');
 
 var Superhero, User, Post, PostWithStringId, db;
@@ -527,8 +528,7 @@ describe('mongodb connector', function () {
 
     var describeMongo26 = describe;
     if (process.env.MONGODB_VERSION &&
-      require('semver').satisfies('2.6.0', '>' +
-        process.env.MONGODB_VERSION)) {
+        !semver.satisfies(process.env.MONGODB_VERSION, '~2.6.0')) {
       describeMongo26 = describe.skip;
     }
 

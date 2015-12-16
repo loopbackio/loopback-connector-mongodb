@@ -1,3 +1,4 @@
+var semver = require('semver');
 var should = require('./init');
 var suite = require('loopback-datasource-juggler/test/persistence-hooks.suite.js');
 
@@ -6,8 +7,7 @@ var customConfig = {
 };
 
 if (process.env.MONGODB_VERSION &&
-  require('semver').satisfies('2.6.0', '>' +
-    process.env.MONGODB_VERSION)) {
+    semver.satisfies(process.env.MONGODB_VERSION, '>= 2.6.0')) {
   customConfig.enableOptimisedfindOrCreate = true;
 }
 
