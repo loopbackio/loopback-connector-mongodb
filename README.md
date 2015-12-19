@@ -1,6 +1,6 @@
-## loopback-connector-mongodb
+# loopback-connector-mongodb
 
-MongoDB connector for loopback-datasource-juggler.
+The official MongoDB connector for the LoopBack framework.
 
 Please see the full documentation at [docs.strongloop.com](http://docs.strongloop.com/display/LB/MongoDB+connector).
 
