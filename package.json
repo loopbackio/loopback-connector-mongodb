@@ -1,20 +1,25 @@
 {
   "name": "loopback-connector-mongodb",
   "version": "1.13.2",
-  "description": "LoopBack MongoDB Connector",
-  "keywords": [
-    "StrongLoop",
-    "LoopBack",
-    "MongoDB",
-    "DataSource",
-    "Connector"
-  ],
+  "description": "The official MongoDB connector for the LoopBack framework.",
   "main": "index.js",
   "scripts": {
     "benchmarks": "make benchmarks",
     "leak-detection": "make leak-detection",
     "test": "mocha -G --timeout 10000 test/*.test.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/strongloop/loopback-connector-mongodb.git"
+  },
+  "keywords": [
+    "connector",
+    "datasource",
+    "loopback",
+    "strongloop",
+    "mongodb"
+  ],
+  "license": "MIT",
   "dependencies": {
     "loopback-connector": "^2.2.0",
     "mongodb": "~2.0.35",
@@ -31,10 +36,5 @@
     "semver": "^4.2.0",
     "should": "^5.0.0",
     "sinon": "^1.15.4"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/strongloop/loopback-connector-mongodb.git"
-  },
-  "license": "MIT"
+  }
 }
