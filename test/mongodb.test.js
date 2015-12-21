@@ -1079,84 +1079,112 @@ describe('mongodb connector', function () {
           return done(err);
         should.not.exist(updatedProduct._id);
         should.exist(updatedProduct.id);
-        Product.findById(updatedProduct.id, function(err, data) {
+        verifyData(updatedProduct.id);
+      });
+       function verifyData(id) {
+        Product.findById(id, function(err, data) {
           data.name.should.be.equal('newFoo');
           done(err);
         });
-      });
+      };
     });
 
     it('should replace a model instance if the passing key already exists', function(done) {
-      Product.create({name: 'foo', price: 100}, function (err, product) {
+      Product.create({name: 'foo', price: 100}, function(err, product) {
         if (err)
           return done(err);
-        Product.replaceOrCreate({id: product.id, name: 'newFoo'}, function(err, updatedProduct) {
+        replaceOrCreate({id: product.id, name: 'newFoo'});
+      });
+      function replaceOrCreate(data) {
+        Product.replaceOrCreate(data, function(err, updatedProduct) {
           if (err)
             return done(err);
           should.not.exist(updatedProduct._id);
           updatedProduct.name.should.be.equal('newFoo');
           should.exist(updatedProduct.id);
-          Product.findById(product.id, function(err, data) {
-            data.name.should.be.equal('newFoo');
-            should.not.exist(data.price);
-            done(err);
-          });
+          verify(data.id);
         });
-      });
+      }
+      function verify(id) {
+        Product.findById(id, function(err, data) {
+          data.name.should.be.equal('newFoo');
+          should.not.exist(data.price);
+          done(err);
+        });
+      }
     });
 
     it('should remove extraneous properties that are not defined in the model', function(done) {
       Product.create({name: 'foo', price: 100, 'bar': 'baz'}, function(err, product) {
         if (err)
           return done(err);
-        Product.replaceOrCreate({id: product.id, name: 'newFoo'}, function(err, updatedProduct) {
+        replaceOrCreate({id: product.id, name: 'newFoo'});
+      });
+      function replaceOrCreate(data) {
+        Product.replaceOrCreate(data, function(err, updatedProduct) {
           if (err)
             return done(err);
           should.not.exist(updatedProduct.bar);
-          Product.findById(product.id, function(err, data) {
-            should.not.exist(data.bar);
-            done(err);
-          });
+          verify(data.id);
         });
-      });
+      }
+      function verify(id) {
+        Product.findById(id, function(err, data) {
+          should.not.exist(data.bar);
+          done(err);
+        });
+      }
     });
-  })  
-  
+  });
+
   describe('replaceAttributes', function() {
     it('should replace the model instance if the provided key already exists', function(done) {
       Product.create({name: 'foo', price: 100}, function(err, product) {
         if (err)
           return done(err);
-        product.replaceAttributes({name: 'newFoo'}, function(err, updatedProduct) {
+        replaceAttributes(product, {name: 'newFoo'}, product.id);
+      });
+      function replaceAttributes(product, data, id) {
+        product.replaceAttributes(data, function(err, updatedProduct) {
           if (err)
             return done(err);
           should.not.exist(updatedProduct._id);
           updatedProduct.name.should.be.equal('newFoo');
           should.exist(updatedProduct.id);
-          Product.findById(product.id, function(err, data) {
-            data.name.should.be.equal('newFoo');
-            should.not.exist(data.price);
-            done(err);
-          });
+          verify(id);
         });
-      });
+      }
+      function verify(id) {
+        Product.findById(id, function(err, data) {
+          data.name.should.be.equal('newFoo');
+          should.not.exist(data.price);
+          done(err);
+        });
+      }
     });
 
     it('should remove extraneous properties that are not defined in the model', function(done) {
       Product.create({name: 'foo', price: 100, bar: 'baz'}, function(err, product) {
         if (err)
           return done(err);
-        product.replaceAttributes({name: 'newFoo'}, function(err, updatedProduct) {
+        replaceAttributes(product, {name: 'newFoo'}, product.id);
+
+      });
+      function replaceAttributes(product, data, id) {
+        product.replaceAttributes(data, function(err, updatedProduct) {
           if (err)
             return done(err);
           should.not.exist(updatedProduct.bar);
-          Product.findById(product.id, function(err, data) {
-            data.name.should.be.equal('newFoo');
-            should.not.exist(data.bar);
-            done(err);
-          });
+          verify(id);
         });
-      });
+      }
+      function verify(id) {
+        Product.findById(id, function(err, data) {
+          data.name.should.be.equal('newFoo');
+          should.not.exist(data.bar);
+          done(err);
+        });
+      }
     });
 
   });
