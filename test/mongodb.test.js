@@ -1181,7 +1181,7 @@ describe('mongodb connector', function () {
       function verify(id) {
         Product.findById(id, function(err, data) {
           data.name.should.be.equal('milk');
-          should.not.exist(data.bar);
+          should.not.exist(data.pricehistory);
           done(err);
         });
       }
