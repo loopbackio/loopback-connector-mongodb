@@ -1186,46 +1186,7 @@ describe('mongodb connector', function () {
         });
       }
     });
-
   });
-
-  describe('replaceAttribute', function() {
-    it('should replace the model instance if the provided key already exists', function(done) {
-      Product.create({name: 'foo', price: 100}, function(err, product) {
-        if (err)
-          return done(err);
-        product.replaceAttribute('name', 'newFoo', function(err, updatedProduct) {
-          if (err)
-            return done(err);
-          should.not.exist(updatedProduct._id);
-          updatedProduct.name.should.be.equal('newFoo');
-          should.exist(updatedProduct.id);
-          Product.findById(product.id, function(err, data) {
-            data.name.should.be.equal('newFoo');
-            should.not.exist(data.price);
-            done(err);
-          });
-        });
-      });
-    });
-
-    it('should remove extraneous properties that are not defined in the model', function(done) {
-      Product.create({name: 'foo', price: 100, bar: 'baz'}, function(err, product) {
-        if (err)
-          return done(err);
-        product.replaceAttribute('name', 'newFoo', function(err, updatedProduct) {
-          if (err)
-            return done(err);
-          should.not.exist(updatedProduct.bar);
-          Product.findById(product.id, function(err, data) {
-            data.name.should.be.equal('newFoo');
-            should.not.exist(data.bar);
-            done(err);
-          });
-        });
-      });
-    });
-  })
 
   it('updateOrCreate: should handle combination of operators and top level properties without errors', function (done) {
     Product.dataSource.settings.allowExtendedOperators = true;
