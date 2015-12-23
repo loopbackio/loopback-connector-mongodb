@@ -1115,7 +1115,7 @@ describe('mongodb connector', function () {
     });
 
     it('should remove extraneous properties that are not defined in the model', function(done) {
-      Product.create({name: 'bread', price: 100, pricehistory:[{'2014-11-11':90},{ '2014-10-10':80 }]}, function(err, product) {
+      Product.create({name: 'bread', price: 100, bar: 'baz'}, function(err, product) {
         if (err)
           return done(err);
         replaceOrCreate({id: product.id, name: 'milk'});
@@ -1124,13 +1124,13 @@ describe('mongodb connector', function () {
         Product.replaceOrCreate(data, function(err, updatedProduct) {
           if (err)
             return done(err);
-          should.not.exist(updatedProduct.pricehistory);
+          should.not.exist(updatedProduct.bar);
           verify(data.id);
         });
       }
       function verify(id) {
         Product.findById(id, function(err, data) {
-          should.not.exist(data.pricehistory);
+          should.not.exist(data.bar);
           done(err);
         });
       }
@@ -1164,7 +1164,7 @@ describe('mongodb connector', function () {
     });
 
     it('should remove extraneous properties that are not defined in the model', function(done) {
-      Product.create({name: 'bread', price: 100, pricehistory:[{'2014-11-11':90},{ '2014-10-10':80 }]}, function(err, product) {
+      Product.create({name: 'bread', price: 100, bar: 'baz'}, function(err, product) {
         if (err)
           return done(err);
         replaceAttributes(product, {name: 'milk'}, product.id);
@@ -1174,14 +1174,14 @@ describe('mongodb connector', function () {
         product.replaceAttributes(data, function(err, updatedProduct) {
           if (err)
             return done(err);
-          should.not.exist(updatedProduct.pricehistory);
+          should.not.exist(updatedProduct.bar);
           verify(id);
         });
       }
       function verify(id) {
         Product.findById(id, function(err, data) {
           data.name.should.be.equal('milk');
-          should.not.exist(data.pricehistory);
+          should.not.exist(data.bar);
           done(err);
         });
       }
