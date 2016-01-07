@@ -1132,14 +1132,14 @@ describe('mongodb connector', function () {
     });
   });
 
-  describe('replaceAttributes', function() {
+  describe('replace', function() {
     it('should replace the model instance if the provided key already exists', function(done) {
       Product.create({name: 'bread', price: 100}, function(err, product) {
         if (err)  return done(err);
-        replaceAttributes(product, {name: 'milk'}, product.id);
+        replace(product, {name: 'milk'}, product.id);
       });
-      function replaceAttributes(product, data, id) {
-        product.replaceAttributes(data, function(err, updatedProduct) {
+      function replace(product, data, id) {
+        product.replace(data, function(err, updatedProduct) {
           if (err)  return done(err);
           should.not.exist(updatedProduct._id);
           updatedProduct.name.should.be.equal('milk');
@@ -1159,11 +1159,11 @@ describe('mongodb connector', function () {
     it('should remove extraneous properties that are not defined in the model', function(done) {
       Product.create({name: 'bread', price: 100, bar: 'baz'}, function(err, product) {
         if (err)  return done(err);
-        replaceAttributes(product, {name: 'milk'}, product.id);
+        replace(product, {name: 'milk'}, product.id);
 
       });
-      function replaceAttributes(product, data, id) {
-        product.replaceAttributes(data, function(err, updatedProduct) {
+      function replace(product, data, id) {
+        product.replace(data, function(err, updatedProduct) {
           if (err)  return done(err);
           should.not.exist(updatedProduct.bar);
           verify(id);
