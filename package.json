@@ -36,5 +36,8 @@
     "type": "git",
     "url": "git://github.com/strongloop/loopback-connector-mongodb.git"
   },
-  "license": "MIT"
+  "license": "MIT",
+    "scripts": {
+    "test": "mocha -R list"
+  }
 }
