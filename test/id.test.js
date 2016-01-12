@@ -71,7 +71,7 @@ describe('mongodb string id', function () {
         age: 40
       }, function(err, customer) {
         customer2 = customer;
-        customer.seq.should.equal(customer2Id);
+        customer.seq.toString().should.eql(customer2Id);
         done(err, customer);
       });
     });
@@ -95,7 +95,8 @@ describe('mongodb string id', function () {
   it('should allow inq with find', function(done) {
     Customer.find({where: {seq: {inq: [customer2.seq]}}}, function(err, customers) {
       customers.length.should.equal(1);
-      customers[0].seq.should.equal(customer2.seq);
+      // seq is now a string
+      customers[0].seq.should.eql(customer2.seq.toString());
       done(err);
     });
   });
@@ -104,7 +105,7 @@ describe('mongodb string id', function () {
 
 describe('mongodb default id type', function() {
   var Account = ds.createModel('account', {
-    seq: {generated: true, id: true},
+    seq: {id: true, generated: true},
     name: String, emails: [String], age: Number
   });
 
