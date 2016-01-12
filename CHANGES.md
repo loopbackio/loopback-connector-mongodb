@@ -1,3 +1,15 @@
+2016-01-12, Version 1.13.3
+==========================
+
+ * Use ObjectId as internal storage for id (Raymond Feng)
+
+ * test: fix order of semver arguments (Ryan Graham)
+
+ * use mocha for test script (Ryan Graham)
+
+ * Add more tests for id coercion (Raymond Feng)
+
+
 2015-12-13, Version 1.13.2
 ==========================
 
