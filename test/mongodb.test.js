@@ -1139,7 +1139,7 @@ describe('mongodb connector', function () {
         replace(product, {name: 'milk'}, product.id);
       });
       function replace(product, data, id) {
-        product.replace(data, function(err, updatedProduct) {
+        product.replaceAttributes(data, function(err, updatedProduct) {
           if (err)  return done(err);
           should.not.exist(updatedProduct._id);
           updatedProduct.name.should.be.equal('milk');
@@ -1163,7 +1163,7 @@ describe('mongodb connector', function () {
 
       });
       function replace(product, data, id) {
-        product.replace(data, function(err, updatedProduct) {
+        product.replaceAttributes(data, function(err, updatedProduct) {
           if (err)  return done(err);
           should.not.exist(updatedProduct.bar);
           verify(id);
