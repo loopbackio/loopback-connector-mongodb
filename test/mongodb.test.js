@@ -2,7 +2,7 @@
 var semver = require('semver');
 var should = require('./init.js');
 
-var Superhero, User, Post, PostWithStringId, db;
+var Superhero, User, Ticket, Post, PostWithStringId, db;
 
 describe('mongodb connector', function () {
 
@@ -11,6 +11,12 @@ describe('mongodb connector', function () {
 
     User = db.define('User', {
       name: { type: String, index: true },
+      address: {
+        street: String,
+        city: String,
+        state: String,
+        zipCode: String
+      },
       email: { type: String, index: true, unique: true },
       age: Number,
       icon: Buffer
@@ -22,6 +28,23 @@ describe('mongodb connector', function () {
         age_index: {age: -1} // The value itself is for keys
       }
     });
+
+    Ticket = db.define('Ticket', {
+      created: { type: Date},
+      creator: {type: String},
+      modified: { type: Date},
+      queue: {type: String},
+      data: {
+         subject: Array,
+         owner: Array,
+         requestor: Array,
+         status: Array,
+         priority: Array,
+         notes: Array
+      }
+    });
+
+
 
     Superhero = db.define('Superhero', {
       name: { type: String, index: true },
@@ -85,12 +108,14 @@ describe('mongodb connector', function () {
   beforeEach(function (done) {
     User.settings.mongodb = {};
     User.destroyAll(function () {
-      Post.destroyAll(function () {
-        PostWithObjectId.destroyAll(function () {
-          PostWithNumberId.destroyAll(function () {
-            PostWithNumberUnderscoreId.destroyAll(function () {
-              PostWithStringId.destroyAll(function () {
-                done();
+      Ticket.destroyAll(function () {
+        Post.destroyAll(function () {
+          PostWithObjectId.destroyAll(function () {
+            PostWithNumberId.destroyAll(function () {
+              PostWithNumberUnderscoreId.destroyAll(function () {
+                PostWithStringId.destroyAll(function () {
+                  done();
+                });
               });
             });
           });
@@ -98,6 +123,8 @@ describe('mongodb connector', function () {
       });
     });
   });
+
+
 
   describe('.ping(cb)', function() {
     it('should return true for valid connection', function(done) {
@@ -1585,6 +1612,76 @@ describe('mongodb connector', function () {
       });
     });
   });
+
+  //Test support for Querying embedded documents
+  describe('query embedded documents', function() {
+    //it should find user by address
+    it('should find user by address', function (done) {
+      User.create({name: 'Steve', icon: new Buffer('1a2'), address: {
+        street: '123 A St',
+        city: 'San Jose',
+        state: 'CA',
+        zipCode: '95131'
+      }}, function (e, u) {
+
+        User.find({where: {'address.state': 'CA'}, order: 'address.city DESC'},
+            function(err, users) {
+              should.not.exist(err);
+              users.length.should.be.equal(1);
+              users[0].address.city.should.be.eql('San Jose');
+              done();
+            });
+      });
+    });
+
+    it('it should find ticket by subject', function(done){
+      Ticket.create({created: new Date(),
+        creator: 'testuser',
+        modified: new Date(),
+        queue: 'dev',
+        data: {
+          subject: ['test ticket'],
+          owner: ['testuser'],
+          requestor: ['steve enduser'],
+          status: ['new'],
+          priority: ['high'],
+          notes: ['this is a test ticket']
+        }}, function (e,t){
+
+        Ticket.find({where: {'data.subject': 'test ticket'}}, function(err, tickets){
+          should.not.exist(err);
+          tickets.length.should.be.equal(1);
+          tickets[0].data.subject[0].should.be.eql('test ticket');
+          done();
+        });
+      });
+    });
+
+    //it should not find this ticket
+    it('it should not find this ticket by subject', function(done){
+      Ticket.create({created: new Date(),
+        creator: 'testuser',
+        modified: new Date(),
+        queue: 'dev',
+        data: {
+          subject: ['test ticket2'],
+          owner: ['testuser'],
+          requestor: ['steve enduser'],
+          status: ['new'],
+          priority: ['high'],
+          notes: ['this is a test ticket']
+        }}, function (e,t){
+
+        Ticket.find({where: {'data.subject': 'test ticket5'}}, function(err, tickets){
+          should.not.exist(err);
+          tickets.length.should.be.equal(0);
+
+          done();
+        });
+      });
+    });
+  });
+
 
   context('regexp operator', function() {
     before(function deleteExistingTestFixtures(done) {
