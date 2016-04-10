@@ -2,8 +2,8 @@ require('./init.js');
 var ds = getDataSource();
 
 describe('mongodb custom id name', function() {
-  var Customer = ds.createModel('customer', { seq: { type: Number, id: true }, name: String, emails: [String], age: Number });
-
+  var Customer = ds.createModel('customer', { seq: { type: Number, id: true },
+    name: String, emails: [String], age: Number });
   before(function(done) {
     Customer.deleteAll(done);
   });
@@ -42,7 +42,6 @@ describe('mongodb custom id name', function() {
       done(err);
     });
   });
-
 });
 
 describe('mongodb string id', function() {
@@ -100,7 +99,6 @@ describe('mongodb string id', function() {
       done(err);
     });
   });
-
 });
 
 describe('mongodb default id type', function() {
@@ -149,7 +147,6 @@ describe('mongodb default id type', function() {
       done(err);
     });
   });
-
 });
 
 describe('mongodb default id name', function() {
@@ -192,6 +189,5 @@ describe('mongodb default id name', function() {
       });
     });
   });
-
 });
 

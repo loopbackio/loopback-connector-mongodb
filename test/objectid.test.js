@@ -3,7 +3,6 @@ require('./init.js');
 var db, Book, Chapter;
 
 describe('ObjectID', function() {
-
   before(function() {
     db = getDataSource();
     Book = db.define('Book');
@@ -13,7 +12,6 @@ describe('ObjectID', function() {
   });
 
   it('should cast foreign keys as ObjectID', function(done) {
-
     Chapter.beforeCreate = function(next, data) {
       data.bookId.should.be.an.instanceOf(db.ObjectID);
       this.bookId.should.be.an.instanceOf(db.ObjectID);
@@ -23,7 +21,6 @@ describe('ObjectID', function() {
     Book.create(function(err, book) {
       Chapter.create({ bookId: book.id.toString() }, done);
     });
-
   });
 
   it('should convert 24 byte hex string as ObjectID', function() {
@@ -49,5 +46,4 @@ describe('ObjectID', function() {
     var id = 123;
     ObjectID(id).should.be.equal(123);
   });
-
 });

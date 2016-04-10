@@ -29,7 +29,6 @@ Customer.destroyAll(function(err) {
       ],
       age: 35,
     }, function(err, customer2) {
-
       Customer.find({ where: { 'emails.email': 'john@x.com' }}, function(err, customers) {
         console.log('Customers matched by emails.email', customers);
       });

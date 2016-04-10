@@ -1,5 +1,4 @@
 describe('mongodb imported features', function() {
-
   before(function() {
     require('./init.js');
   });
@@ -7,5 +6,4 @@ describe('mongodb imported features', function() {
   require('loopback-datasource-juggler/test/common.batch.js');
   require('loopback-datasource-juggler/test/default-scope.test.js');
   require('loopback-datasource-juggler/test/include.test.js');
-
 });

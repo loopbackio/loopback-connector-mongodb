@@ -17,8 +17,8 @@ for (var i in config) {
 var DB_VERSION = process.env.MONGODB_VERSION;
 
 if (!DB_VERSION) {
-  console.log('The ENV variable MONGODB_VERSION is not set.'
-    + ' Assuming MongoDB version 2.6 or newer.');
+  console.log('The ENV variable MONGODB_VERSION is not set.' +
+    ' Assuming MongoDB version 2.6 or newer.');
 }
 
 var DB_HAS_2_6_FEATURES = (!DB_VERSION ||
