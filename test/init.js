@@ -3,7 +3,7 @@ module.exports = require('should');
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
 var TEST_ENV = process.env.TEST_ENV || 'test';
-var config = require('rc')('loopback', {test: {mongodb: {}}})[TEST_ENV].mongodb;
+var config = require('rc')('loopback', { test: { mongodb: {}}})[TEST_ENV].mongodb;
 
 if (process.env.CI) {
   config = {
@@ -17,9 +17,9 @@ if (process.env.CI) {
 
 global.config = config;
 
-global.getDataSource = global.getSchema = function (customConfig) {
+global.getDataSource = global.getSchema = function(customConfig) {
   var db = new DataSource(require('../'), customConfig || config);
-  db.log = function (a) {
+  db.log = function(a) {
     console.log(a);
   };
 

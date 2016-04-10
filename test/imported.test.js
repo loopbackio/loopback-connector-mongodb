@@ -1,6 +1,6 @@
-describe('mongodb imported features', function () {
+describe('mongodb imported features', function() {
 
-  before(function () {
+  before(function() {
     require('./init.js');
   });
 
