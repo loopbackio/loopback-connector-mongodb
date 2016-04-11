@@ -3,7 +3,7 @@ var should = require('./init');
 var suite = require('loopback-datasource-juggler/test/persistence-hooks.suite.js');
 
 var customConfig = {
-  enableOptimisedfindOrCreate: false
+  enableOptimisedfindOrCreate: false,
 };
 
 if (process.env.MONGODB_VERSION &&
@@ -11,19 +11,19 @@ if (process.env.MONGODB_VERSION &&
   customConfig.enableOptimisedfindOrCreate = true;
 }
 
-for(var i in config) {
+for (var i in config) {
   customConfig[i] = config[i];
 }
 var DB_VERSION = process.env.MONGODB_VERSION;
 
 if (!DB_VERSION) {
-  console.log('The ENV variable MONGODB_VERSION is not set.'
-    + ' Assuming MongoDB version 2.6 or newer.');
+  console.log('The ENV variable MONGODB_VERSION is not set.' +
+    ' Assuming MongoDB version 2.6 or newer.');
 }
 
 var DB_HAS_2_6_FEATURES = (!DB_VERSION ||
   semver.satisfies(DB_VERSION, '>=2.6.0'));
 
 suite(global.getDataSource(customConfig), should, {
-  replaceOrCreateReportsNewInstance: DB_HAS_2_6_FEATURES
+  replaceOrCreateReportsNewInstance: DB_HAS_2_6_FEATURES,
 });
