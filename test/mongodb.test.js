@@ -4,6 +4,37 @@ var should = require('./init.js');
 
 var Superhero, User, Post, PostWithStringId, db;
 
+describe('lazyConnect', function() {
+  it('should skip connect phase (lazyConnect = true)', function(done) {
+    var ds = getDataSource({
+      host: '127.0.0.1',
+      port: 4,
+      lazyConnect: true,
+    });
+    var errTimeout = setTimeout(function() {
+      done();
+    }, 2000);
+
+    ds.on('error', function(err) {
+      clearTimeout(errTimeout);
+      done(err);
+    });
+  });
+
+  it('should report connection error (lazyConnect = false)', function(done) {
+    var ds = getDataSource({
+      host: '127.0.0.1',
+      port: 4,
+      lazyConnect: false,
+    });
+
+    ds.on('error', function(err) {
+      err.message.should.containEql('ECONNREFUSED');
+      done();
+    });
+  });
+});
+
 describe('mongodb connector', function() {
   before(function() {
     db = getDataSource();
@@ -117,7 +148,6 @@ describe('mongodb connector', function() {
       });
     });
   });
-
 
   it('should create indexes', function(done) {
     db.automigrate('User', function() {
