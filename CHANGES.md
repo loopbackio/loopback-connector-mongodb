@@ -1,3 +1,57 @@
+2016-05-02, Version 1.14.0
+==========================
+
+ * Change names accordingly based on the changes on the PR on `loopback-datasource-juggler` (Amir Jafarian)
+
+ * Rename to replace and add cbInfo for replaceOrCreate (Amir Jafarian)
+
+ * Make short if statements as one line (Amir Jafarian)
+
+ * Correct extra item name to something which does not exist (Amir Jafarian)
+
+ * Change a name in test data (Amir Jafarian)
+
+ * Change the example data to real names (Amir Jafarian)
+
+ * Remove test suit for replaceAttribute (Amir Jafarian)
+
+ * Modularize the added testcases (Amir Jafarian)
+
+ * Cleanup (Amir Jafarian)
+
+ * Change tests descriptions (Amir Jafarian)
+
+ * Change some methods' descriptions (Amir Jafarian)
+
+ * Apply Simon's syntax suggestions (Amir Jafarian)
+
+ * Add describe in test cases (Amir Jafarian)
+
+ * Implementation for replace (Amir Jafarian)
+
+ * Upgrade should to 8.0.2 (Simon Ho)
+
+ * Check dataSource.connecting to prevent race conditions (Fabien Franzen)
+
+ * Remove email from AUTHORS (Simon Ho)
+
+ * Update description in README.md (Simon Ho)
+
+ * Clean up package.json (Simon Ho)
+
+ * Update AUTHORS (Simon Ho)
+
+ * Add AUTHORS file (Simon Ho)
+
+ * Use ObjectId as internal storage for id (Raymond Feng)
+
+ * test: fix order of semver arguments (Ryan Graham)
+
+ * use mocha for test script (Ryan Graham)
+
+ * Add more tests for id coercion (Raymond Feng)
+
+
 2015-12-13, Version 1.13.2
 ==========================
 
