@@ -1,3 +1,11 @@
+2016-05-03, Version 1.15.1
+==========================
+
+ * insert/update copyrights (Ryan Graham)
+
+ * relicense as MIT only (Ryan Graham)
+
+
 2016-05-03, Version 1.15.0
 ==========================
 
@@ -376,10 +384,6 @@
  * Update README (Raymond Feng)
 
  * Fix the conversion for mongodb.Binary (Raymond Feng)
-
-
-2014-03-18, Version 1.2.0
-=========================
 
  * Set default options for background/unique (Raymond Feng)
 
