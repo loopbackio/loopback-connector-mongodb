@@ -1,3 +1,41 @@
+2016-05-03, Version 1.15.0
+==========================
+
+ * Lazy connect when booting app (juehou)
+
+ * Add support for geoNear queries (Timo Saikkonen)
+
+ * Fix linting errors (Amir Jafarian)
+
+ * Auto-update by eslint --fix (Amir Jafarian)
+
+ * Add eslint infrastructure (Amir Jafarian)
+
+ * Implementation for replace (Amir Jafarian)
+
+ * Upgrade should to 8.0.2 (Simon Ho)
+
+ * Check dataSource.connecting to prevent race conditions (Fabien Franzen)
+
+ * Remove email from AUTHORS (Simon Ho)
+
+ * Update description in README.md (Simon Ho)
+
+ * Clean up package.json (Simon Ho)
+
+ * Update AUTHORS (Simon Ho)
+
+ * Add AUTHORS file (Simon Ho)
+
+ * Use ObjectId as internal storage for id (Raymond Feng)
+
+ * test: fix order of semver arguments (Ryan Graham)
+
+ * use mocha for test script (Ryan Graham)
+
+ * Add more tests for id coercion (Raymond Feng)
+
+
 2015-12-13, Version 1.13.2
 ==========================
 

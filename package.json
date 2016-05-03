@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-mongodb",
-  "version": "1.13.2",
+  "version": "1.15.0",
   "description": "The official MongoDB connector for the LoopBack framework.",
   "main": "index.js",
   "scripts": {
