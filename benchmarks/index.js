@@ -1,3 +1,8 @@
+// Copyright IBM Corp. 2015,2016. All Rights Reserved.
+// Node module: loopback-connector-mongodb
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
+
 var DataSource = require('loopback-datasource-juggler').DataSource;
 var connector = require('..');
 var Benchmark = require('benchmark');
