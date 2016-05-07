@@ -26,7 +26,8 @@
     "loopback-connector": "^2.2.0",
     "mongodb": "~2.0.35",
     "async": "^1.0.0",
-    "debug": "^2.1.1"
+    "debug": "^2.1.1",
+    "kerberos": "0.0.21"
   },
   "devDependencies": {
     "benchmark": "^1.0.0",
