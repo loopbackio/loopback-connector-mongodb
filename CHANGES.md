@@ -1,3 +1,9 @@
+2016-05-16, Version 1.15.2
+==========================
+
+ * Update "mongodb" dependency to caret notation (Bram Borggreve)
+
+
 2016-05-03, Version 1.15.1
 ==========================
 
@@ -384,6 +390,10 @@
  * Update README (Raymond Feng)
 
  * Fix the conversion for mongodb.Binary (Raymond Feng)
+
+
+2014-03-18, Version 1.2.0
+=========================
 
  * Set default options for background/unique (Raymond Feng)
 
