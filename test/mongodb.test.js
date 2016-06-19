@@ -808,6 +808,35 @@ describe('mongodb connector', function() {
     });
   });
 
+  it('updateAttributes should update the instance', function(done) {
+    Post.create({ title: 'a', content: 'AAA' }, function(err, post) {
+      post.updateAttributes({ title: 'b' }, function(err, p) {
+        should.not.exist(err);
+        p.id.should.be.equal(post.id);
+        p.title.should.be.equal('b');
+
+        Post.findById(post.id, function(err, p) {
+          p.id.should.be.eql(post.id);
+          p.title.should.be.equal('b');
+
+          done();
+        });
+      });
+    });
+  });
+
+  it('updateAttributes should not throw an error when no attributes are given', function(done) {
+    Post.create({ title: 'a', content: 'AAA' }, function(err, post) {
+      post.updateAttributes({}, function(err, p) {
+        should.not.exist(err);
+        p.id.should.be.equal(post.id);
+        p.title.should.be.equal('a');
+
+        done();
+      });
+    });
+  });
+
   it('updateAttributes: $addToSet should append item to an Array if it doesn\'t already exist', function(done) {
     Product.dataSource.settings.allowExtendedOperators = true;
     Product.create({ name: 'bread', price: 100, pricehistory: [{ '2014-11-11': 90 }] },
