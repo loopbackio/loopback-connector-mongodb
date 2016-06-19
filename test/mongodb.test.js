@@ -879,7 +879,6 @@ describe('mongodb connector', function() {
     });
   });
 
-
   it('updateOrCreate: $addToSet should not append item to an Array if it does already exist', function(done) {
     Product.dataSource.settings.allowExtendedOperators = true;
     Product.create({ name: 'bread', price: 100, pricehistory: [{ '2014-11-11': 90 }, { '2014-10-10': 80 }] },
@@ -1822,6 +1821,16 @@ describe('mongodb connector', function() {
             done();
           });
         });
+      });
+    });
+  });
+
+  it('should return info for destroy', function(done) {
+    Post.create({ title: 'My Post', content: 'Hello' }, function(err, post) {
+      post.destroy(function(err, info) {
+        should.not.exist(err);
+        info.should.be.eql({ count: 1 });
+        done();
       });
     });
   });
