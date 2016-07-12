@@ -38,7 +38,7 @@ describe('lazyConnect', function() {
     });
 
     ds.on('error', function(err) {
-      err.message.should.containEql('ECONNREFUSED');
+      err.message.should.match(/connect ECONNREFUSED/);
       done();
     });
   });
