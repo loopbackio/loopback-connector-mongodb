@@ -3,6 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+var SG = require('strong-globalize');
+var g = SG();
+
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
 var config = require('rc')('loopback', { dev: { mongodb: {}}}).dev.mongodb;
@@ -35,11 +38,11 @@ Customer.destroyAll(function(err) {
       age: 35,
     }, function(err, customer2) {
       Customer.find({ where: { 'emails.email': 'john@x.com' }}, function(err, customers) {
-        console.log('Customers matched by emails.email', customers);
+        g.log('{{Customers}} matched by {{emails.email}} %s', customers);
       });
 
       Customer.find({ where: { 'emails.0.label': 'work' }}, function(err, customers) {
-        console.log('Customers matched by emails.0.label', customers);
+        g.log('{{Customers}} matched by {{emails.0.label}} %s', customers);
       });
       /*
        customer1.updateAttributes({name: 'John'}, function(err, result) {
