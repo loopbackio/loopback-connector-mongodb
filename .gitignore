@@ -1,6 +1,5 @@
 node_modules
 coverage
 .idea
-!intl/
 intl/*
 !intl/en/
