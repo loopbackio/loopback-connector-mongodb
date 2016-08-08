@@ -1466,7 +1466,7 @@ describe('mongodb connector', function() {
           createPost.bind(null),
           createPost.bind(null),
         ], function(err) {
-          should.not.exist(err);
+          if (err) return done(err);
 
           PostWithLocation.find({
             where: {
@@ -1482,7 +1482,7 @@ describe('mongodb connector', function() {
               ],
             },
           }, function(err, results) {
-            should.not.exist(err);
+            if (err) return done(err);
             should.exist(results);
             results.length.should.be.exactly(1);
 
@@ -1519,7 +1519,7 @@ describe('mongodb connector', function() {
             }, callback);
           },
         ], function(err) {
-          should.not.exist(err);
+          if (err) return done(err);
 
           async.parallel([
             // test maxDistance with logical operator
@@ -1539,7 +1539,7 @@ describe('mongodb connector', function() {
                   ],
                 },
               }, function(err, results) {
-                should.not.exist(err);
+                if (err) return done(err);
                 should.exist(results);
                 results.length.should.be.exactly(1);
 
@@ -1565,7 +1565,7 @@ describe('mongodb connector', function() {
                   },
                 },
               }, function(err, results) {
-                should.not.exist(err);
+                if (err) return done(err);
                 should.exist(results);
                 results.length.should.be.exactly(1);
 
@@ -1582,7 +1582,7 @@ describe('mongodb connector', function() {
               });
             },
           ], function(err) {
-            should.not.exist(err);
+            if (err) return done(err);
             done();
           });
         });
