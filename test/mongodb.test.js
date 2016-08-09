@@ -1374,6 +1374,7 @@ describe('mongodb connector', function() {
       PostWithLocation = geoDb.define('PostWithLocation', {
         _id: { type: geoDb.ObjectID, id: true },
         location: { type: GeoPoint, index: true },
+        title: { type: String },
       });
     });
 
@@ -1432,6 +1433,156 @@ describe('mongodb connector', function() {
               dist = currentDist;
             });
 
+            done();
+          });
+        });
+      });
+    });
+
+    it('find should be able to query by location with logical operator', function(done) {
+      var coords = { lat: 1.25, lng: 20.20 };
+      var title = 'geoWithLogicalOperatorTest';
+
+      geoDb.autoupdate(function(err) {
+        var titleIndex = 0;
+
+        var createPost = function(callback) {
+          var point = new GeoPoint({
+            lat: (Math.random() * 180) - 90,
+            lng: (Math.random() * 360) - 180,
+          });
+
+          PostWithLocation.create({
+            location: point,
+            title: title + titleIndex,
+          }, callback);
+
+          titleIndex++;
+        };
+
+        async.parallel([
+          createPost.bind(null),
+          createPost.bind(null),
+          createPost.bind(null),
+          createPost.bind(null),
+        ], function(err) {
+          if (err) return done(err);
+
+          PostWithLocation.find({
+            where: {
+              and: [
+                {
+                  location: {
+                    near: new GeoPoint(coords),
+                  },
+                },
+                {
+                  title: title + '0',
+                },
+              ],
+            },
+          }, function(err, results) {
+            if (err) return done(err);
+            should.exist(results);
+            results.length.should.be.exactly(1);
+
+            var dist = 0;
+            results.forEach(function(result) {
+              var currentDist = testUtils.getDistanceBetweenPoints(coords, result.location);
+              currentDist.should.be.aboveOrEqual(dist);
+
+              result.title.should.be.exactly(title + '0');
+
+              dist = currentDist;
+            });
+
+            done();
+          });
+        });
+      });
+    });
+
+    it('find should be able to query by location with maxDistance', function(done) {
+      var coords = { lat: 33.801463, lng: -118.341724 };
+      var title = 'geoWithLogicalOperatorTest';
+
+      geoDb.autoupdate(function(err) {
+        async.parallel([
+          function(callback) {
+            PostWithLocation.create({
+              location: new GeoPoint({ lat: 33.801368, lng: -118.341697 }), title: title,
+            }, callback);
+          },
+          function(callback) {
+            PostWithLocation.create({
+              location: new GeoPoint({ lat: 31.704320, lng: 35.207651 }), title: title,
+            }, callback);
+          },
+        ], function(err) {
+          if (err) return done(err);
+
+          async.parallel([
+            // test maxDistance with logical operator
+            function(callback) {
+              PostWithLocation.find({
+                where: {
+                  and: [
+                    {
+                      location: {
+                        near: new GeoPoint(coords),
+                        maxDistance: Number(Math.round(5 * 1609.34).toFixed(2)), // miles to meters
+                      },
+                    },
+                    {
+                      title: title,
+                    },
+                  ],
+                },
+              }, function(err, results) {
+                if (err) return done(err);
+                should.exist(results);
+                results.length.should.be.exactly(1);
+
+                var dist = 0;
+                results.forEach(function(result) {
+                  var currentDist = testUtils.getDistanceBetweenPoints(coords, result.location);
+                  currentDist.should.be.aboveOrEqual(dist);
+
+                  result.title.should.be.exactly(title);
+
+                  dist = currentDist;
+                });
+                callback();
+              });
+            },
+            // test maxDistance without logical operator
+            function(callback) {
+              PostWithLocation.find({
+                where: {
+                  location: {
+                    near: new GeoPoint(coords),
+                    maxDistance: Number(Math.round(5 * 1609.34).toFixed(2)), // miles to meters
+                  },
+                },
+              }, function(err, results) {
+                if (err) return done(err);
+                should.exist(results);
+                results.length.should.be.exactly(1);
+
+                var dist = 0;
+                results.forEach(function(result) {
+                  var currentDist = testUtils.getDistanceBetweenPoints(coords, result.location);
+                  currentDist.should.be.aboveOrEqual(dist);
+
+                  result.title.should.be.exactly(title);
+
+                  dist = currentDist;
+                });
+                callback();
+              });
+            },
+          ], function(err) {
+            if (err) return done(err);
             done();
           });
         });
