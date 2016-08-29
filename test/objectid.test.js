@@ -3,6 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
+
 require('./init.js');
 
 var db, Book, Chapter;
@@ -24,7 +26,7 @@ describe('ObjectID', function() {
     };
 
     Book.create(function(err, book) {
-      Chapter.create({ bookId: book.id.toString() }, done);
+      Chapter.create({bookId: book.id.toString()}, done);
     });
   });
 

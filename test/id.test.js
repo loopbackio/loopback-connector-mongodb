@@ -3,12 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
+
 require('./init.js');
 var ds = getDataSource();
 
 describe('mongodb custom id name', function() {
-  var Customer = ds.createModel('customer', { seq: { type: Number, id: true },
-    name: String, emails: [String], age: Number });
+  var Customer = ds.createModel('customer', {seq: {type: Number, id: true},
+    name: String, emails: [String], age: Number});
   before(function(done) {
     Customer.deleteAll(done);
   });
@@ -41,7 +43,7 @@ describe('mongodb custom id name', function() {
   });
 
   it('should allow inq with find', function(done) {
-    Customer.find({ where: { seq: { inq: [1] }}}, function(err, customers) {
+    Customer.find({where: {seq: {inq: [1]}}}, function(err, customers) {
       customers.length.should.equal(1);
       customers[0].seq.should.equal(1);
       done(err);
@@ -50,8 +52,8 @@ describe('mongodb custom id name', function() {
 });
 
 describe('mongodb string id', function() {
-  var Customer = ds.createModel('customer2', { seq: { type: String, id: true },
-    name: String, emails: [String], age: Number });
+  var Customer = ds.createModel('customer2', {seq: {type: String, id: true},
+    name: String, emails: [String], age: Number});
   var customer1, customer2;
 
   before(function(done) {
@@ -89,7 +91,7 @@ describe('mongodb string id', function() {
   });
 
   it('should allow inq with find', function(done) {
-    Customer.find({ where: { seq: { inq: [1] }}}, function(err, customers) {
+    Customer.find({where: {seq: {inq: [1]}}}, function(err, customers) {
       customers.length.should.equal(1);
       customers[0].seq.should.equal('1');
       done(err);
@@ -97,7 +99,7 @@ describe('mongodb string id', function() {
   });
 
   it('should allow inq with find', function(done) {
-    Customer.find({ where: { seq: { inq: [customer2.seq] }}}, function(err, customers) {
+    Customer.find({where: {seq: {inq: [customer2.seq]}}}, function(err, customers) {
       customers.length.should.equal(1);
       // seq is now a string
       customers[0].seq.should.eql(customer2.seq.toString());
@@ -108,7 +110,7 @@ describe('mongodb string id', function() {
 
 describe('mongodb default id type', function() {
   var Account = ds.createModel('account', {
-    seq: { id: true, generated: true },
+    seq: {id: true, generated: true},
     name: String, emails: [String], age: Number,
   });
 
@@ -155,7 +157,7 @@ describe('mongodb default id type', function() {
 });
 
 describe('mongodb default id name', function() {
-  var Customer1 = ds.createModel('customer1', { name: String, emails: [String], age: Number });
+  var Customer1 = ds.createModel('customer1', {name: String, emails: [String], age: Number});
 
   before(function(done) {
     Customer1.deleteAll(done);

@@ -3,6 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
+
 var memwatch = require('memwatch-next');
 var Todo = require('./fixtures/todo');
 
@@ -46,14 +48,14 @@ describe('mongodb', function() {
 
     beforeEach(function createFixtures(done) {
       Todo.create([
-        { content: 'Buy eggs' },
-        { content: 'Buy milk' },
-        { content: 'Buy cheese' },
+        {content: 'Buy eggs'},
+        {content: 'Buy milk'},
+        {content: 'Buy cheese'},
       ], done);
     });
 
     it('should not leak when retrieving a specific item', function(done) {
-      execute(this, 'find', { where: { content: 'Buy eggs' }}, done);
+      execute(this, 'find', {where: {content: 'Buy eggs'}}, done);
     });
 
     it('should not leak when retrieving all items', function(done) {
@@ -67,14 +69,14 @@ describe('mongodb', function() {
     });
 
     it('should not leak when creating an item', function(done) {
-      execute(this, 'create', { content: 'Buy eggs' }, done);
+      execute(this, 'create', {content: 'Buy eggs'}, done);
     });
 
     it('should not leak when creating multiple items', function(done) {
       execute(this, 'create', [
-        { content: 'Buy eggs' },
-        { content: 'Buy milk' },
-        { content: 'Buy cheese' },
+        {content: 'Buy eggs'},
+        {content: 'Buy milk'},
+        {content: 'Buy cheese'},
       ], done);
     });
   });
