@@ -3,6 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
+
 var DataSource = require('loopback-datasource-juggler').DataSource;
 var connector = require('..');
 var Benchmark = require('benchmark');

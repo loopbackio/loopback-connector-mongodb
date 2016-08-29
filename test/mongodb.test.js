@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 // This test written in mocha+should.js
+'use strict';
 var semver = require('semver');
 var should = require('./init.js');
 var testUtils = require('../lib/test-utils');

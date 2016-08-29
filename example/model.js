@@ -3,6 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
+
 var g = require('strong-globalize')();
 
 var DataSource = require('loopback-datasource-juggler').DataSource;
