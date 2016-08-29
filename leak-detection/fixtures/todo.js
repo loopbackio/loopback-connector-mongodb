@@ -12,7 +12,7 @@ var db = new DataSource(connector, {
   database: process.env.LB_DB || 'strongloop',
 });
 var Todo = db.define('Todo', {
-  content: { type: String },
+  content: {type: String},
 });
 
 module.exports = Todo;
