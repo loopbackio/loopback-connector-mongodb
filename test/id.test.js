@@ -155,7 +155,10 @@ describe('mongodb default id type', function() {
 });
 
 describe('mongodb default id name', function() {
-  var Customer1 = ds.createModel('customer1', { name: String, emails: [String], age: Number });
+  var Customer1 = ds.createModel(
+    'customer1',
+    { name: String, emails: [String], age: Number },
+    { forceId: false });
 
   before(function(done) {
     Customer1.deleteAll(done);
