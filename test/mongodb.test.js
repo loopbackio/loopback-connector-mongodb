@@ -82,6 +82,7 @@ describe('mongodb connector', function() {
       mongodb: {
         collection: 'PostCollection', // Customize the collection name
       },
+      forceId: false,
     });
 
     Product = db.define('Product', {
@@ -93,6 +94,7 @@ describe('mongodb connector', function() {
       mongodb: {
         collection: 'ProductCollection', // Customize the collection name
       },
+      forceId: false,
     });
 
     PostWithStringId = db.define('PostWithStringId', {

@@ -7,8 +7,10 @@ require('./init.js');
 var ds = getDataSource();
 
 describe('mongodb custom id name', function() {
-  var Customer = ds.createModel('customer', { seq: { type: Number, id: true },
-    name: String, emails: [String], age: Number });
+  var Customer = ds.createModel(
+    'customer',
+    { seq: { type: Number, id: true }, name: String, emails: [String], age: Number },
+    { forceId: false });
   before(function(done) {
     Customer.deleteAll(done);
   });
@@ -50,8 +52,10 @@ describe('mongodb custom id name', function() {
 });
 
 describe('mongodb string id', function() {
-  var Customer = ds.createModel('customer2', { seq: { type: String, id: true },
-    name: String, emails: [String], age: Number });
+  var Customer = ds.createModel(
+    'customer2',
+    { seq: { type: String, id: true }, name: String, emails: [String], age: Number },
+    { forceId: false });
   var customer1, customer2;
 
   before(function(done) {
@@ -107,10 +111,10 @@ describe('mongodb string id', function() {
 });
 
 describe('mongodb default id type', function() {
-  var Account = ds.createModel('account', {
-    seq: { id: true, generated: true },
-    name: String, emails: [String], age: Number,
-  });
+  var Account = ds.createModel(
+    'account',
+    { seq: { id: true, generated: true }, name: String, emails: [String], age: Number },
+    { forceId: false });
 
   before(function(done) {
     Account.deleteAll(done);
@@ -155,7 +159,10 @@ describe('mongodb default id type', function() {
 });
 
 describe('mongodb default id name', function() {
-  var Customer1 = ds.createModel('customer1', { name: String, emails: [String], age: Number });
+  var Customer1 = ds.createModel(
+    'customer1',
+    { name: String, emails: [String], age: Number },
+    { forceId: false });
 
   before(function(done) {
     Customer1.deleteAll(done);
