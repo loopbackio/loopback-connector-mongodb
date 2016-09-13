@@ -1365,7 +1365,7 @@ describe('mongodb connector', function() {
     });
 
   describe('geo queries', function() {
-    var geoDb, PostWithLocation;
+    var geoDb, PostWithLocation, createPosts;
 
     before(function() {
       var config = JSON.parse(JSON.stringify(global.config)); // clone config
@@ -1382,6 +1382,26 @@ describe('mongodb connector', function() {
     beforeEach(function(done) {
       PostWithLocation.destroyAll(done);
     });
+
+    createPosts = function(isFar) {
+      var point;
+
+      if (isFar) {
+        point = new GeoPoint({
+          lat: 31.230416,
+          lng: 121.473701,
+        });
+      } else {
+        point = new GeoPoint({
+          lat: 30.27167 + Math.random() * 0.01,
+          lng: 120.13469600000008 + Math.random() * 0.01,
+        });
+      }
+
+      return function(callback) {
+        PostWithLocation.create({ location: point }, callback);
+      };
+    };
 
     it('create should convert geopoint to geojson', function(done) {
       var point = new GeoPoint({ lat: 1.243, lng: 20.40 });
@@ -1436,6 +1456,129 @@ describe('mongodb connector', function() {
 
             done();
           });
+        });
+      });
+    });
+
+    it('find should be able to query by location via near with maxDistance', function(done) {
+      var coords = { lat: 30.274085, lng: 120.15507000000002 };
+
+      geoDb.autoupdate(function(err) {
+        async.parallel([
+          createPosts(false),
+          createPosts(false),
+          createPosts(false),
+          createPosts(true),
+        ], function(err) {
+          if (err) return done(err);
+
+          PostWithLocation.find({
+            where: {
+              location: {
+                near: new GeoPoint(coords),
+                maxDistance: 17000,
+                unit: 'meters',
+              },
+            },
+          }, function(err, results) {
+            if (err) return done(err);
+            results.length.should.equal(3);
+
+            var dist = 0;
+            results.forEach(function(result) {
+              var currentDist = testUtils.getDistanceBetweenPoints(coords, result.location);
+              currentDist.should.be.aboveOrEqual(dist);
+              currentDist.should.be.belowOrEqual(17);
+              dist = currentDist;
+            });
+
+            done();
+          });
+        });
+      });
+    });
+
+    it('find should be able to query by location via near with minDistance set', function(done) {
+      var coords = { lat: 30.274085, lng: 120.15507000000002 };
+
+      geoDb.autoupdate(function(err) {
+        async.parallel([
+          createPosts(false),
+          createPosts(false),
+          createPosts(false),
+          createPosts(true),
+        ], function(err) {
+          if (err) return done(err);
+
+          PostWithLocation.find({
+            where: {
+              location: {
+                near: new GeoPoint(coords),
+                minDistance: 17000,
+                unit: 'meters',
+              },
+            },
+          }, function(err, results) {
+            if (err) return done(err);
+            results.length.should.equal(4);
+
+            var dist = 0;
+            results.forEach(function(result) {
+              var currentDist = testUtils.getDistanceBetweenPoints(coords, result.location);
+              currentDist.should.be.aboveOrEqual(dist);
+              dist = currentDist;
+            });
+
+            done();
+          });
+        });
+      });
+    });
+
+    it('find should be able to set unit when query location via near', function(done) {
+      var coords = { lat: 30.274085, lng: 120.15507000000002 };
+
+      geoDb.autoupdate(function(err) {
+        var queryLocation = function(distance, unit, distanceInMeters, numOfResults) {
+          return function(callback) {
+            PostWithLocation.find({
+              where: {
+                location: {
+                  near: new GeoPoint(coords),
+                  maxDistance: distance,
+                  unit: unit,
+                },
+              },
+            }, function(err, results) {
+              if (err) return done(err);
+              results.length.should.equal(numOfResults);
+
+              results.forEach(function(result) {
+                var currentDist = testUtils.getDistanceBetweenPoints(coords, result.location);
+                currentDist.should.be.belowOrEqual(distanceInMeters / 1000);
+              });
+
+              callback();
+            });
+          };
+        };
+
+        async.parallel([
+          createPosts(false),
+          createPosts(false),
+          createPosts(false),
+          createPosts(true),
+        ], function(err) {
+          if (err) return done(err);
+
+          async.parallel([
+            queryLocation(10000, undefined, 10000, 3),
+            queryLocation(10, 'miles', 16000, 3),
+            queryLocation(10, 'kilometers', 10000, 3),
+            queryLocation(20000, 'feet', 6096, 3),
+            queryLocation(10000, 'radians', 10000, 3),
+            queryLocation(10000, 'degrees', 10000, 3),
+          ], done);
         });
       });
     });
