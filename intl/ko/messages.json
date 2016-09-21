@@ -1,0 +1,8 @@
+{
+  "005d4d9a3be323339f34eca349b41b0d": "{{emails.0.label}} {0}과(와) 일치하는 {{Customers}}",
+  "36f92de2bed6d89338a407bea8c175d8": "{{emails.email}} {0}과(와) 일치하는 {{Customers}}",
+  "4d7914a539a53043878faaf72f1c97cc": "{{MongoDB}} 연결에 실패함: {0} {1}",
+  "70b3f1cefa67f8cc592f90f7ad3b44bc": "{{MongoDB}} regex 구문에서 {{`g`}} 플래그를 준수하지 않음",
+  "d9ab5ec15a1c9998d3c3f548ed6949cb": "{{MongoDB}} 연결이 구축되지 않음"
+}
+
