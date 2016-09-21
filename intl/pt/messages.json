@@ -1,0 +1,8 @@
+{
+  "005d4d9a3be323339f34eca349b41b0d": "{{Customers}} correspondidos por {{emails.0.label}} {0}",
+  "36f92de2bed6d89338a407bea8c175d8": "{{Customers}} correspondidos por {{emails.email}} {0}",
+  "4d7914a539a53043878faaf72f1c97cc": "Conexão de {{MongoDB}} falhou: {0} {1}",
+  "70b3f1cefa67f8cc592f90f7ad3b44bc": "Sintaxe regex de {{MongoDB}} não respeita a sinalização {{`g`}}",
+  "d9ab5ec15a1c9998d3c3f548ed6949cb": "Conexão de {{MongoDB}} não foi estabelecida"
+}
+
