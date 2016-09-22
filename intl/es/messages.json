@@ -1,0 +1,8 @@
+{
+  "005d4d9a3be323339f34eca349b41b0d": "{{Customers}} comparado por {{emails.0.label}} {0}",
+  "36f92de2bed6d89338a407bea8c175d8": "{{Customers}} comparado por {{emails.email}} {0}",
+  "4d7914a539a53043878faaf72f1c97cc": "la conexión de {{MongoDB}} ha fallado: {0} {1}",
+  "70b3f1cefa67f8cc592f90f7ad3b44bc": "la sintaxis de expresión regular {{MongoDB}} no respeta el distintivo {{`g`}}",
+  "d9ab5ec15a1c9998d3c3f548ed6949cb": "la conexión de {{MongoDB}} no se ha establecido"
+}
+
