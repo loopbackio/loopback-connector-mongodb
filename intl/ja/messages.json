@@ -1,8 +1,8 @@
 {
-  "005d4d9a3be323339f34eca349b41b0d": "{{emails.0.label}} {0} と一致する {{Customers}}",
-  "36f92de2bed6d89338a407bea8c175d8": "{{emails.email}} {0} と一致する {{Customers}}",
-  "4d7914a539a53043878faaf72f1c97cc": "{{MongoDB}} 接続が失敗しました: {0} {1}",
-  "70b3f1cefa67f8cc592f90f7ad3b44bc": "{{MongoDB}} 正規表現の構文は {{`g`}} フラグを考慮しません",
-  "d9ab5ec15a1c9998d3c3f548ed6949cb": "{{MongoDB}} 接続が確立されていません"
+  "005d4d9a3be323339f34eca349b41b0d": "{{Customers}} は {{emails.0.label}} {0} と一致しました",
+  "36f92de2bed6d89338a407bea8c175d8": "{{Customers}} は {{emails.email}} {0} と一致しました",
+  "4d7914a539a53043878faaf72f1c97cc": "{{MongoDB}} 接続は失敗しました: {0} {1}",
+  "70b3f1cefa67f8cc592f90f7ad3b44bc": "{{MongoDB}} 正規表現の構文では {{`g`}} フラグは考慮されません",
+  "d9ab5ec15a1c9998d3c3f548ed6949cb": "{{MongoDB}} 接続は確立されていません"
 }
 
