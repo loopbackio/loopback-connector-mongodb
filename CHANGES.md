@@ -1,3 +1,33 @@
+2016-10-17, Version 1.17.0
+==========================
+
+ * Remove TEST prefix for env vars (#292) (Simon Ho)
+
+ * Add connectorCapabilities global object (Nick Duffy)
+
+ * Update translation files - round#2 (Candy)
+
+ * Update deps to loopback 3.0.0 RC (Miroslav Bajtoš)
+
+ * Remove conflict (jannyHou)
+
+ * fix maxDistance not supported in geo filter. (Vincent Wen)
+
+ * Use juggler@3 for running the tests (Miroslav Bajtoš)
+
+ * Remove !intl (jannyHou)
+
+ * Refactor (jannyHou)
+
+ * Globalization (jannyHou)
+
+ * Support patches afterwards (jannyHou)
+
+ * Use the latest compatible mongodb (jannyHou)
+
+ * Update URLs in CONTRIBUTING.md (#264) (Ryan Graham)
+
+
 2016-05-16, Version 1.15.2
 ==========================
 
