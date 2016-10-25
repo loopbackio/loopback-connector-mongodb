@@ -121,6 +121,11 @@ describe('mongodb connector', function() {
       content: { type: String },
     });
 
+    Category = db.define('Category', {
+      title: { type: String, length: 255, index: true },
+      posts: { type: [db.ObjectID], index: true },
+    });
+
     User.hasMany(Post);
     Post.belongsTo(User);
   });
@@ -808,6 +813,35 @@ describe('mongodb connector', function() {
     });
   });
 
+  it('updateAttributes should update the instance', function(done) {
+    Post.create({ title: 'a', content: 'AAA' }, function(err, post) {
+      post.updateAttributes({ title: 'b' }, function(err, p) {
+        should.not.exist(err);
+        p.id.should.be.equal(post.id);
+        p.title.should.be.equal('b');
+
+        Post.findById(post.id, function(err, p) {
+          p.id.should.be.eql(post.id);
+          p.title.should.be.equal('b');
+
+          done();
+        });
+      });
+    });
+  });
+
+  it('updateAttributes should not throw an error when no attributes are given', function(done) {
+    Post.create({ title: 'a', content: 'AAA' }, function(err, post) {
+      post.updateAttributes({}, function(err, p) {
+        should.not.exist(err);
+        p.id.should.be.equal(post.id);
+        p.title.should.be.equal('a');
+
+        done();
+      });
+    });
+  });
+
   it('updateAttributes: $addToSet should append item to an Array if it doesn\'t already exist', function(done) {
     Product.dataSource.settings.allowExtendedOperators = true;
     Product.create({ name: 'bread', price: 100, pricehistory: [{ '2014-11-11': 90 }] },
@@ -849,7 +883,6 @@ describe('mongodb connector', function() {
       });
     });
   });
-
 
   it('updateOrCreate: $addToSet should not append item to an Array if it does already exist', function(done) {
     Product.dataSource.settings.allowExtendedOperators = true;
@@ -1350,19 +1383,54 @@ describe('mongodb connector', function() {
     });
   });
 
-  it('create should convert id from string to ObjectID if format matches',
-    function(done) {
-      var oid = new db.ObjectID().toString();
-      PostWithStringId.create({ id: oid, title: 'c', content: 'CCC' }, function(err, post) {
-        PostWithStringId.findById(oid, function(err, post) {
+  it('create should convert id from ObjectID to string', function(done) {
+    var oid = new db.ObjectID();
+    var sid = oid.toString();
+    PostWithStringId.create({ id: oid, title: 'c', content: 'CCC' }, function(err, post) {
+      post.id.should.be.a.string;
+      PostWithStringId.findById(oid, function(err, post) {
+        should.not.exist(err);
+        should.not.exist(post._id);
+        post.id.should.be.a.string;
+        post.id.should.be.equal(sid);
+
+        done();
+      });
+    });
+  });
+
+  it('create should convert id from string to ObjectID', function(done) {
+    var oid = new db.ObjectID();
+    var sid = oid.toString();
+    Post.create({ id: sid, title: 'c', content: 'CCC' }, function(err, post) {
+      post.id.should.be.an.instanceOf(db.ObjectID);
+      Post.findById(sid, function(err, post) {
+        should.not.exist(err);
+        should.not.exist(post._id);
+        post.id.should.be.an.instanceOf(db.ObjectID);
+        post.id.should.be.eql(oid);
+
+        done();
+      });
+    });
+  });
+
+  it('create should convert id from string to ObjectID - Array property', function(done) {
+    Post.create({ title: 'c', content: 'CCC' }, function(err, post) {
+      Category.create({ title: 'a', posts: [String(post.id)] }, function(err, category) {
+        category.id.should.be.an.instanceOf(db.ObjectID);
+        category.posts[0].should.be.an.instanceOf(db.ObjectID);
+        Category.findOne({ where: { posts: post.id }}, function(err, c) {
           should.not.exist(err);
-          should.not.exist(post._id);
-          post.id.should.be.equal(oid);
+          c.id.should.be.an.instanceOf(db.ObjectID);
+          c.posts[0].should.be.an.instanceOf(db.ObjectID);
+          c.id.should.be.eql(category.id);
 
           done();
         });
       });
     });
+  });
 
   describe('geo queries', function() {
     var geoDb, PostWithLocation, createLocationPost;
@@ -1793,6 +1861,16 @@ describe('mongodb connector', function() {
             done();
           });
         });
+      });
+    });
+  });
+
+  it('should return info for destroy', function(done) {
+    Post.create({ title: 'My Post', content: 'Hello' }, function(err, post) {
+      post.destroy(function(err, info) {
+        should.not.exist(err);
+        info.should.be.eql({ count: 1 });
+        done();
       });
     });
   });
