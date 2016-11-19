@@ -2,6 +2,9 @@
   "name": "loopback-connector-mongodb",
   "version": "3.0.0-alpha.1",
   "description": "The official MongoDB connector for the LoopBack framework.",
+  "engines": {
+    "node": ">=4"
+  },
   "main": "index.js",
   "scripts": {
     "benchmarks": "make benchmarks",
