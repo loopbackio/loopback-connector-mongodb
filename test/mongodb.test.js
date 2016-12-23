@@ -11,7 +11,9 @@ var async = require('async');
 
 var GeoPoint = require('loopback-datasource-juggler').GeoPoint;
 
-var Superhero, User, Post, PostWithStringId, db;
+var Superhero, User, Post, PostWithStringId, db, PostWithObjectId,
+  PostWithObjectId, PostWithNumberUnderscoreId, PostWithNumberId,
+  Category, UserWithRenamedColumns, PostWithStringIdAndRenamedColumns;
 
 describe('lazyConnect', function() {
   it('should skip connect phase (lazyConnect = true)', function(done) {
@@ -61,6 +63,17 @@ describe('mongodb connector', function() {
         }, // The value contains keys and optinally options
         age_index: { age: -1 }, // The value itself is for keys
         /* eslint-enable camelcase */
+      },
+    });
+
+    UserWithRenamedColumns = db.define('UserWithRenamedColumns', {
+      renamedName: { type: String, index: true, mongodb: { column: 'name' }},
+      renamedEmail: { type: String, index: true, unique: true, mongodb: { field: 'email' }},
+      age: Number,
+      icon: Buffer,
+    }, {
+      mongodb: {
+        collection: 'User', // Overlay on the User collection
       },
     });
 
@@ -124,6 +137,16 @@ describe('mongodb connector', function() {
     Category = db.define('Category', {
       title: { type: String, length: 255, index: true },
       posts: { type: [db.ObjectID], index: true },
+    });
+
+    PostWithStringIdAndRenamedColumns = db.define('PostWithStringIdAndRenamedColumns', {
+      id: { type: String, id: true },
+      renamedTitle: { type: String, length: 255, index: true, mongodb: { fieldName: 'title' }},
+      renamedContent: { type: String, mongodb: { columnName: 'content' }},
+    }, {
+      mongodb: {
+        collection: 'PostWithStringId', // Overlay on the PostWithStringId collection
+      },
     });
 
     User.hasMany(Post);
@@ -577,6 +600,31 @@ describe('mongodb connector', function() {
               should.not.exist(err3);
 
               User.updateAll({ name: 'Simon' }, { name: 'Alex' }, function(err, updatedusers) {
+                should.not.exist(err);
+                updatedusers.should.have.property('count', 1);
+
+                User.find({ where: { name: 'Alex' }}, function(err, founduser) {
+                  should.not.exist(err);
+                  founduser.length.should.be.equal(1);
+                  founduser[0].name.should.be.equal('Alex');
+
+                  done();
+                });
+              });
+            });
+          });
+        });
+      });
+
+      it('should use $set by default if no operator is supplied (using renamed columns)', function(done) {
+        User.create({ name: 'Al', age: 31, email: 'al@strongloop' }, function(err1, createdusers1) {
+          should.not.exist(err1);
+          User.create({ name: 'Simon', age: 32, email: 'simon@strongloop' }, function(err2, createdusers2) {
+            should.not.exist(err2);
+            User.create({ name: 'Ray', age: 31, email: 'ray@strongloop' }, function(err3, createdusers3) {
+              should.not.exist(err3);
+
+              UserWithRenamedColumns.updateAll({ name: 'Simon' }, { renamedName: 'Alex' }, function(err, updatedusers) {
                 should.not.exist(err);
                 updatedusers.should.have.property('count', 1);
 
@@ -1432,6 +1480,45 @@ describe('mongodb connector', function() {
     });
   });
 
+  it('create should support renamed column names (using property syntax first)',
+    function(done) {
+      var oid = new db.ObjectID().toString();
+      PostWithStringId.create({ id: oid, title: 'c', content: 'CCC' }, function(err, post) {
+        PostWithStringIdAndRenamedColumns.findById(oid, function(err, post) {
+          should.not.exist(err);
+          should.not.exist(post._id);
+          post.id.should.be.equal(oid);
+
+          should.exist(post.renamedTitle);
+          should.exist(post.renamedContent);
+          post.renamedTitle.should.be.equal('c');
+          post.renamedContent.should.be.equal('CCC');
+
+          done();
+        });
+      });
+    });
+
+  it('create should support renamed column names (using db syntax first)',
+    function(done) {
+      var oid = new db.ObjectID().toString();
+      PostWithStringIdAndRenamedColumns.create({ id: oid, renamedTitle: 'c',
+        renamedContent: 'CCC' }, function(err, post) {
+        PostWithStringId.findById(oid, function(err, post) {
+          should.not.exist(err);
+          should.not.exist(post._id);
+          post.id.should.be.equal(oid);
+
+          should.exist(post.title);
+          should.exist(post.content);
+          post.title.should.be.equal('c');
+          post.content.should.be.equal('CCC');
+
+          done();
+        });
+      });
+    });
+
   describe('geo queries', function() {
     var geoDb, PostWithLocation, createLocationPost;
 
@@ -1701,6 +1788,26 @@ describe('mongodb connector', function() {
     });
   });
 
+  it('should allow to find using like with renamed columns', function(done) {
+    PostWithStringId.create({ title: 'My Post', content: 'Hello' }, function(err, post) {
+      PostWithStringIdAndRenamedColumns.find({ where: { renamedTitle: { like: 'M.+st' }}}, function(err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 1);
+        done();
+      });
+    });
+  });
+
+  it('should allow to find using like with renamed columns (inverse create order)', function(done) {
+    PostWithStringIdAndRenamedColumns.create({ renamedTitle: 'My Post', renamedContent: 'Hello' }, function(err, post) {
+      PostWithStringId.find({ where: { title: { like: 'M.+st' }}}, function(err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 1);
+        done();
+      });
+    });
+  });
+
   it('should allow to find using case insensitive like', function(done) {
     Post.create({ title: 'My Post', content: 'Hello' }, function(err, post) {
       Post.find({ where: { content: { like: 'HELLO', options: 'i' }}}, function(err, posts) {
@@ -1863,6 +1970,30 @@ describe('mongodb connector', function() {
         });
       });
     });
+  });
+
+  it('should support where for count (using renamed columns in deep filter ' +
+    'criteria)', function(done) {
+    PostWithStringId.create({ title: 'My Post', content: 'Hello' },
+      function(err, post) {
+        PostWithStringIdAndRenamedColumns.count({
+          and: [{
+            renamedTitle: 'My Post',
+          }, { renamedContent: 'Hello' }],
+        }, function(err, count) {
+          should.not.exist(err);
+          count.should.be.equal(1);
+          PostWithStringIdAndRenamedColumns.count({
+            and: [{
+              renamedTitle: 'My Post1',
+            }, { renamedContent: 'Hello' }],
+          }, function(err, count) {
+            should.not.exist(err);
+            count.should.be.equal(0);
+            done();
+          });
+        });
+      });
   });
 
   it('should return info for destroy', function(done) {
