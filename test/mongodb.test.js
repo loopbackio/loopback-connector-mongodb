@@ -132,10 +132,19 @@ describe('mongodb connector', function() {
       power: { type: String, index: true, unique: true },
       address: { type: String, required: false, index: { mongodb: { unique: false, sparse: true }}},
       description: { type: String, required: false },
-      geometry: { type: Object, required: false, index: { mongodb: { kind: '2dsphere' }}},
+      location: { type: Object, required: false },
       age: Number,
       icon: Buffer,
-    }, { mongodb: { collection: 'sh' }});
+    }, {
+      mongodb: {
+        collection: 'sh',
+      },
+      indexes: {
+        'geojson_location_geometry': {
+          'location.geometry': '2dsphere',
+        },
+      },
+    });
 
     Post = db.define('Post', {
       title: { type: String, length: 255, index: true },
@@ -268,7 +277,7 @@ describe('mongodb connector', function() {
         /* eslint-disable camelcase */
         var indexes =
         { _id_: [['_id', 1]],
-          geometry_2dsphere: [['geometry', '2dsphere']],
+          geojson_location_geometry: [['location.geometry', '2dsphere']],
           power_1: [['power', 1]],
           name_1: [['name', 1]],
           address_1: [['address', 1]] };
@@ -1658,6 +1667,77 @@ describe('mongodb connector', function() {
             var dist = 0;
             results.forEach(function(result) {
               var currentDist = testUtils.getDistanceBetweenPoints(coords, result.location);
+              currentDist.should.be.aboveOrEqual(dist);
+              dist = currentDist;
+            });
+
+            done();
+          });
+        });
+      });
+    });
+
+    it('find should be queryable using locations with deep/multiple keys', function(done) {
+      var coords = { lat: 1.25, lng: 20.20 };
+
+      geoDb.autoupdate(function(err) {
+        var heroNumber = 0;
+        var powers = ['fly', 'lasers', 'strength', 'drink'];
+
+        function createSuperheroWithLocation(callback) {
+          heroNumber++;
+
+          Superhero.create({
+            name: 'Hero #' + heroNumber,
+            power: powers[heroNumber - 1],
+            location: {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [
+                  coords.lng,
+                  coords.lat,
+                ],
+              },
+            },
+          }, callback);
+        };
+
+        async.parallel([
+          createSuperheroWithLocation,
+          createSuperheroWithLocation,
+          createSuperheroWithLocation,
+        ], function(err) {
+          if (err) return done(err);
+
+          Superhero.find({
+            where: {
+              and: [
+                {
+                  'location.geometry': {
+                    near: [
+                      coords.lng,
+                      coords.lat,
+                    ],
+                    maxDistance: 50,
+                  },
+                },
+                {
+                  power: 'strength',
+                },
+              ],
+            },
+          }, function(err, results) {
+            if (err) return done(err);
+
+            results.should.have.length(1);
+
+            var dist = 0;
+            results.forEach(function(result) {
+              var currentDist = testUtils.getDistanceBetweenPoints(coords, {
+                lng: result.location.geometry.coordinates[0],
+                lat: result.location.geometry.coordinates[1],
+              });
               currentDist.should.be.aboveOrEqual(dist);
               dist = currentDist;
             });
