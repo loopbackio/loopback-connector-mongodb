@@ -1,3 +1,31 @@
+2017-01-12, Version 1.18.0
+==========================
+
+ * Upgrade mongodb version (Raymond Feng)
+
+ * Revert loopback 2.x (siddhipai)
+
+ * Revert dev-dependency on loopback to 2.x (Siddhi Pai)
+
+ * Set publish tag to "lts" (Siddhi Pai)
+
+ * Update mongodb version (jannyHou)
+
+ * Update README with correct doc links, etc (Amir Jafarian)
+
+ * Ensure inq/nin use array cond value (Fabien Franzen)
+
+ * More ObjectID vs. String handling improvements (Fabien Franzen)
+
+ * Test returned info for #destroy (Fabien Franzen)
+
+ * Test fix for #253 (Fabien Franzen)
+
+ * Fix Copyright, use process.nextTick (Fabien Franzen)
+
+ * Fix all sorts of issues... (Fabien Franzen)
+
+
 2016-10-17, Version 1.17.0
 ==========================
 
