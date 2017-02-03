@@ -2,7 +2,7 @@
 
 The official MongoDB connector for the LoopBack framework.
 
-Please see the full documentation at [loopback.io](http://loopback.io/doc/en/lb2/MongoDB-connector.html).
+Please see the full documentation at [loopback.io](http://loopback.io/doc/en/lb3/MongoDB-connector.html).
 
 ## Installation
 
@@ -14,11 +14,11 @@ npm install loopback-connector-mongodb --save
 
 This installs the module from npm and adds it as a dependency to the application's `package.json` file.
 
-If you create a MySQL data source using the data source generator as described below, you don't have to do this, since the generator will run `npm install` for you.
+If you create a MongoDB data source using the data source generator as described below, you don't have to do this, since the generator will run `npm install` for you.
 
 ## Creating a MongoDB data source
 
-Use the [Data source generator](http://loopback.io/doc/en/lb3/Data-source-generator.html) to add a MySQL data source to your application.  
+Use the [Data source generator](http://loopback.io/doc/en/lb3/Data-source-generator.html) to add a MongoDB data source to your application.  
 The generator will prompt for the database server hostname, port, and other settings
 required to connect to a MongoDB database.  It will also run the `npm install` command above for you.
 
