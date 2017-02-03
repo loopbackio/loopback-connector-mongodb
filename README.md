@@ -4,6 +4,99 @@ The official MongoDB connector for the LoopBack framework.
 
 Please see the full documentation at [loopback.io](http://loopback.io/doc/en/lb2/MongoDB-connector.html).
 
+## Installation
+
+In your application root directory, enter this command to install the connector:
+
+```sh
+npm install loopback-connector-mongodb --save
+```
+
+This installs the module from npm and adds it as a dependency to the application's `package.json` file.
+
+If you create a MySQL data source using the data source generator as described below, you don't have to do this, since the generator will run `npm install` for you.
+
+## Creating a MongoDB data source
+
+Use the [Data source generator](http://loopback.io/doc/en/lb3/Data-source-generator.html) to add a MySQL data source to your application.  
+The generator will prompt for the database server hostname, port, and other settings
+required to connect to a MongoDB database.  It will also run the `npm install` command above for you.
+
+The entry in the application's `/server/datasources.json` will look like this:
+
+```javascript
+"mydb": {
+  "host": "myserver",
+  "port": 27017,
+  "url":  "",
+  "database": "test",
+  "password": "mypassword",
+  "name": "mydb",
+  "user": "me",
+  "connector": "mongodb"  
+}
+```
+
+Edit `datasources.json` to add any other additional properties that you require.
+
+### Properties
+
+<table>
+  <thead>
+    <tr>
+    <th width="150">Property</th>
+    <th width="80">Type</th>
+    <th>Description</th>
+    </tr>
+  </thead> 
+  <tbody>
+    <tr>
+      <td>connector</td>
+      <td>String</td>
+      <td>Connector name, either “loopback-connector-mongodb” or “mongodb”.</td>  
+    </tr>  
+    <tr>
+      <td>database</td>
+      <td>String</td>
+      <td>Database name</td> 
+      </tr>
+    <tr>
+      <td>host</td>
+      <td>String</td>
+      <td>Database host name</td>
+    <tr>
+      <td>password</td>
+      <td>String</td>
+      <td>Password to connect to database</td> 
+    </tr>
+    <tr>
+      <td>port</td>
+      <td>Number</td>
+      <td>Database TCP port</td> 
+    </tr>
+    <tr>
+      <td>url</td>
+      <td>String</td>
+      <td>Connection URL of form <code>mongodb://user:password@host/db</code>.  Overrides other connection settings.</td> 
+    </tr>
+    <tr>
+       <td>username</td> 
+       <td>String</td>
+       <td>Username to connect to database</td>
+    </tr>
+  </tbody>
+</table>
+
+**NOTE**: In addition to these properties, you can use additional Single Server Connection parameters supported by [`node-mongodb-native`](http://mongodb.github.io/node-mongodb-native/core/driver/reference/connecting/connection-settings/).
+
+## Type mappings
+
+See [LoopBack types](http://loopback.io/doc/en/lb3/LoopBack-types.html) for details on LoopBack's data types.
+
+### LoopBack to MongoDB types
+
+### MongoDB to LoopBack types
+
 ## Customizing MongoDB configuration for tests/examples
 
 By default, examples and tests from this module assume there is a MongoDB server
