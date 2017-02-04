@@ -95,7 +95,7 @@ See [LoopBack types](http://loopback.io/doc/en/lb3/LoopBack-types.html) for de
 
 ### LoopBack to MongoDB types
 
-### MongoDB to LoopBack types
+Type conversion is mainly handled by Mongodb. See ['node-mongodb-native'](http://mongodb.github.io/node-mongodb-native/) for details.
 
 ## Customizing MongoDB configuration for tests/examples
 
