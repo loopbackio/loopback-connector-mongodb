@@ -97,6 +97,32 @@ See [LoopBack types](http://loopback.io/doc/en/lb3/LoopBack-types.html) for de
 
 Type conversion is mainly handled by Mongodb. See ['node-mongodb-native'](http://mongodb.github.io/node-mongodb-native/) for details.
 
+
+## Overriding URL setting in Datasource.json
+
+If url is set in datasource.json as a global setting, all the connection parameters e.g. host, user, password and
+port will be ignored.  You can override the global url in datasource.json with a specific environment json 
+e.g. datasource.production.json and use the ndividual connection parameters - host, user, password, port
+Here are the tips:
+
+In the special environment datasource.production.json
+
+You must set the url to be false, null or “”.
+If you set url to undefined or remove the url , the override will not work.
+
+```javascript
+"mydb": {
+  "host": "myserver",
+  "port": 27017,
+  "url":  false,
+  "database": "test",
+  "password": "mypassword",
+  "name": "mydb",
+  "user": "me",
+  "connector": "mongodb"  
+}
+```
+
 ## Customizing MongoDB configuration for tests/examples
 
 By default, examples and tests from this module assume there is a MongoDB server
