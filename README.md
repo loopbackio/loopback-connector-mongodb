@@ -77,7 +77,8 @@ Edit `datasources.json` to add any other additional properties that you require.
     <tr>
       <td>url</td>
       <td>String</td>
-      <td>Connection URL of form <code>mongodb://user:password@host/db</code>.  Overrides other connection settings.</td> 
+      <td>Connection URL of form <code>mongodb://user:password@host/db</code>.  
+      Overrides other connection settings (see below).</td> 
     </tr>
     <tr>
        <td>username</td> 
@@ -88,6 +89,30 @@ Edit `datasources.json` to add any other additional properties that you require.
 </table>
 
 **NOTE**: In addition to these properties, you can use additional Single Server Connection parameters supported by [`node-mongodb-native`](http://mongodb.github.io/node-mongodb-native/core/driver/reference/connecting/connection-settings/).
+
+### Setting the url property in datasource.json
+
+You can set the `url` property to a connection URL in `datasources.json` to override individual connection parameters such as `host`, `user`, and `password`.  
+
+Additionally, you can override the global `url` property in environment-specific data source configuration files, for example for production in `datasources.production.json`, and use the individual connection parameters `host`, `user`, `password`, and `port`.  To do this, you _must_ set `url` to `false`, null, or “” (empty string).
+If you set `url` to `undefined` or remove the `url` property altogether, the override will not work.
+
+For example, for production, use `datasources.production.json` as follows (for example) to overide the `url` setting in `datasources.json:
+
+```javascript
+"mydb": {
+  "host": "myserver",
+  "port": 27017,
+  "url":  false,
+  "database": "test",
+  "password": "mypassword",
+  "name": "mydb",
+  "user": "me",
+  "connector": "mongodb"  
+}
+```
+
+For more information on setting data source configurations for different environments, see [Environment-specific configuration](https://loopback.io/doc/en/lb3/Environment-specific-configuration.html#data-source-configuration).
 
 ## Type mappings
 
