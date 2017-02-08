@@ -77,7 +77,8 @@ Edit `datasources.json` to add any other additional properties that you require.
     <tr>
       <td>url</td>
       <td>String</td>
-      <td>Connection URL of form <code>mongodb://user:password@host/db</code>.  Overrides other connection settings.</td> 
+      <td>Connection URL of form <code>mongodb://user:password@host/db</code>.  
+      Overrides other connection settings (see below).</td> 
     </tr>
     <tr>
        <td>username</td> 
@@ -89,26 +90,14 @@ Edit `datasources.json` to add any other additional properties that you require.
 
 **NOTE**: In addition to these properties, you can use additional Single Server Connection parameters supported by [`node-mongodb-native`](http://mongodb.github.io/node-mongodb-native/core/driver/reference/connecting/connection-settings/).
 
-## Type mappings
+### Setting the url property in datasource.json
 
-See [LoopBack types](http://loopback.io/doc/en/lb3/LoopBack-types.html) for details on LoopBack's data types.
+You can set the `url` property to a connection URL in `datasources.json` to override individual connection parameters such as `host`, `user`, and `password`.  
 
-### LoopBack to MongoDB types
+Additionally, you can override the global `url` property in environment-specific data source configuration files, for example for production in `datasources.production.json`, and use the individual connection parameters `host`, `user`, `password`, and `port`.  To do this, you _must_ set `url` to `false`, null, or “” (empty string).
+If you set `url` to `undefined` or remove the `url` property altogether, the override will not work.
 
-Type conversion is mainly handled by Mongodb. See ['node-mongodb-native'](http://mongodb.github.io/node-mongodb-native/) for details.
-
-
-## Overriding URL setting in Datasource.json
-
-If url is set in datasource.json as a global setting, all the connection parameters e.g. host, user, password and
-port will be ignored.  You can override the global url in datasource.json with a specific environment json 
-e.g. datasource.production.json and use the ndividual connection parameters - host, user, password, port
-Here are the tips:
-
-In the special environment datasource.production.json
-
-You must set the url to be false, null or “”.
-If you set url to undefined or remove the url , the override will not work.
+For example, for production, use `datasources.production.json` as follows (for example) to overide the `url` setting in `datasources.json:
 
 ```javascript
 "mydb": {
@@ -122,6 +111,16 @@ If you set url to undefined or remove the url , the override will not work.
   "connector": "mongodb"  
 }
 ```
+
+For more information on setting data source configurations for different environments, see [Environment-specific configuration](https://loopback.io/doc/en/lb3/Environment-specific-configuration.html#data-source-configuration).
+
+## Type mappings
+
+See [LoopBack types](http://loopback.io/doc/en/lb3/LoopBack-types.html) for details on LoopBack's data types.
+
+### LoopBack to MongoDB types
+
+Type conversion is mainly handled by Mongodb. See ['node-mongodb-native'](http://mongodb.github.io/node-mongodb-native/) for details.
 
 ## Customizing MongoDB configuration for tests/examples
 
