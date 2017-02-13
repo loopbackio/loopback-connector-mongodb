@@ -140,17 +140,7 @@ to run them using our preconfigured test server.
    credentials on your machine
 2. `npm test`
 
-## Running benchmarks
-
-**Benchmarks must be run on a Unix-like operating system.**
-
-```
-make benchmarks
-```
-
-The results will be output in `./benchmarks/results.md`.
-
-## Leak detection
+### Leak detection
 
 Tests run for 100 iterations by default, but can be increased by setting the
 env var `ITERATIONS`.
@@ -164,6 +154,16 @@ or
 ```
 ITERATIONS=1000 make leak-detection # run 1000 iterations
 ```
+
+## Running benchmarks
+
+**Benchmarks must be run on a Unix-like operating system.**
+
+```
+make benchmarks
+```
+
+The results will be output in `./benchmarks/results.md`.
 
 ## Release notes
 
