@@ -1,3 +1,25 @@
+2017-02-13, Version 3.0.1
+=========================
+
+ * Remove invalid options (jannyHou)
+
+ * Add nestedProperty to connectorCapabilities (jannyHou)
+
+ * Update README.md (Rand McKinney)
+
+ * add info on url override (ivy ho)
+
+ * add link for loopback types to mongodb (ivy ho)
+
+ * replace MySQL with MongodDB (ivy ho)
+
+ * Update Readme with Properties (ivy ho)
+
+ * update lB connector version (Loay)
+
+ * Fix replaceById to report err when id not found (Loay Gewily)
+
+
 2017-01-13, Version 3.0.0
 =========================
 
