@@ -175,7 +175,7 @@ describe('mongodb connector', function() {
       db.ping(done);
     });
 
-    it('should report connection errors', function(done) {
+    it('should report connection errors with invalid config', function(done) {
       var ds = getDataSource({
         host: 'localhost',
         port: 4, // unassigned by IANA
@@ -185,6 +185,13 @@ describe('mongodb connector', function() {
         err.message.should.match(/failed to connect to server/);
         done();
       });
+    });
+
+    it('ignores invalid option', function(done) {
+      var configWithInvalidOption = config;
+      configWithInvalidOption.invalidOption = 'invalid';
+      var ds = getDataSource(configWithInvalidOption);
+      ds.ping(done);
     });
   });
 
