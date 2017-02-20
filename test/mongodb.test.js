@@ -2013,6 +2013,21 @@ describe('mongodb connector', function() {
     });
   });
 
+  it('should export the MongoDB function', function() {
+    var module = require('../');
+    module.MongoDB.should.be.an.instanceOf(Function);
+  });
+
+  it('should export the ObjectID function', function() {
+    var module = require('../');
+    module.ObjectID.should.be.an.instanceOf(Function);
+  });
+
+  it('should export the generateMongoDBURL function', function() {
+    var module = require('../');
+    module.generateMongoDBURL.should.be.an.instanceOf(Function);
+  });
+
   context('regexp operator', function() {
     before(function deleteExistingTestFixtures(done) {
       Post.destroyAll(done);
