@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-mongodb",
-  "version": "3.0.0-alpha.1",
+  "version": "3.0.1",
   "description": "The official MongoDB connector for the LoopBack framework.",
   "engines": {
     "node": ">=4"
@@ -28,7 +28,7 @@
   "dependencies": {
     "async": "^1.0.0",
     "debug": "^2.1.1",
-    "loopback-connector": "^2.2.0",
+    "loopback-connector": "^3.0.0",
     "mongodb": "^2.1.21",
     "strong-globalize": "^2.6.0"
   },

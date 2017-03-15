@@ -34,6 +34,7 @@ global.getDataSource = global.getSchema = function(customConfig) {
 global.connectorCapabilities = {
   ilike: false,
   nilike: false,
+  nestedProperty: true,
 };
 
 global.sinon = require('sinon');

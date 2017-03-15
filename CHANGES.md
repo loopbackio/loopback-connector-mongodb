@@ -1,3 +1,59 @@
+2017-02-13, Version 3.0.1
+=========================
+
+ * Remove invalid options (jannyHou)
+
+ * Add nestedProperty to connectorCapabilities (jannyHou)
+
+ * Update README.md (Rand McKinney)
+
+ * add info on url override (ivy ho)
+
+ * add link for loopback types to mongodb (ivy ho)
+
+ * replace MySQL with MongodDB (ivy ho)
+
+ * Update Readme with Properties (ivy ho)
+
+ * update lB connector version (Loay)
+
+ * Fix replaceById to report err when id not found (Loay Gewily)
+
+
+2017-01-13, Version 3.0.0
+=========================
+
+ * Delete extraneous `id` for replacById (Amir Jafarian)
+
+ * Update paid support URL (Siddhi Pai)
+
+ * Start 3.x + drop support for Node v0.10/v0.12 (siddhipai)
+
+ * Drop support for Node v0.10 and v0.12 (Siddhi Pai)
+
+ * Start the development of the next major version (Siddhi Pai)
+
+ * Update mongodb version (jannyHou)
+
+ * Update README with correct doc links, etc (Amir Jafarian)
+
+ * Ensure inq/nin use array cond value (Fabien Franzen)
+
+ * More ObjectID vs. String handling improvements (Fabien Franzen)
+
+ * Test returned info for #destroy (Fabien Franzen)
+
+ * Test fix for #253 (Fabien Franzen)
+
+ * Fix Copyright, use process.nextTick (Fabien Franzen)
+
+ * Fix all sorts of issues... (Fabien Franzen)
+
+ * Column renaming should be done before extended ops (Ian Zepp)
+
+ * Added support for renaming columns (Ian Zepp)
+
+
 2016-10-17, Version 1.17.0
 ==========================
 
