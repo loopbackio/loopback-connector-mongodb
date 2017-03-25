@@ -44,6 +44,26 @@ describe('lazyConnect', function() {
       done();
     });
   });
+
+  it('should connect on execute (lazyConnect = true)', function(done) {
+    var ds = getDataSource({
+      host: '127.0.0.1',
+      port: config.port,
+      lazyConnect: true,
+    });
+
+    ds.define('TestLazy', {
+      value: { type: String },
+    });
+
+    ds.connector.execute('TestLazy', 'insert', { 'value': 'test value' }, function(err, success) {
+      if (err) {
+        done(err);
+      } else {
+        done();
+      }
+    });
+  });
 });
 
 describe('mongodb connector', function() {
