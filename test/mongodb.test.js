@@ -1693,10 +1693,7 @@ describe('mongodb connector', function() {
             },
           }, function(err, results) {
             if (err) return done(err);
-            //the result will contain 4 posts since minDistance is not supported by
-            //loopback-datasource-juggler, it should contain only one post when minDistance
-            //is supported
-            results.length.should.be.equal(4);
+            results.length.should.be.equal(1);
             var dist = 0;
             results.forEach(function(result) {
               var currentDist = testUtils.getDistanceBetweenPoints(coords, result.location);
