@@ -64,6 +64,36 @@ describe('lazyConnect', function() {
       }
     });
   });
+
+  it('should reconnect on execute when disconnected (lazyConnect = true)', function(done) {
+    var ds = getDataSource({
+      host: '127.0.0.1',
+      port: config.port,
+      lazyConnect: true,
+    });
+
+    ds.define('TestLazy', {
+      value: { type: String },
+    });
+
+    ds.connector.should.not.have.property('db');
+
+    ds.connector.execute('TestLazy', 'insert', { 'value': 'test value' }, function(err, success) {
+      if (err) done(err);
+      var id = success.insertedIds[0];
+      ds.connector.should.have.property('db');
+      ds.connector.db.should.have.property('topology');
+      ds.connector.db.topology.should.have.property('isDestroyed');
+      ds.connector.db.topology.isDestroyed().should.be.false;
+      ds.connector.disconnect();
+      ds.connector.db.topology.isDestroyed().should.be.true;
+      ds.connector.execute('TestLazy', 'findOne', { _id: id }, function(err, data) {
+        if (err) done(err);
+        ds.connector.db.topology.isDestroyed().should.be.false;
+        done();
+      });
+    });
+  });
 });
 
 describe('mongodb connector', function() {
