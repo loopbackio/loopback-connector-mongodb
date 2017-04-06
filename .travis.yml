@@ -2,6 +2,8 @@ language: node_js
 node_js:
   - "4"
   - "6"
+before_install:
+  - npm config set http://ci.strongloop.com:4873/
 env:
   - CXX=g++-4.8
 addons:
