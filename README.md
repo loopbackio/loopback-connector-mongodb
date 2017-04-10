@@ -123,13 +123,14 @@ The .loopbackrc file is in JSON format, for example:
                 "database": "test",
                 "username": "youruser",
                 "password": "yourpass",
-                "port": 27017
+                "port": 27017,
+                "allowExtendedOperators": true
             }
         }
     }
 
 **Note**: username/password is only required if the MongoDB server has
-authentication enabled.
+authentication enabled. In order to use MongoDB built-in operators, such as `$set` and `$inc`, you will need to explicitly enable it by setting `allowExtendedOperators` to true.
 
 ## Running tests
 
