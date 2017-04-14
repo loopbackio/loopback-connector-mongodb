@@ -28,7 +28,7 @@
   "dependencies": {
     "async": "^1.0.0",
     "debug": "^2.1.1",
-    "loopback-connector": "^3.0.0",
+    "loopback-connector": "^4.0.0",
     "mongodb": "^2.1.21",
     "strong-globalize": "^2.6.0"
   },
