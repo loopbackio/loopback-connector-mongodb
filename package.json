@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-mongodb",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "The official MongoDB connector for the LoopBack framework.",
   "engines": {
     "node": ">=4"

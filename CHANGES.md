@@ -1,3 +1,31 @@
+2017-04-17, Version 3.1.0
+=========================
+
+ * Update connector version (#368) (Sakib Hasan)
+
+ * Replicate issue_template from loopback repo (#350) (siddhipai)
+
+ * Fix buildNearFilter to work with any key depth (#322) (Corentin H)
+
+ * Fix Update when id not found (Loay)
+
+ * Add additional envs for node v4/v6 (#365) (Sakib Hasan)
+
+ * Update node version (ssh24)
+
+ * Reconnect on execute after disconnect (#362) (phairow)
+
+ * update the near query with minDistance test (#361) (Vincent Wen)
+
+ * Fix lazy connect (#360) (phairow)
+
+ * Export the additional functions (#353) (James Cooke)
+
+ * Mongo 3.4 Support/Delete index ‘kind’ property from index options (#335) (Dylan Lundy)
+
+ * Update README.md (Rand McKinney)
+
+
 2017-02-13, Version 3.0.1
 =========================
 
