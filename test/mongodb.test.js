@@ -13,7 +13,7 @@ var GeoPoint = require('loopback-datasource-juggler').GeoPoint;
 
 var Superhero, User, Post, PostWithStringId, db, PostWithObjectId,
   PostWithObjectId, PostWithNumberUnderscoreId, PostWithNumberId,
-  Category, UserWithRenamedColumns, PostWithStringIdAndRenamedColumns;
+  Category, UserWithRenamedColumns, PostWithStringIdAndRenamedColumns, Employee;
 
 describe('lazyConnect', function() {
   it('should skip connect phase (lazyConnect = true)', function(done) {
@@ -251,6 +251,84 @@ describe('mongodb connector', function() {
       configWithInvalidOption.invalidOption = 'invalid';
       var ds = getDataSource(configWithInvalidOption);
       ds.ping(done);
+    });
+  });
+
+  describe('order filters', function() {
+    var data = [{
+      id: 1,
+      title: 'Senior Software Developer',
+      name: 'Foo',
+      contact: 'foo@foo.com',
+    }, {
+      id: 3,
+      title: 'Lead Developer',
+      name: 'Baz',
+      contact: 'baz@baz.com',
+    }, {
+      id: 5,
+      title: 'Senior Architect',
+      name: 'Bar',
+      contact: 'bar@bar.com',
+    }];
+    before(function(done) {
+      db = getDataSource();
+
+      Employee = db.define('Employee', {
+        id: { type: Number, id: true },
+        title: { type: String, length: 255 },
+        name: { type: String },
+        contact: { type: String },
+      });
+
+      db.automigrate(function(err) {
+        should.not.exist(err);
+        Employee.create(data, done);
+      });
+    });
+
+    after(function(done) {
+      Employee.destroyAll(done);
+    });
+
+    context('using buildSort directly', function() {
+      it('sort in descending order', function(done) {
+        var sort = db.connector.buildSort('Employee', 'id DESC');
+        sort.should.have.property('_id');
+        sort._id.should.equal(-1);
+        done();
+      });
+      it('sort in ascending order', function(done) {
+        var sort = db.connector.buildSort('Employee', 'id ASC');
+        sort.should.have.property('_id');
+        sort._id.should.equal(1);
+        done();
+      });
+    });
+
+    context('using all with order filter', function() {
+      it('find instances in descending order', function(done) {
+        Employee.all({ order: 'id DESC' }, function(err, result) {
+          should.not.exist(err);
+          should.exist(result);
+          result.length.should.equal(data.length);
+          result[0].toObject().should.deepEqual(data[2]);
+          result[1].toObject().should.deepEqual(data[1]);
+          result[2].toObject().should.deepEqual(data[0]);
+          done();
+        });
+      });
+      it('find instances in ascending order', function(done) {
+        Employee.all({ order: 'id ASC' }, function(err, result) {
+          should.not.exist(err);
+          should.exist(result);
+          result.length.should.equal(data.length);
+          result[0].toObject().should.deepEqual(data[0]);
+          result[1].toObject().should.deepEqual(data[1]);
+          result[2].toObject().should.deepEqual(data[2]);
+          done();
+        });
+      });
     });
   });
 
