@@ -9,7 +9,7 @@
   "scripts": {
     "benchmarks": "make benchmarks",
     "leak-detection": "make leak-detection",
-    "test": "mocha -G --timeout 10000 test/*.test.js",
+    "test": "mocha -G --timeout 10000 --require test/init.js test/*.test.js",
     "lint": "eslint .",
     "posttest": "npm run lint"
   },
