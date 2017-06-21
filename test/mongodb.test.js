@@ -2367,6 +2367,169 @@ describe('mongodb connector', function() {
     });
   });
 
+  context('like and nlike operator', function() {
+    before(function deleteExistingTestFixtures(done) {
+      Post.destroyAll(done);
+    });
+    beforeEach(function createTestFixtures(done) {
+      Post.create([
+        { title: 'a', content: 'AAA' },
+        { title: 'b', content: 'BBB' },
+      ], done);
+    });
+    after(function deleteTestFixtures(done) {
+      Post.destroyAll(done);
+    });
+
+    context('like operator', function() {
+      context('with regex strings', function() {
+        context('using no flags', function() {
+          it('should work', function(done) {
+            Post.find({ where: { content: { like: '^A' }}}, function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('AAA');
+              done();
+            });
+          });
+        });
+
+        context('using flags', function() {
+          it('should work', function(done) {
+            Post.find({ where: { content: { like: '^a', options: 'i' }}}, function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('AAA');
+              done();
+            });
+          });
+        });
+      });
+
+      context('with regex literals', function() {
+        context('using no flags', function() {
+          it('should work', function(done) {
+            Post.find({ where: { content: { like: /^A/ }}}, function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('AAA');
+              done();
+            });
+          });
+        });
+
+        context('using flags', function() {
+          it('should work', function(done) {
+            Post.find({ where: { content: { like: /^a/i }}}, function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('AAA');
+              done();
+            });
+          });
+        });
+      });
+
+      context('with regex object', function() {
+        context('using no flags', function() {
+          it('should work', function(done) {
+            Post.find({ where: { content: { like: new RegExp(/^A/) }}}, function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('AAA');
+              done();
+            });
+          });
+        });
+
+        context('using flags', function() {
+          it('should work', function(done) {
+            Post.find({ where: { content: { like: new RegExp(/^a/i) }}}, function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('AAA');
+              done();
+            });
+          });
+        });
+      });
+    });
+
+    context('nlike operator', function() {
+      context('with regex strings', function() {
+        context('using no flags', function() {
+          it('should work', function(done) {
+            Post.find({ where: { content: { nlike: '^A' }}}, function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('BBB');
+              done();
+            });
+          });
+        });
+
+        context('using flags', function() {
+          it('should work', function(done) {
+            Post.find({ where: { content: { nlike: '^a', options: 'i' }}}, function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('BBB');
+              done();
+            });
+          });
+        });
+      });
+
+      context('with regex literals', function() {
+        context('using no flags', function() {
+          it('should work', function(done) {
+            Post.find({ where: { content: { nlike: /^A/ }}}, function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('BBB');
+              done();
+            });
+          });
+        });
+
+        context('using flags', function() {
+          it('should work', function(done) {
+            Post.find({ where: { content: { nlike: /^a/i }}}, function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('BBB');
+              done();
+            });
+          });
+        });
+      });
+
+      context('with regex object', function() {
+        context('using no flags', function() {
+          it('should work', function(done) {
+            Post.find({ where: { content: { nlike: new RegExp(/^A/) }}}, function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('BBB');
+              done();
+            });
+          });
+        });
+
+        context('using flags', function() {
+          it('should work', function(done) {
+            Post.find({ where: { content: { nlike: new RegExp(/^a/i) }}}, function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('BBB');
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
+
   after(function(done) {
     User.destroyAll(function() {
       Post.destroyAll(function() {
