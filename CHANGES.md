@@ -1,3 +1,21 @@
+2017-06-28, Version 3.2.0
+=========================
+
+ * Remove the hard-coded writeConcern (Raymond Feng)
+
+ * Document strictObjectIDCorecion flag (Loay)
+
+ * Allow different forms of regexp on like/nlike op (ssh24)
+
+ * Require init on mocha args (ssh24)
+
+ * Use buildSort function to sort (ssh24)
+
+ * Add docker setup (#373) (Sakib Hasan)
+
+ * test: use mongodb-3.2 on Travis (#369) (Ryan Graham)
+
+
 2017-04-17, Version 3.1.0
 =========================
 
