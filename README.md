@@ -60,6 +60,14 @@ Edit `datasources.json` to add any other additional properties that you require.
 `$pop`, `$pullAll`, `$pull`, `$pushAll`, `$push`, and `$bit`.  Default is `false`.
 - **enableGeoIndexing**: Set to `true` to enable 2dsphere indexing for model properties
 of type `GeoPoint`. This allows for indexed ```near``` queries.  Default is `false`.
+- **lazyConnect**: 
+  - Default is `false`.
+  - If set to `true`, the database instance will not be attached to the datasource and defer the connection.
+  - It will try to establish the connection automatically once users hit the endpoint.
+    - If the mongodb server is offline:
+      - The `app` will start, however, the `endpoints` will not work.
+    - If the mongodb server is online:
+      - The `app` will start and the `endpoints` will work.
 
 ### Setting the url property in datasource.json
 
