@@ -1,3 +1,11 @@
+2017-07-10, Version 3.2.1
+=========================
+
+ * Apply feedback (ssh24)
+
+ * Add docs on lazyConnect flag (ssh24)
+
+
 2017-06-28, Version 3.2.0
 =========================
 
