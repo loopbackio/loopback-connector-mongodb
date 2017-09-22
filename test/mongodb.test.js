@@ -2542,3 +2542,57 @@ describe('mongodb connector', function() {
     });
   });
 });
+
+describe('fromFieldFilterToDatabaseNames', function() {
+  var ds = getDataSource();
+  var Foo = ds.define('Foo', {
+    name: {
+      type: 'string',
+      description: 'The name of the foo.',
+    },
+    foo: {
+      type: 'string',
+      mongodb: {
+        columnName: 'f',
+      },
+    },
+    baz: {
+      type: 'string',
+      mongodb: {
+        columnName: 'bz',
+      },
+    },
+    bar: {
+      type: 'string',
+      mongodb: {
+        columnName: 'br',
+      },
+    },
+  });
+  it('returns data as-is when Object', function() {
+    var data = { foo: 'foo', baz: 'baz' };
+    var result = ds.connector.fromFieldFilterToDatabaseNames('Foo', data);
+    result.should.equal(data); // Should be the same ref
+  });
+  it('returns data as-is when String', function() {
+    var data = 'test';
+    var result = ds.connector.fromFieldFilterToDatabaseNames('Foo', data);
+    result.should.equal(data); // Should be the same ref
+  });
+  it('returns transformed data when Array', function() {
+    var data = ['foo', 'baz'];
+    var result = ds.connector.fromFieldFilterToDatabaseNames('Foo', data);
+    result.should.be.instanceOf(Array); // Should be an Array
+    result.should.have.lengthOf(2); // Should have length of 2
+    result.should.containDeep(['f', 'bz']); // Should contain transformed fields
+  });
+  it('returns transformed and clean data when Array with properties', function() {
+    var data = ['foo', 'baz'];
+    data.foo = 'test';
+    data.baz = 'test';
+    var result = ds.connector.fromFieldFilterToDatabaseNames('Foo', data);
+    result.should.be.instanceOf(Array); // Should be an Array
+    result.should.have.lengthOf(2); // Should have length of 2
+    result.should.containDeep(['f', 'bz']); // Should contain transformed fields
+  });
+});
