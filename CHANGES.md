@@ -1,3 +1,17 @@
+2017-10-13, Version 3.3.0
+=========================
+
+ * update strong-globalize to 3.1.0 (shimks)
+
+ * Create Issue and PR Templates (#386) (Sakib Hasan)
+
+ * Use stalebot on this repo (#383) (Kevin Delisle)
+
+ * Use stalebot on this repo (Kevin Delisle)
+
+ * Add CODEOWNER file (Diana Lau)
+
+
 2017-07-10, Version 3.2.1
 =========================
 
