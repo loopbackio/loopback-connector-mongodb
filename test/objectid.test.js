@@ -29,7 +29,7 @@ describe('ObjectID', function() {
     Synopsis.create(function(err, synopsis) {
       Book.create({ synopsisId: synopsis.id }, function(err, book) {
         Chapter.create({ bookId: book.id.toString() }, function(err, chapter){
-          Book.find({where: {synopsisId: {gte: synopsis.id.toString() }}}, function(err, result) {
+          Book.find({ where: { synopsisId: { gte: synopsis.id.toString() }}}, function(err, result) {
             result.length.should.be.equal(1);
             done();
           });
