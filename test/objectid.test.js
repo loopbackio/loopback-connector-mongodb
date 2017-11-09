@@ -5,13 +5,16 @@
 
 require('./init.js');
 
-var db, Book, Chapter;
+var db, Book, Chapter, Synopsis;
 
 describe('ObjectID', function() {
   before(function() {
     db = getDataSource();
     Book = db.define('Book');
     Chapter = db.define('Chapter');
+    Synopsis = db.define('Synopsis');
+    Book.hasOne('synopsis');
+    Synopsis.belongsTo('book');
     Book.hasMany('chapters');
     Chapter.belongsTo('book');
   });
@@ -23,8 +26,15 @@ describe('ObjectID', function() {
       next();
     };
 
-    Book.create(function(err, book) {
-      Chapter.create({ bookId: book.id.toString() }, done);
+    Synopsis.create(function(err, synopsis) {
+      Book.create({ synopsisId: synopsis.id }, function(err, book) {
+        Chapter.create({ bookId: book.id.toString() }, function(err, chapter){
+          Book.find({ where: { synopsisId: { gte: synopsis.id.toString() }}}, function(err, result) {
+            result.length.should.be.equal(1);
+            done();
+          });
+        });
+      });
     });
   });
 
