@@ -1,3 +1,11 @@
+2017-12-04, Version 3.3.1
+=========================
+
+ * Switch to bson.ObjectID (#401) (Kevin Delisle)
+
+ * chore: update license (Diana Lau)
+
+
 2017-10-13, Version 3.3.0
 =========================
 
