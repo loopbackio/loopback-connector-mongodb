@@ -1,3 +1,9 @@
+2018-01-19, Version 3.4.1
+=========================
+
+ * fix: allow db name to be parsed from url (Raymond Feng)
+
+
 2018-01-19, Version 3.4.0
 =========================
 
