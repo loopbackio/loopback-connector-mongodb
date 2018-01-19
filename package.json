@@ -26,23 +26,23 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "async": "^1.0.0",
+    "async": "^2.6.0",
     "bson": "^1.0.4",
-    "debug": "^2.1.1",
+    "debug": "^3.1.0",
     "loopback-connector": "^4.0.0",
-    "mongodb": "^2.1.21",
+    "mongodb": "^3.0.1",
     "strong-globalize": "^3.1.0"
   },
   "devDependencies": {
-    "benchmark": "^1.0.0",
-    "bluebird": "^2.9.12",
+    "benchmark": "^2.1.4",
+    "bluebird": "^3.5.1",
     "eslint": "^2.7.0",
     "eslint-config-loopback": "^1.0.0",
     "loopback-datasource-juggler": "^3.0.0",
-    "memwatch-next": "^0.2.6",
+    "memwatch-next": "^0.3.0",
     "mocha": "^2.1.0",
     "rc": "^1.0.0",
-    "semver": "^4.2.0",
+    "semver": "^5.5.0",
     "should": "^8.0.2",
     "sinon": "^1.15.4"
   }
