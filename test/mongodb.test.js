@@ -250,7 +250,20 @@ describe('mongodb connector', function() {
       var configWithInvalidOption = config;
       configWithInvalidOption.invalidOption = 'invalid';
       var ds = getDataSource(configWithInvalidOption);
-      ds.ping(done);
+      ds.ping(function(err) {
+        if (err) return done(err);
+        ds.disconnect(done);
+      });
+    });
+
+    it('accepts database from the url', function(done) {
+      var cfg = JSON.parse(JSON.stringify(config));
+      delete cfg.database;
+      var ds = getDataSource(cfg);
+      ds.ping(function(err) {
+        if (err) return done(err);
+        ds.disconnect(done);
+      });
     });
   });
 
