@@ -1,3 +1,11 @@
+2018-01-19, Version 3.4.0
+=========================
+
+ * upgrade to mongodb driver 3.x (Raymond Feng)
+
+ * Alias find as findById (jannyHou)
+
+
 2017-12-04, Version 3.3.1
 =========================
 
