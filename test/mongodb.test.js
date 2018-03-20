@@ -265,6 +265,29 @@ describe('mongodb connector', function() {
         ds.disconnect(done);
       });
     });
+
+    it('should prioritize to the database given in the url property', function(done) {
+      var cfg = JSON.parse(JSON.stringify(config));
+      var testDb = 'lb-ds-overriden-test-1';
+      cfg.url = 'mongodb://' + cfg.hostname + ':' + cfg.port + '/' + testDb;
+      var ds = getDataSource(cfg);
+      ds.once('connected', function() {
+        var db = ds.connector.db;
+        var validationError = null;
+        try {
+          db.should.have.property('databaseName', testDb); // check the db name in the db instance
+        } catch (err) { // async error
+          validationError = err;
+        }
+        ds.ping(function(err) {
+          if (err && !validationError) validationError = err;
+          ds.disconnect(function(disconnectError) {
+            if (disconnectError && !validationError) validationError = disconnectError;
+            done(validationError);
+          });
+        });
+      });
+    });
   });
 
   describe('order filters', function() {
