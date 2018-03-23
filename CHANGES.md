@@ -1,3 +1,13 @@
+2018-03-23, Version 3.4.2
+=========================
+
+ * chore:update CODEOWNERS (Diana Lau)
+
+ * Prioritize db url (Dimitris)
+
+ * CODEOWNERS: add nitro404 (Miroslav Bajtoš)
+
+
 2018-01-19, Version 3.4.1
 =========================
 
