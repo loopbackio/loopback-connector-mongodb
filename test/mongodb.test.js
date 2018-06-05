@@ -1597,12 +1597,12 @@ describe('mongodb connector', function() {
   it('all return should honor filter.fields', function(done) {
     var post = new Post({ title: 'b', content: 'BBB' });
     post.save(function(err, post) {
-      Post.all({ fields: ['title'], where: { title: 'b' }}, function(err, posts) {
+      db.connector.all('Post', { fields: ['title'], where: { title: 'b' }}, {}, function(err, posts) {
         should.not.exist(err);
         posts.should.have.lengthOf(1);
         post = posts[0];
         post.should.have.property('title', 'b');
-        post.should.have.property('content', undefined);
+        should.not.exist(post.content);
         should.not.exist(post._id);
         should.not.exist(post.id);
 
