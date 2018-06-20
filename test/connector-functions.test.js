@@ -3,17 +3,19 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
+
 // This test written in mocha+should.js
 var should = require('./init.js');
 
 describe('connector function - findById', function() {
   var db, TestAlias, sampleId;
   before(function(done) {
-    db = getDataSource();
-    TestAlias = db.define('TestAlias', { foo: { type: String }});
+    db = global.getDataSource();
+    TestAlias = db.define('TestAlias', {foo: {type: String}});
     db.automigrate(function(err) {
       if (err) return done(err);
-      TestAlias.create({ foo: 'foo' }, function(err, t) {
+      TestAlias.create({foo: 'foo'}, function(err, t) {
         if (err) return done(err);
         sampleId = t.id;
         done();

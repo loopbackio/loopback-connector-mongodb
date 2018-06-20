@@ -3,6 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
+
 var DataSource = require('loopback-datasource-juggler').DataSource;
 var connector = require('../..');
 
@@ -12,7 +14,7 @@ var db = new DataSource(connector, {
   database: process.env.LB_DB || 'strongloop',
 });
 var Todo = db.define('Todo', {
-  content: { type: String },
+  content: {type: String},
 });
 
 module.exports = Todo;

@@ -3,7 +3,10 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
+
 var memwatch = require('memwatch-next');
+var sinon = require('sinon');
 
 describe('leak detector', function() {
   before(function() {
@@ -16,8 +19,8 @@ describe('leak detector', function() {
     var iterations = 0;
     var leaks = [];
     var interval = setInterval(function() {
-      if (test.iterations >= ITERATIONS || test.spy.called) {
-        test.spy.called.should.be.true;
+      if (test.iterations >= global.ITERATIONS || test.spy.called) {
+        test.spy.called.should.be.True();
         clearInterval(interval);
         return done();
       }

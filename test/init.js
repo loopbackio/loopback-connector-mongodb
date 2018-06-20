@@ -3,19 +3,23 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
+
 module.exports = require('should');
 
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
 var TEST_ENV = process.env.TEST_ENV || 'test';
-var config = require('rc')('loopback', { test: { mongodb: {}}})[TEST_ENV].mongodb;
+var config = require('rc')('loopback', {test: {mongodb: {}}})[TEST_ENV]
+  .mongodb;
 
 config = {
   host: process.env.MONGODB_HOST || 'localhost',
   port: process.env.MONGODB_PORT || 27017,
-  database: process.env.MONGODB_DATABASE || 'lb-ds-mongodb-test-' + (
-      process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER || '1'
-    ),
+  database:
+    process.env.MONGODB_DATABASE ||
+    'lb-ds-mongodb-test-' +
+      (process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER || '1'),
 };
 
 global.config = config;
@@ -34,5 +38,3 @@ global.connectorCapabilities = {
   nilike: false,
   nestedProperty: true,
 };
-
-global.sinon = require('sinon');
