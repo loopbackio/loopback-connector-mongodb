@@ -1,0 +1,8 @@
+{
+  "005d4d9a3be323339f34eca349b41b0d": "{{Customers}} совпадают по {{emails.0.label}} {0}",
+  "36f92de2bed6d89338a407bea8c175d8": "{{Customers}} совпадают по {{emails.email}} {0}",
+  "4d7914a539a53043878faaf72f1c97cc": "Соединение с {{MongoDB}} не выполнено: {0} {1}",
+  "70b3f1cefa67f8cc592f90f7ad3b44bc": "Синтаксис regex {{MongoDB}} не учитывает флаг {{`g`}}",
+  "d9ab5ec15a1c9998d3c3f548ed6949cb": "Соединение с {{MongoDB}} не установлено"
+}
+
