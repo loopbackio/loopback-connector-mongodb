@@ -1,3 +1,11 @@
+2018-07-24, Version 3.5.0
+=========================
+
+ * chore: drop node 4 and update deps (Taranveer Virk)
+
+ * [WebFM] cs/pl/ru translation (candytangnb)
+
+
 2018-06-05, Version 3.4.4
 =========================
 
