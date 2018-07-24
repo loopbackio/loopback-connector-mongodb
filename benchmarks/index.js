@@ -3,6 +3,8 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
+
 var DataSource = require('loopback-datasource-juggler').DataSource;
 var connector = require('..');
 var Benchmark = require('benchmark');
@@ -13,7 +15,7 @@ var ds = new DataSource(connector, {
   database: process.env.LB_DB || 'strongloop',
 });
 var Todo = ds.define('Todo', {
-  content: { type: String },
+  content: {type: String},
 });
 
 // not critical for MongoDB, but may uncover inefficiencies in SQL connectors
@@ -25,7 +27,7 @@ function resetTestState() {
   Todo.destroyAll();
 }
 
-var suite = new Benchmark.Suite;
+var suite = new Benchmark.Suite();
 suite
   .on('start', function() {
     console.log('#', new Date());
@@ -33,7 +35,7 @@ suite
   .add('create', {
     defer: true,
     fn: function(deferred) {
-      Todo.create({ content: 'Buy eggs, ' + (uniqVal++) }, function() {
+      Todo.create({content: 'Buy eggs, ' + uniqVal++}, function() {
         deferred.resolve();
       });
     },
@@ -48,9 +50,9 @@ suite
     },
     onStart: function() {
       Todo.create([
-        { content: 'Buy eggs' },
-        { content: 'Buy milk' },
-        { content: 'Buy cheese' },
+        {content: 'Buy eggs'},
+        {content: 'Buy milk'},
+        {content: 'Buy cheese'},
       ]);
     },
     onComplete: resetTestState,
@@ -58,15 +60,15 @@ suite
   .add('find with a simple filter', {
     defer: true,
     fn: function(deferred) {
-      Todo.find({ where: { content: 'Buy milk' }}, function() {
+      Todo.find({where: {content: 'Buy milk'}}, function() {
         deferred.resolve();
       });
     },
     onStart: function() {
       Todo.create([
-        { content: 'Buy eggs' },
-        { content: 'Buy milk' },
-        { content: 'Buy cheese' },
+        {content: 'Buy eggs'},
+        {content: 'Buy milk'},
+        {content: 'Buy cheese'},
       ]);
     },
     onComplete: resetTestState,
@@ -79,4 +81,4 @@ suite
     Todo.destroyAll();
     process.exit();
   })
-  .run({ async: true });
+  .run({async: true});
