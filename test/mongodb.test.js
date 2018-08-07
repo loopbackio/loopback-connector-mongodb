@@ -26,7 +26,8 @@ var Superhero,
   Category,
   UserWithRenamedColumns,
   PostWithStringIdAndRenamedColumns,
-  Employee;
+  Employee,
+  PostWithDisableDefaultSort;
 
 describe('lazyConnect', function() {
   it('should skip connect phase (lazyConnect = true)', function(done) {
@@ -273,6 +274,18 @@ describe('mongodb connector', function() {
       }
     );
 
+    PostWithDisableDefaultSort = db.define(
+      'PostWithDisableDefaultSort',
+      {
+        id: {type: String, id: true},
+        title: {type: String, length: 255, index: true},
+        content: {type: String},
+      },
+      {
+        disableDefaultSort: true,
+      }
+    );
+
     User.hasMany(Post);
     Post.belongsTo(User);
   });
@@ -285,7 +298,9 @@ describe('mongodb connector', function() {
           PostWithNumberId.destroyAll(function() {
             PostWithNumberUnderscoreId.destroyAll(function() {
               PostWithStringId.destroyAll(function() {
-                done();
+                PostWithDisableDefaultSort.destroyAll(function() {
+                  done();
+                });
               });
             });
           });
@@ -2489,6 +2504,32 @@ describe('mongodb connector', function() {
       });
     });
   });
+
+  it('find should not order by id if the order is not set for the query filter and settings.disableDefaultSort is true',
+    function(done) {
+      PostWithDisableDefaultSort.create({id: '2', title: 'c', content: 'CCC'}, function(err, post) {
+        PostWithDisableDefaultSort.create({id: '1', title: 'd', content: 'DDD'}, function(err, post) {
+          PostWithDisableDefaultSort.find({}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.be.equal(2);
+            posts[0].id.should.be.equal('2');
+
+            PostWithDisableDefaultSort.find({limit: 1, offset: 0}, function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.be.equal(1);
+              posts[0].id.should.be.equal('2');
+
+              PostWithDisableDefaultSort.find({limit: 1, offset: 1}, function(err, posts) {
+                should.not.exist(err);
+                posts.length.should.be.equal(1);
+                posts[0].id.should.be.equal('1');
+                done();
+              });
+            });
+          });
+        });
+      });
+    });
 
   it('should report error on duplicate keys', function(done) {
     Post.create({title: 'd', content: 'DDD'}, function(err, post) {
