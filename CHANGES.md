@@ -1,4 +1,22 @@
-2018-07-24, Version 3.5.0
+2018-08-15, Version 3.6.0
+=========================
+
+ * docs: update with security consideration section (virkt25)
+
+ * fix: sanitize query by default (virkt25)
+
+ * change `count` to `countDocuments` (Rahmat Nugraha)
+
+ * add `useNewUrlParser` on validOptionNames (Rahmat Nugraha)
+
+ * Dedicated Model for testing disableDefaultSort (HugoPoi)
+
+ * Add disableDefaultSort in README (HugoPoi)
+
+ * Add settings disableDefaultSort for find method (HugoPoi)
+
+
+2018-07-23, Version 3.5.0
 =========================
 
  * chore: drop node 4 and update deps (Taranveer Virk)
