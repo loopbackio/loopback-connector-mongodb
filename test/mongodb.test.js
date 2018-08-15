@@ -11,6 +11,7 @@ var should = require('./init.js');
 var testUtils = require('../lib/test-utils');
 var async = require('async');
 var sinon = require('sinon');
+var sanitizeFilter = require('../lib/mongodb').sanitizeFilter;
 
 var GeoPoint = require('loopback-datasource-juggler').GeoPoint;
 
@@ -712,6 +713,52 @@ describe('mongodb connector', function() {
           // Not strict equal
           p[0].id.should.be.eql(p1.id);
           done();
+        });
+      });
+    });
+  });
+
+  it('should not return data for nested `$where` in where', function(done) {
+    Post.create({title: 'Post1', content: 'Post1 content'}, (err, p1) => {
+      Post.create({title: 'Post2', content: 'Post2 content'}, (err2, p2) => {
+        Post.create({title: 'Post3', content: 'Post3 data'}, (err3, p3) => {
+          Post.find({where: {$where: 'function() {return this.content.contains("content")}'}}, (err, p) => {
+            should.not.exist(err);
+            p.length.should.be.equal(3);
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  it('should allow $where in where with options.disableSanitization', function(done) {
+    Post.create({title: 'Post1', content: 'Post1 content'}, (err, p1) => {
+      Post.create({title: 'Post2', content: 'Post2 content'}, (err2, p2) => {
+        Post.create({title: 'Post3', content: 'Post3 data'}, (err3, p3) => {
+          Post.find(
+            {where: {$where: 'function() {return this.content.contains("content")}'}},
+            {disableSanitization: true},
+            (err, p) => {
+              should.not.exist(err);
+              p.length.should.be.equal(2);
+              done();
+            }
+          );
+        });
+      });
+    });
+  });
+
+  it('does not execute a nested `$where`', function(done) {
+    Post.create({title: 'Post1', content: 'Post1 content'}, (err, p1) => {
+      Post.create({title: 'Post2', content: 'Post2 content'}, (err2, p2) => {
+        Post.create({title: 'Post3', content: 'Post3 data'}, (err3, p3) => {
+          Post.find({where: {content: {$where: 'function() {return this.content.contains("content")}'}}}, (err, p) => {
+            should.not.exist(err);
+            p.length.should.be.equal(0);
+            done();
+          });
         });
       });
     });
@@ -3215,6 +3262,38 @@ describe('mongodb connector', function() {
           });
         });
       });
+    });
+  });
+
+  context('sanitizeFilter()', () => {
+    it('returns filter if not an object', () => {
+      const input = false;
+      const out = sanitizeFilter(input);
+      out.should.equal(input);
+    });
+
+    it('returns the filter if options.disableSanitization is true', () => {
+      const input = {key: 'value', $where: 'a value'};
+      const out = sanitizeFilter(input, {disableSanitization: true});
+      out.should.deepEqual(input);
+    });
+
+    it('removes `$where` property', () => {
+      const input = {key: 'value', $where: 'a value'};
+      const out = sanitizeFilter(input);
+      out.should.deepEqual({key: 'value'});
+    });
+
+    it('does not remove properties with `$` in it', () => {
+      const input = {key: 'value', $where: 'a value', random$key: 'random'};
+      const out = sanitizeFilter(input);
+      out.should.deepEqual({key: 'value', random$key: 'random'});
+    });
+
+    it('removes `mapReduce` property in the object', () => {
+      const input = {key: 'value', random$key: 'a value', mapReduce: 'map'};
+      const out = sanitizeFilter(input);
+      out.should.deepEqual({key: 'value', random$key: 'a value'});
     });
   });
 
