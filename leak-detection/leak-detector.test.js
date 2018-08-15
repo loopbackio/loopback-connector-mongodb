@@ -5,7 +5,7 @@
 
 'use strict';
 
-var memwatch = require('memwatch-next');
+var memwatch = require('node-memwatch');
 var sinon = require('sinon');
 
 describe('leak detector', function() {
