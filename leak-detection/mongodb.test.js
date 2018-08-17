@@ -5,7 +5,7 @@
 
 'use strict';
 
-var memwatch = require('memwatch-next');
+var memwatch = require('@airbnb/node-memwatch');
 var sinon = require('sinon');
 var Todo = require('./fixtures/todo');
 
