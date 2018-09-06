@@ -73,7 +73,7 @@ describe('lazyConnect', function() {
 
     ds.connector.execute(
       'TestLazy',
-      'insert',
+      'insertOne',
       {value: 'test value'},
       function(err, success) {
         if (err) {
@@ -100,11 +100,11 @@ describe('lazyConnect', function() {
 
     ds.connector.execute(
       'TestLazy',
-      'insert',
+      'insertOne',
       {value: 'test value'},
       function(err, success) {
         if (err) done(err);
-        var id = success.insertedIds[0];
+        var id = success.insertedId;
         ds.connector.should.have.property('db');
         ds.connector.db.should.have.property('topology');
         ds.connector.db.topology.should.have.property('isDestroyed');
@@ -805,8 +805,8 @@ describe('mongodb connector', function() {
     ) {
       Post.find(function(err, results) {
         events.should.eql([
-          'before execute insert',
-          'after execute insert',
+          'before execute insertOne',
+          'after execute insertOne',
           'before execute find',
           'after execute find',
         ]);
