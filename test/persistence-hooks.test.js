@@ -13,13 +13,6 @@ var customConfig = {
   enableOptimisedfindOrCreate: false,
 };
 
-if (
-  process.env.MONGODB_VERSION &&
-  semver.satisfies(process.env.MONGODB_VERSION, '>= 2.6.0')
-) {
-  customConfig.enableOptimisedfindOrCreate = true;
-}
-
 for (var i in global.config) {
   customConfig[i] = global.config[i];
 }
@@ -34,6 +27,10 @@ if (!DB_VERSION) {
 
 var DB_HAS_2_6_FEATURES =
   !DB_VERSION || semver.satisfies(DB_VERSION, '>=2.6.0');
+
+if (DB_HAS_2_6_FEATURES) {
+  customConfig.enableOptimisedfindOrCreate = true;
+}
 
 suite(global.getDataSource(customConfig), should, {
   replaceOrCreateReportsNewInstance: DB_HAS_2_6_FEATURES,

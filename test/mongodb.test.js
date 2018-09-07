@@ -1406,6 +1406,68 @@ describe('mongodb connector', function() {
     });
   });
 
+  it('findOrCreate should properly support field projection (on create) - object', function() {
+    const query = {where: {title: 'Kopria post'}, fields: {comments: 1}};
+    const newData = {title: 'Kopria post', content: 'Xazo content', comments: ['comment1', 'comment2']};
+    return Post.findOrCreate(query, newData)
+      .then(function(result) {
+        const createdPost = result[0];
+        const created = result[1];
+        created.should.be.true();
+        should.not.exist(createdPost.title);
+        should.not.exist(createdPost.content);
+        createdPost.comments.should.containDeep(['comment1', 'comment2']);
+      });
+  });
+
+  it('findOrCreate should properly support field projection (on create) - array', function() {
+    const query = {where: {title: 'Kopria post'}, fields: ['comments']};
+    const newData = {title: 'Kopria post', content: 'Xazo content', comments: ['comment1', 'comment2']};
+    return Post.findOrCreate(query, newData)
+      .then(function(result) {
+        const createdPost = result[0];
+        const created = result[1];
+        created.should.be.true();
+        should.not.exist(createdPost.title);
+        should.not.exist(createdPost.content);
+        createdPost.comments.should.containDeep(['comment1', 'comment2']);
+      });
+  });
+
+  it('findOrCreate should properly support field projection (on find) - object', function() {
+    const query = {where: {title: 'Kopria post'}, fields: {comments: 1}};
+    const postData = {title: 'Kopria post', content: 'Xazo content', comments: ['comment1', 'comment2']};
+    return Post.create(postData)
+      .then(function() { // post created
+        return Post.findOrCreate(query, postData);
+      })
+      .then(function(result) {
+        const foundPost = result[0];
+        const created = result[1];
+        created.should.be.false();
+        should.not.exist(foundPost.title);
+        should.not.exist(foundPost.content);
+        foundPost.comments.should.containDeep(['comment1', 'comment2']);
+      });
+  });
+
+  it('findOrCreate should properly support field projection (on find) - array', function() {
+    const query = {where: {title: 'Kopria post'}, fields: ['comments']};
+    const postData = {title: 'Kopria post', content: 'Xazo content', comments: ['comment1', 'comment2']};
+    return Post.create(postData)
+      .then(function() { // post created
+        return Post.findOrCreate(query, postData);
+      })
+      .then(function(result) {
+        const foundPost = result[0];
+        const created = result[1];
+        created.should.be.false();
+        should.not.exist(foundPost.title);
+        should.not.exist(foundPost.content);
+        foundPost.comments.should.containDeep(['comment1', 'comment2']);
+      });
+  });
+
   it('updateOrCreate should update the instance', function(done) {
     Post.create({title: 'a', content: 'AAA'}, function(err, post) {
       post.title = 'b';
@@ -2921,6 +2983,25 @@ describe('mongodb connector', function() {
   it('should export the generateMongoDBURL function', function() {
     var module = require('../');
     module.generateMongoDBURL.should.be.an.instanceOf(Function);
+  });
+
+  context('fieldsArrayToObj', function() {
+    var fieldsArrayToObj = require('../').fieldsArrayToObj;
+    it('should export the fieldsArrayToObj function', function() {
+      fieldsArrayToObj.should.be.an.instanceOf(Function);
+    });
+
+    it('should return actual object if provided input is not an array', function() {
+      fieldsArrayToObj({someField: 1}).should.be.eql({someField: 1});
+    });
+
+    it('should provide the single _id element when input array empty', function() {
+      fieldsArrayToObj([]).should.be.eql({_id: 1});
+    });
+
+    it('should properly convert the provided array to object', function() {
+      fieldsArrayToObj(['prop1', 'prop2']).should.be.eql({prop1: 1, prop2: 1});
+    });
   });
 
   context('regexp operator', function() {
