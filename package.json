@@ -39,7 +39,6 @@
     "eslint": "^5.1.0",
     "eslint-config-loopback": "^10.0.0",
     "loopback-datasource-juggler": "^3.23.0",
-    "memwatch-next": "^0.3.0",
     "mocha": "^5.2.0",
     "rc": "^1.2.8",
     "semver": "^5.5.1",
