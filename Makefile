@@ -19,6 +19,7 @@ b benchmark benchmarks:
 
 .PHONY: l ld leak leak-detection
 l ld leak leak-detection:
+	npm i @airbnb/node-memwatch --no-save || npm i memwatch-next --no-save
 	@ITERATIONS=$(ITERATIONS) $(TESTER) leak-detection \
 		--recursive \
 		--reporter spec \
