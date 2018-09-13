@@ -2799,6 +2799,22 @@ describe('mongodb connector', function() {
     });
   });
 
+  it('should support count without where', function(done) {
+    const POST_NUMBER = 35;
+    const posts = [];
+    for (let i = 0; i < POST_NUMBER; i++) {
+      posts.push({title: `My post ${i}`, content: `content ${i}`});
+    }
+
+    Post.create(posts, function() {
+      Post.count(function(err, count) {
+        if (err) return done(err);
+        count.should.be.equal(POST_NUMBER);
+        done();
+      });
+    });
+  });
+
   // The where object should be parsed by the connector
   it('should support where for count', function(done) {
     Post.create({title: 'My Post', content: 'Hello'}, function(err, post) {

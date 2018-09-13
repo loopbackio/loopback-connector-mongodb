@@ -73,6 +73,21 @@ suite
     },
     onComplete: resetTestState,
   })
+  .add('count without filter', {
+    defer: true,
+    fn: function(deferred) {
+      Todo.count(function() {
+        deferred.resolve();
+      });
+    },
+    onStart: function() {
+      const todos = [];
+      for (let i = 0; i < 1000; i++) {
+        todos.push({content: `Buy something ${i}`});
+      }
+      Todo.create(todos);
+    },
+  })
   .on('cycle', function(event) {
     console.log(String(event.target));
   })
