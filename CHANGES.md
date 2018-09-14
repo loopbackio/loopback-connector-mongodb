@@ -1,3 +1,9 @@
+2018-09-14, Version 3.7.1
+=========================
+
+ * fix: map new names to old for connector hooks (virkt25)
+
+
 2018-09-12, Version 3.7.0
 =========================
 
