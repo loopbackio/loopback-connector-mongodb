@@ -805,8 +805,8 @@ describe('mongodb connector', function() {
     ) {
       Post.find(function(err, results) {
         events.should.eql([
-          'before execute insertOne',
-          'after execute insertOne',
+          'before execute insert',
+          'after execute insert',
           'before execute find',
           'after execute find',
         ]);
