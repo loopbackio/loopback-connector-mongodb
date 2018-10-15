@@ -28,7 +28,8 @@ var Superhero,
   UserWithRenamedColumns,
   PostWithStringIdAndRenamedColumns,
   Employee,
-  PostWithDisableDefaultSort;
+  PostWithDisableDefaultSort,
+  WithEmbeddedBinaryProperties;
 
 describe('lazyConnect', function() {
   it('should skip connect phase (lazyConnect = true)', function(done) {
@@ -284,6 +285,19 @@ describe('mongodb connector', function() {
       },
       {
         disableDefaultSort: true,
+      }
+    );
+
+    WithEmbeddedBinaryProperties = db.define(
+      'WithEmbeddedBinaryProperties',
+      {
+        name: {type: String},
+        image: {
+          type: {
+            label: String,
+            rawImg: Buffer,
+          },
+        },
       }
     );
 
@@ -637,6 +651,19 @@ describe('mongodb connector', function() {
     User.create({name: 'John', icon: new Buffer('1a2')}, function(e, u) {
       User.findById(u.id, function(e, user) {
         user.icon.should.be.an.instanceOf(Buffer);
+        done();
+      });
+    });
+  });
+
+  it('should convert embedded model binary properties to buffer correctly', function(done) {
+    const entity = {
+      name: 'Rigas',
+      image: {label: 'paris 2016', rawImg: Buffer.from([255, 216, 255, 224])},
+    };
+    WithEmbeddedBinaryProperties.create(entity, function(e, r) {
+      WithEmbeddedBinaryProperties.findById(r.id, function(e, post) {
+        post.image.rawImg.should.be.eql(Buffer.from([255, 216, 255, 224]));
         done();
       });
     });
@@ -1155,7 +1182,7 @@ describe('mongodb connector', function() {
               err.name.should.equal('MongoError');
               err.errmsg.should.equal(
                 'The dollar ($) prefixed ' +
-                  "field '$rename' in '$rename' is not valid for storage."
+                "field '$rename' in '$rename' is not valid for storage."
               );
               done();
             }
@@ -1180,7 +1207,7 @@ describe('mongodb connector', function() {
               err.name.should.equal('MongoError');
               err.errmsg.should.equal(
                 'The dollar ($) prefixed ' +
-                  "field '$rename' in '$rename' is not valid for storage."
+                "field '$rename' in '$rename' is not valid for storage."
               );
               done();
             }
@@ -1237,7 +1264,7 @@ describe('mongodb connector', function() {
               err.name.should.equal('MongoError');
               err.errmsg.should.equal(
                 'The dollar ($) prefixed ' +
-                  "field '$rename' in '$rename' is not valid for storage."
+                "field '$rename' in '$rename' is not valid for storage."
               );
               done();
             }
@@ -2921,7 +2948,7 @@ describe('mongodb connector', function() {
 
   it(
     'should support where for count (using renamed columns in deep filter ' +
-      'criteria)',
+    'criteria)',
     function(done) {
       PostWithStringId.create({title: 'My Post', content: 'Hello'}, function(
         err,
