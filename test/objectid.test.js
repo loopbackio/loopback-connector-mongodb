@@ -26,6 +26,7 @@ describe('ObjectID', function() {
     };
 
     Book.create(function(err, book) {
+      if (err) return done(err);
       Chapter.create({bookId: book.id.toString()}, done);
     });
   });
