@@ -26,6 +26,18 @@ describe('model with decimal property', function() {
     OrderDecimal.destroyAll(done);
   });
 
+  before(function printVersion(done) {
+    db.connector.connect(function(err, dbInst) {
+      if (err) return done(err);
+      var adminDb = dbInst.admin();
+      adminDb.serverStatus(function(err, info) {
+        if (err) return done(err);
+        console.log('Your mongodb server is: ', info.version);
+        done();
+      })
+    });
+  })
+
   it('create - coerces strings to decimal 128', function(done) {
     OrderDecimal.create({count: '0.0005'}, function(err, order) {
       if (err) return done(err);
