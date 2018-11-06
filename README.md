@@ -280,6 +280,12 @@ myModelName.find(
 )
 ```
 
+## Advanced features
+
+### decimal128 type
+
+You can check [document](https://github.com/strongloop/loopback-connector-mongodb/blob/master/docs/decimal128.md) for details.
+
 ## Release notes
 
   * 1.1.7 - Do not return MongoDB-specific _id to client API, except if specifically specified in the model definition
