@@ -1,3 +1,13 @@
+2018-11-06, Version 4.0.0
+=========================
+
+ * Use new url parser by default (#462) (Hugo Da Roit)
+
+ * remove the infinite inspect (#480) (Janny)
+
+ * Add case insensitive indexes support (maxim.sharai)
+
+
 2018-10-23, Version 3.9.0
 =========================
 
