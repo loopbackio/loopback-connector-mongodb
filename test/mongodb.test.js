@@ -778,12 +778,13 @@ describe('mongodb connector', function() {
   });
 
   it('does not execute a nested `$where`', function(done) {
+    const filter = {where: {content: {$where: 'function() {return this.content.contains("content")}'}}};
+
     Post.create({title: 'Post1', content: 'Post1 content'}, (err, p1) => {
       Post.create({title: 'Post2', content: 'Post2 content'}, (err2, p2) => {
         Post.create({title: 'Post3', content: 'Post3 data'}, (err3, p3) => {
-          Post.find({where: {content: {$where: 'function() {return this.content.contains("content")}'}}}, (err, p) => {
-            should.not.exist(err);
-            p.length.should.be.equal(0);
+          Post.find(filter, {allowExtendedOperators: true}, (err, p) => {
+            should.exist(err);
             done();
           });
         });
