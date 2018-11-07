@@ -785,6 +785,7 @@ describe('mongodb connector', function() {
         Post.create({title: 'Post3', content: 'Post3 data'}, (err3, p3) => {
           Post.find(filter, {allowExtendedOperators: true}, (err, p) => {
             should.exist(err);
+            err.message.should.match(/^\$where/);
             done();
           });
         });
