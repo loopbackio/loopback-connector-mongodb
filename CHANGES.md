@@ -1,3 +1,9 @@
+2018-11-08, Version 3.9.2
+=========================
+
+ * support decimal128 type for nested properties  (#483) (Janny)
+
+
 2018-10-24, Version 3.9.1
 =========================
 
