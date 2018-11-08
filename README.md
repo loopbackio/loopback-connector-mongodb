@@ -78,7 +78,7 @@ You can set the `url` property to a connection URL in `datasources.json` to over
 Additionally, you can override the global `url` property in environment-specific data source configuration files, for example for production in `datasources.production.json`, and use the individual connection parameters `host`, `user`, `password`, and `port`.  To do this, you _must_ set `url` to `false`, null, or “” (empty string).
 If you set `url` to `undefined` or remove the `url` property altogether, the override will not work.
 
-For example, for production, use `datasources.production.json` as follows (for example) to overide the `url` setting in `datasources.json:
+For example, for production, use `datasources.production.json` as follows (for example) to override the `url` setting in `datasources.json:
 
 ```javascript
 "mydb": {
@@ -279,6 +279,12 @@ myModelName.find(
   }
 )
 ```
+
+## Advanced features
+
+### decimal128 type
+
+You can check [document](https://github.com/strongloop/loopback-connector-mongodb/blob/master/docs/decimal128.md) for details.
 
 ## Release notes
 
