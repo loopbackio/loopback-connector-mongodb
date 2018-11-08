@@ -88,7 +88,7 @@ OrderDecimal.find({where: {count: '0.0005'}}, function(err, orders) {
 
 The connector automatically converts the condition from string to decimal.
 
-When query nested properties, you still need to do the conversion yourself, like
+When query nested properties, you still need to do the conversion yourself, as follows
 
 ```js
 // query decimal property in a nested array
