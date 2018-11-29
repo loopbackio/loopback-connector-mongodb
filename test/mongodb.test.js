@@ -668,6 +668,25 @@ describe('mongodb connector', function() {
           should.not.exist(post._id);
 
           done();
+        });
+    });
+  });
+
+  it('all return should honor filter.fields with `_id` selected', function(done) {
+    var post = new PostWithObjectId({title: 'a', content: 'AAA'});
+    post.save(function(err, post) {
+      PostWithObjectId.all(
+        {fields: ['_id', 'content'], where: {title: 'a'}},
+        function(err, posts) {
+          should.not.exist(err);
+          if (err) return done(err);
+          posts.should.have.lengthOf(1);
+          post = posts[0];
+          should.not.exist(post.title);
+          post.should.have.property('content', 'AAA');
+          post._id.should.be.an.instanceOf(db.ObjectID);
+
+          done();
         }
       );
     });
