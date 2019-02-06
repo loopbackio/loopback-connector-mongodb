@@ -3074,6 +3074,60 @@ describe('mongodb connector', function() {
     module.generateMongoDBURL.should.be.an.instanceOf(Function);
   });
 
+  describe('Test generateMongoDBURL function', function() {
+    var module = require('../');
+    context('should return correct mongodb url ', function() {
+      it('when only passing in database', function() {
+        var options = {
+          database: 'fakeDatabase',
+        };
+        module.generateMongoDBURL(options).should.be.eql('mongodb://127.0.0.1:27017/fakeDatabase');
+      });
+      it('when protocol is mongodb and no username/password', function() {
+        var options = {
+          protocol: 'mongodb',
+          hostname: 'fakeHostname',
+          port: 9999,
+          database: 'fakeDatabase',
+        };
+        module.generateMongoDBURL(options).should.be.eql('mongodb://fakeHostname:9999/fakeDatabase');
+      });
+      it('when protocol is mongodb and has username/password', function() {
+        var options = {
+          protocol: 'mongodb',
+          hostname: 'fakeHostname',
+          port: 9999,
+          database: 'fakeDatabase',
+          username: 'fakeUsername',
+          password: 'fakePassword',
+        };
+        module.generateMongoDBURL(options).should.be.eql('mongodb://fakeUsername:fakePassword@fakeHostname:9999/fakeDatabase');
+      });
+      it('when protocol is mongodb+srv and no username/password', function() {
+        var options = {
+          protocol: 'mongodb+srv',
+          hostname: 'fakeHostname',
+          port: 9999,
+          database: 'fakeDatabase',
+        };
+        // mongodb+srv url should not have the port in it
+        module.generateMongoDBURL(options).should.be.eql('mongodb+srv://fakeHostname/fakeDatabase');
+      });
+      it('when protocol is mongodb+srv and has username/password', function() {
+        var options = {
+          protocol: 'mongodb+srv',
+          hostname: 'fakeHostname',
+          port: 9999,
+          database: 'fakeDatabase',
+          username: 'fakeUsername',
+          password: 'fakePassword',
+        };
+        // mongodb+srv url should not have the port in it
+        module.generateMongoDBURL(options).should.be.eql('mongodb+srv://fakeUsername:fakePassword@fakeHostname/fakeDatabase');
+      });
+    });
+  });
+
   context('fieldsArrayToObj', function() {
     var fieldsArrayToObj = require('../').fieldsArrayToObj;
     it('should export the fieldsArrayToObj function', function() {
