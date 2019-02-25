@@ -169,7 +169,7 @@ describe('decimal128', function() {
     });
 
     it('find - filters nested object decimal property', function(done) {
-      const cond = {where: {'summary.totalValue': Decimal128.fromString('100.0005')}};
+      const cond = {where: {'summary.totalValue': '100.0005'}};
       OrderDecimalObj.find(cond, function(err, orders) {
         if (err) return done(err);
         orders.length.should.be.above(0);
@@ -183,7 +183,7 @@ describe('decimal128', function() {
       const anotherSample = {
         summary: {totalValue: '100.0006'},
       };
-      const cond = {'summary.totalValue': Decimal128.fromString('100.0005')};
+      const cond = {'summary.totalValue': '100.0005'};
       OrderDecimalObj.create(anotherSample)
         .then(function() {
           return OrderDecimalObj.destroyAll(cond);
