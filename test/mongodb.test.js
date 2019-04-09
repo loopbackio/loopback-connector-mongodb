@@ -56,7 +56,7 @@ describe('lazyConnect', function() {
     });
 
     ds.on('error', function(err) {
-      err.message.should.match(/failed to connect to server/);
+      err.code.should.eql('ECONNREFUSED');
       done();
     });
   });
@@ -345,7 +345,7 @@ describe('mongodb connector', function() {
       });
       ds.ping(function(err) {
         (!!err).should.be.True();
-        err.message.should.match(/failed to connect to server/);
+        err.code.should.eql('ECONNREFUSED');
         done();
       });
     });
@@ -790,7 +790,7 @@ describe('mongodb connector', function() {
     });
   });
 
-  it('should not return data for nested `$where` in where', function(done) {
+  it('should return data for nested `$where` in where', function(done) {
     Post.create({title: 'Post1', content: 'Post1 content'}, (err, p1) => {
       Post.create({title: 'Post2', content: 'Post2 content'}, (err2, p2) => {
         Post.create({title: 'Post3', content: 'Post3 data'}, (err3, p3) => {
@@ -822,13 +822,14 @@ describe('mongodb connector', function() {
     });
   });
 
-  it('does not execute a nested `$where`', function(done) {
+  it('does not execute a nested `$where` when extended operators are allowed', function(done) {
+    const nestedWhereFilter = {where: {content: {$where: 'function() {return this.content.contains("content")}'}}};
     Post.create({title: 'Post1', content: 'Post1 content'}, (err, p1) => {
       Post.create({title: 'Post2', content: 'Post2 content'}, (err2, p2) => {
         Post.create({title: 'Post3', content: 'Post3 data'}, (err3, p3) => {
-          Post.find({where: {content: {$where: 'function() {return this.content.contains("content")}'}}}, (err, p) => {
-            should.not.exist(err);
-            p.length.should.be.equal(0);
+          Post.find(nestedWhereFilter, {allowExtendedOperators: true}, (err, p) => {
+            should.exist(err);
+            err.message.should.match(/\$where/);
             done();
           });
         });
