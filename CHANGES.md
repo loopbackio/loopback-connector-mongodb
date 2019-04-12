@@ -1,3 +1,11 @@
+2019-04-12, Version 4.1.0
+=========================
+
+ * fix: coerce deep nested decimal properties (biniam)
+
+ * Fix missing '_id' when selected in filter.fields (#439) (Helge Willum Thingvad)
+
+
 2018-11-06, Version 4.0.0
 =========================
 
