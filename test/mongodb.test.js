@@ -29,6 +29,7 @@ var Superhero,
   PostWithStringIdAndRenamedColumns,
   Employee,
   PostWithDisableDefaultSort,
+  WithEmbeddedProperties,
   WithEmbeddedBinaryProperties;
 
 describe('lazyConnect', function() {
@@ -295,6 +296,20 @@ describe('mongodb connector', function() {
       }
     );
 
+    WithEmbeddedProperties = db.define(
+      'WithEmbeddedProperties',
+      {
+        id: {type: String, id: true},
+        name: {type: String},
+        location: {
+          type: {
+            city: {type: String},
+            country: {type: String},
+          },
+        },
+      }
+    );
+
     WithEmbeddedBinaryProperties = db.define(
       'WithEmbeddedBinaryProperties',
       {
@@ -322,7 +337,9 @@ describe('mongodb connector', function() {
               PostWithStringId.destroyAll(function() {
                 PostWithDisableDefaultSort.destroyAll(function() {
                   Category.destroyAll(function() {
-                    done();
+                    WithEmbeddedProperties.destroyAll(function() {
+                      done();
+                    });
                   });
                 });
               });
@@ -696,6 +713,34 @@ describe('mongodb connector', function() {
     User.create({name: 'John', icon: new Buffer('1a2')}, function(e, u) {
       User.findById(u.id, function(e, user) {
         user.icon.should.be.an.instanceOf(Buffer);
+        done();
+      });
+    });
+  });
+
+  it('should properly retrieve embedded model properties', function(done) {
+    const data = {name: 'Mitsos', location: {city: 'Volos', country: 'Greece'}};
+    WithEmbeddedProperties.create(data, function(err, createdModel) {
+      if (err) return done(err);
+      WithEmbeddedProperties.findById(createdModel.id, function(err, dbModel) {
+        if (err) return done(err);
+        const modelObj = dbModel.toJSON();
+        const dataObj = Object.assign({id: modelObj.id}, data);
+        modelObj.should.be.eql(dataObj);
+        done();
+      });
+    });
+  });
+
+  it('should not present missing embedded model properties as null', function(done) {
+    const data = {name: 'Mitsos'};
+    WithEmbeddedProperties.create(data, function(err, createdModel) {
+      if (err) return done(err);
+      WithEmbeddedProperties.findById(createdModel.id, function(err, dbModel) {
+        if (err) return done(err);
+        const modelObj = dbModel.toJSON();
+        const dataObj = Object.assign({}, data, {id: modelObj.id, location: undefined});
+        modelObj.should.be.eql(dataObj);
         done();
       });
     });
