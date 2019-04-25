@@ -1522,6 +1522,28 @@ describe('mongodb connector', function() {
         });
       });
     });
+
+    it('should allow extended operators in update data for strict models', function() {
+      const noteModel = db.define('noteModel', {
+        title: String,
+        description: String,
+      }, {strict: true});
+      noteModel.settings.mongodb = {allowExtendedOperators: true};
+      let noteId;
+
+      return noteModel.create({title: 'note1', description: 'grocery list'})
+        .then(function(createdInstance) {
+          noteId = createdInstance.id;
+          return noteModel.updateAll({id: noteId}, {$set: {description: 'updated list', title: 'setTitle'}});
+        })
+        .then(function() {
+          return noteModel.findById(noteId);
+        })
+        .then(function(foundNote) {
+          foundNote.title.should.equal('setTitle');
+          foundNote.description.should.equal('updated list');
+        });
+    });
   });
 
   it('findOrCreate should properly support field projection (on create) - object', function() {
