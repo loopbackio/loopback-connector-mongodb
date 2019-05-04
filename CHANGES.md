@@ -1,3 +1,19 @@
+2019-05-04, Version 4.2.0
+=========================
+
+ * fix: edge cases to coerce nested decimal props (biniam)
+
+ * test: strict model update with mongo operators (biniam)
+
+ * chore: update copyrights years (Diana Lau)
+
+ * add check for embedded property type conversion (Dimitris)
+
+ * Remove port when using mongodb+srv (JREEVE)
+
+ * ci: fix previously failing tests (biniam)
+
+
 2019-04-12, Version 4.1.0
 =========================
 
