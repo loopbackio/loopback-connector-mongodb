@@ -1,6 +1,9 @@
 # Lines starting with '#' are comments.
 # Each line is a file pattern followed by one or more owners,
-# the last matching pattern has the most precendence.
+# the last matching pattern has the most precedence.
 
 # Current maintainers
-* @jannyHou @loay @b-admike @virkt25 @dhmlau @shimks @nitro404
+* @jannyHou @b-admike @dhmlau @nitro404 @emonddr
+
+# Alumni maintainers
+# @loay @virkt25 @shimks
