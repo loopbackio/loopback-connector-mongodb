@@ -7,11 +7,13 @@
 
 require('./init.js');
 
-let ds, Book, Chapter;
+let Book, Chapter;
+const ds = global.getDataSource();
+const ObjectID = ds.connector.getDefaultIdType();
+const objectIDLikeString = '7cd2ad46ffc580ba45d3cb1f';
 
 describe('ObjectID', function() {
   before(function() {
-    ds = global.getDataSource();
     Book = ds.define('Book');
     Chapter = ds.define('Chapter');
     Book.hasMany('chapters');
@@ -33,7 +35,7 @@ describe('ObjectID', function() {
 
   it('should convert 24 byte hex string as ObjectID', function() {
     const ObjectID = ds.connector.getDefaultIdType();
-    const str = '52fcef5c0325ace8dcb7a0bd';
+    const str = objectIDLikeString;
     ObjectID(str).should.be.an.instanceOf(ds.ObjectID);
   });
 
@@ -55,18 +57,19 @@ describe('ObjectID', function() {
     ObjectID(id).should.be.equal(123);
   });
 
-  it('coerces ObjectID', function() {
-    const coercedId = ds.connector.isObjectIDProperty('Book', {}, '52fcef5c0325ace8dcb7a0bd');
-    coercedId.should.be.True();
-  });
-
-  it('given strictObjectIDCoercion: true, does not coerce ObjectID', function() {
-    const coercedId = ds.connector.isObjectIDProperty(
-      'Book',
-      {},
-      '52fcef5c0325ace8dcb7a0bd',
-      {strictObjectIDCoercion: true}
-    );
-    coercedId.should.be.False();
+  context('ObjectID type', function() {
+    it('should throw if value is not an ObjectID', async function() {
+      Book = ds.createModel(
+        'book1',
+        {
+          xid: {type: String, mongodb: {dataType: 'objectid'}},
+        }
+      );
+      try {
+        await Book.create({xid: 'x'});
+      } catch (e) {
+        e.message.should.match(/not an ObjectID string/);
+      }
+    });
   });
 });
