@@ -57,7 +57,9 @@ describe('lazyConnect', function() {
     });
 
     ds.on('error', function(err) {
-      err.code.should.eql('ECONNREFUSED');
+      should.exist(err);
+      err.name.should.equal('MongoNetworkError');
+      err.message.should.match(/ECONNREFUSED/);
       done();
     });
   });
@@ -361,8 +363,9 @@ describe('mongodb connector', function() {
         port: 4, // unassigned by IANA
       });
       ds.ping(function(err) {
-        (!!err).should.be.True();
-        err.code.should.eql('ECONNREFUSED');
+        should.exist(err);
+        err.name.should.equal('MongoNetworkError');
+        err.message.should.match(/ECONNREFUSED/);
         done();
       });
     });
