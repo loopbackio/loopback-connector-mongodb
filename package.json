@@ -10,7 +10,7 @@
   "scripts": {
     "benchmarks": "make benchmarks",
     "leak-detection": "make leak-detection",
-    "test": "mocha",
+    "test": "mocha test/*.test.js node_modules/juggler-v3/test.js node_modules/juggler-v4/test.js",
     "lint": "eslint .",
     "posttest": "npm run lint"
   },
@@ -39,7 +39,9 @@
     "bluebird": "^3.5.4",
     "eslint": "^5.1.0",
     "eslint-config-loopback": "^10.0.0",
-    "loopback-datasource-juggler": "^3.23.0",
+    "juggler-v3": "file:./deps/juggler-v3",
+    "juggler-v4": "file:./deps/juggler-v4",
+    "loopback-datasource-juggler": "^3.0.0 || ^4.0.0",
     "mocha": "^5.2.0",
     "rc": "^1.2.8",
     "semver": "^5.5.1",
