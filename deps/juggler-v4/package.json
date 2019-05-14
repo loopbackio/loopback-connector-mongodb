@@ -1,0 +1,8 @@
+{
+  "name": "juggler-v4",
+  "version": "4.0.0",
+  "dependencies": {
+    "loopback-datasource-juggler":"4.x",
+    "should": "^13.2.3"
+  }
+}

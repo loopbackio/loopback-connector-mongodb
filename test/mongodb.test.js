@@ -371,8 +371,9 @@ describe('mongodb connector', function() {
     });
 
     it('ignores invalid option', function(done) {
-      var configWithInvalidOption = global.config;
-      configWithInvalidOption.invalidOption = 'invalid';
+      var configWithInvalidOption = Object.assign({}, global.config, {
+        invalidOption: 'invalid',
+      });
       var ds = global.getDataSource(configWithInvalidOption);
       ds.ping(function(err) {
         if (err) return done(err);
@@ -393,7 +394,7 @@ describe('mongodb connector', function() {
     it('should prioritize to the database given in the url property', function(done) {
       var cfg = JSON.parse(JSON.stringify(global.config));
       var testDb = 'lb-ds-overriden-test-1';
-      cfg.url = 'mongodb://' + cfg.hostname + ':' + cfg.port + '/' + testDb;
+      cfg.url = 'mongodb://' + cfg.host + ':' + cfg.port + '/' + testDb;
       var ds = global.getDataSource(cfg);
       ds.once('connected', function() {
         var db = ds.connector.db;
