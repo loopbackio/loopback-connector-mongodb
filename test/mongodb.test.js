@@ -2003,6 +2003,33 @@ describe('mongodb connector', function() {
     );
   });
 
+  describe('replaceById', function() {
+    it('should replace the object with given data', function(done) {
+      Product.create({name: 'beer', price: 150}, function(err, product) {
+        if (err) return done(err);
+        replaceById(product.id, {name: 'milk'});
+      });
+
+      function replaceById(id, data) {
+        Product.replaceById(id, data, function(err, updatedProduct) {
+          if (err) return done(err);
+          should.not.exist(updatedProduct._id);
+          updatedProduct.name.should.be.equal('milk');
+          should.exist(updatedProduct.id);
+          verify(id);
+        });
+      }
+
+      function verify(id) {
+        Product.findById(id, function(err, data) {
+          data.name.should.be.equal('milk');
+          should.not.exist(data.price);
+          done(err);
+        });
+      }
+    });
+  });
+
   describe('replaceOrCreate', function() {
     it('should create a model instance even if it already exists', function(done) {
       Product.replaceOrCreate({name: 'newFoo'}, function(
@@ -2442,6 +2469,58 @@ describe('mongodb connector', function() {
         point.lng.should.be.equal(post.location.lng);
 
         done();
+      });
+    });
+
+    it('updateOrCreate should convert geopoint to geojson', function(done) {
+      const point = new GeoPoint({lat: 1.243, lng: 20.4});
+      const newPoint = new GeoPoint({lat: 1.2431, lng: 20.41});
+
+      PostWithLocation.create({location: point}, function(err, post) {
+        should.not.exist(err);
+        point.lat.should.be.equal(post.location.lat);
+        point.lng.should.be.equal(post.location.lng);
+
+        post.location = newPoint;
+
+        PostWithLocation.updateOrCreate(post, function(err, p) {
+          should.not.exist(err);
+          p._id.should.be.equal(post._id);
+
+          PostWithLocation.findById(post._id, function(err, p2) {
+            should.not.exist(err);
+            p2._id.should.be.eql(post._id);
+            p2.location.lat.should.be.equal(newPoint.lat);
+            p2.location.lng.should.be.equal(newPoint.lng);
+            done();
+          });
+        });
+      });
+    });
+
+    it('replaceById should convert geopoint to geojson', function(done) {
+      const point = new GeoPoint({lat: 1.243, lng: 20.4});
+      const newPoint = new GeoPoint({lat: 1.2431, lng: 20.41});
+
+      PostWithLocation.create({location: point}, function(err, post) {
+        should.not.exist(err);
+        point.lat.should.be.equal(post.location.lat);
+        point.lng.should.be.equal(post.location.lng);
+
+        post.location = newPoint;
+
+        PostWithLocation.replaceById(post._id, post, function(err, p) {
+          should.not.exist(err);
+          p._id.should.be.equal(post._id);
+
+          PostWithLocation.findById(post._id, function(err, p) {
+            should.not.exist(err);
+            p._id.should.be.eql(post._id);
+            p.location.lat.should.be.equal(newPoint.lat);
+            p.location.lng.should.be.equal(newPoint.lng);
+            done();
+          });
+        });
       });
     });
 
