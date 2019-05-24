@@ -5,29 +5,29 @@
 
 'use strict';
 
-var DataSource = require('loopback-datasource-juggler').DataSource;
-var connector = require('..');
-var Benchmark = require('benchmark');
+const DataSource = require('loopback-datasource-juggler').DataSource;
+const connector = require('..');
+const Benchmark = require('benchmark');
 
-var ds = new DataSource(connector, {
+const ds = new DataSource(connector, {
   host: process.env.LB_HOST || '127.0.0.1',
   port: process.env.LB_PORT || 27017,
   database: process.env.LB_DB || 'strongloop',
 });
-var Todo = ds.define('Todo', {
+const Todo = ds.define('Todo', {
   content: {type: String},
 });
 
 // not critical for MongoDB, but may uncover inefficiencies in SQL connectors
 // https://github.com/strongloop/loopback-connector-mongodb/pull/124/files#r28435614
-var uniqVal = 0;
+let uniqVal = 0;
 
 function resetTestState() {
   uniqVal = 0;
   Todo.destroyAll();
 }
 
-var suite = new Benchmark.Suite();
+const suite = new Benchmark.Suite();
 suite
   .on('start', function() {
     console.log('#', new Date());
