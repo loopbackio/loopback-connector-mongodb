@@ -7,11 +7,11 @@
 
 module.exports = require('should');
 
-var juggler = require('loopback-datasource-juggler');
-var DataSource = juggler.DataSource;
+const juggler = require('loopback-datasource-juggler');
+let DataSource = juggler.DataSource;
 
-var TEST_ENV = process.env.TEST_ENV || 'test';
-var config = require('rc')('loopback', {test: {mongodb: {}}})[TEST_ENV]
+const TEST_ENV = process.env.TEST_ENV || 'test';
+let config = require('rc')('loopback', {test: {mongodb: {}}})[TEST_ENV]
   .mongodb;
 
 config = {
@@ -25,7 +25,7 @@ config = {
 
 global.config = config;
 
-var db;
+let db;
 global.getDataSource = global.getSchema = function(customConfig, customClass) {
   const ctor = customClass || DataSource;
   db = new ctor(require('../'), customConfig || config);
@@ -38,7 +38,7 @@ global.getDataSource = global.getSchema = function(customConfig, customClass) {
 
 global.resetDataSourceClass = function(ctor) {
   DataSource = ctor || juggler.DataSource;
-  var promise = db ? db.disconnect() : Promise.resolve();
+  const promise = db ? db.disconnect() : Promise.resolve();
   db = undefined;
   return promise;
 };

@@ -6,16 +6,16 @@
 'use strict';
 
 // This test written in mocha+should.js
-var semver = require('semver');
-var should = require('./init.js');
-var testUtils = require('../lib/test-utils');
-var async = require('async');
-var sinon = require('sinon');
-var sanitizeFilter = require('../lib/mongodb').sanitizeFilter;
+const semver = require('semver');
+const should = require('./init.js');
+const testUtils = require('../lib/test-utils');
+const async = require('async');
+const sinon = require('sinon');
+const sanitizeFilter = require('../lib/mongodb').sanitizeFilter;
 
-var GeoPoint = require('loopback-datasource-juggler').GeoPoint;
+const GeoPoint = require('loopback-datasource-juggler').GeoPoint;
 
-var Superhero,
+let Superhero,
   User,
   Post,
   Product,
@@ -34,12 +34,12 @@ var Superhero,
 
 describe('lazyConnect', function() {
   it('should skip connect phase (lazyConnect = true)', function(done) {
-    var ds = global.getDataSource({
+    const ds = global.getDataSource({
       host: '127.0.0.1',
       port: 4,
       lazyConnect: true,
     });
-    var errTimeout = setTimeout(function() {
+    const errTimeout = setTimeout(function() {
       done();
     }, 2000);
 
@@ -50,7 +50,7 @@ describe('lazyConnect', function() {
   });
 
   it('should report connection error (lazyConnect = false)', function(done) {
-    var ds = global.getDataSource({
+    const ds = global.getDataSource({
       host: '127.0.0.1',
       port: 4,
       lazyConnect: false,
@@ -65,7 +65,7 @@ describe('lazyConnect', function() {
   });
 
   it('should connect on execute (lazyConnect = true)', function(done) {
-    var ds = global.getDataSource({
+    const ds = global.getDataSource({
       host: '127.0.0.1',
       port: global.config.port,
       lazyConnect: true,
@@ -90,7 +90,7 @@ describe('lazyConnect', function() {
   });
 
   it('should reconnect on execute when disconnected (lazyConnect = true)', function(done) {
-    var ds = global.getDataSource({
+    const ds = global.getDataSource({
       host: '127.0.0.1',
       port: global.config.port,
       lazyConnect: true,
@@ -108,7 +108,7 @@ describe('lazyConnect', function() {
       {value: 'test value'},
       function(err, success) {
         if (err) done(err);
-        var id = success.insertedId;
+        const id = success.insertedId;
         ds.connector.should.have.property('db');
         ds.connector.db.should.have.property('topology');
         ds.connector.db.topology.should.have.property('isDestroyed');
@@ -358,7 +358,7 @@ describe('mongodb connector', function() {
     });
 
     it('should report connection errors with invalid config', function(done) {
-      var ds = global.getDataSource({
+      const ds = global.getDataSource({
         host: 'localhost',
         port: 4, // unassigned by IANA
       });
@@ -371,10 +371,10 @@ describe('mongodb connector', function() {
     });
 
     it('ignores invalid option', function(done) {
-      var configWithInvalidOption = Object.assign({}, global.config, {
+      const configWithInvalidOption = Object.assign({}, global.config, {
         invalidOption: 'invalid',
       });
-      var ds = global.getDataSource(configWithInvalidOption);
+      const ds = global.getDataSource(configWithInvalidOption);
       ds.ping(function(err) {
         if (err) return done(err);
         ds.disconnect(done);
@@ -382,9 +382,9 @@ describe('mongodb connector', function() {
     });
 
     it('accepts database from the url', function(done) {
-      var cfg = JSON.parse(JSON.stringify(global.config));
+      const cfg = JSON.parse(JSON.stringify(global.config));
       delete cfg.database;
-      var ds = global.getDataSource(cfg);
+      const ds = global.getDataSource(cfg);
       ds.ping(function(err) {
         if (err) return done(err);
         ds.disconnect(done);
@@ -392,13 +392,13 @@ describe('mongodb connector', function() {
     });
 
     it('should prioritize to the database given in the url property', function(done) {
-      var cfg = JSON.parse(JSON.stringify(global.config));
-      var testDb = 'lb-ds-overriden-test-1';
+      const cfg = JSON.parse(JSON.stringify(global.config));
+      const testDb = 'lb-ds-overriden-test-1';
       cfg.url = 'mongodb://' + cfg.host + ':' + cfg.port + '/' + testDb;
-      var ds = global.getDataSource(cfg);
+      const ds = global.getDataSource(cfg);
       ds.once('connected', function() {
-        var db = ds.connector.db;
-        var validationError = null;
+        const db = ds.connector.db;
+        let validationError = null;
         try {
           db.should.have.property('databaseName', testDb); // check the db name in the db instance
         } catch (err) {
@@ -418,7 +418,7 @@ describe('mongodb connector', function() {
   });
 
   describe('order filters', function() {
-    var data = [
+    const data = [
       {
         id: 1,
         title: 'Senior Software Developer',
@@ -460,13 +460,13 @@ describe('mongodb connector', function() {
 
     context('using buildSort directly', function() {
       it('sort in descending order', function(done) {
-        var sort = db.connector.buildSort('Employee', 'id DESC');
+        const sort = db.connector.buildSort('Employee', 'id DESC');
         sort.should.have.property('_id');
         sort._id.should.equal(-1);
         done();
       });
       it('sort in ascending order', function(done) {
-        var sort = db.connector.buildSort('Employee', 'id ASC');
+        const sort = db.connector.buildSort('Employee', 'id ASC');
         sort.should.have.property('_id');
         sort._id.should.equal(1);
         done();
@@ -505,7 +505,7 @@ describe('mongodb connector', function() {
         .collection('User')
         .indexInformation(function(err, result) {
           /* eslint-disable camelcase */
-          var indexes = {
+          const indexes = {
             _id_: [['_id', 1]],
             name_age_index: [['name', 1], ['age', -1]],
             age_index: [['age', -1]],
@@ -523,7 +523,7 @@ describe('mongodb connector', function() {
     db.automigrate('Superhero', function() {
       db.connector.db.collection('sh').indexInformation(function(err, result) {
         /* eslint-disable camelcase */
-        var indexes = {
+        const indexes = {
           _id_: [['_id', 1]],
           geojson_location_geometry: [['location.geometry', '2dsphere']],
           power_1: [['power', 1]],
@@ -542,7 +542,7 @@ describe('mongodb connector', function() {
     db.automigrate('Category', function() {
       db.connector.db.collection('Category').indexes(function(err, result) {
         if (err) return done(err);
-        var indexes = [
+        const indexes = [
           {name: '_id_', key: {_id: 1}},
           {name: 'title_1', key: {title: 1}},
           {name: 'title_case_insensitive', key: {title: 1}, collation: {locale: 'en', strength: 1}},
@@ -660,7 +660,7 @@ describe('mongodb connector', function() {
   });
 
   it('all should return object (with `_id` as defined id) with an _id instanceof ObjectID', function(done) {
-    var post = new PostWithObjectId({title: 'a', content: 'AAA'});
+    const post = new PostWithObjectId({title: 'a', content: 'AAA'});
     post.save(function(err, post) {
       PostWithObjectId.all({where: {title: 'a'}}, function(err, posts) {
         should.not.exist(err);
@@ -676,7 +676,7 @@ describe('mongodb connector', function() {
   });
 
   it('all return should honor filter.fields, with `_id` as defined id', function(done) {
-    var post = new PostWithObjectId({title: 'a', content: 'AAA'});
+    const post = new PostWithObjectId({title: 'a', content: 'AAA'});
     post.save(function(err, post) {
       PostWithObjectId.all(
         {fields: ['title'], where: {title: 'a'}},
@@ -689,12 +689,13 @@ describe('mongodb connector', function() {
           should.not.exist(post._id);
 
           done();
-        });
+        }
+      );
     });
   });
 
   it('all return should honor filter.fields with `_id` selected', function(done) {
-    var post = new PostWithObjectId({title: 'a', content: 'AAA'});
+    const post = new PostWithObjectId({title: 'a', content: 'AAA'});
     post.save(function(err, post) {
       PostWithObjectId.all(
         {fields: ['_id', 'content'], where: {title: 'a'}},
@@ -908,8 +909,8 @@ describe('mongodb connector', function() {
   });
 
   it('should invoke hooks', function(done) {
-    var events = [];
-    var connector = Post.getDataSource().connector;
+    const events = [];
+    const connector = Post.getDataSource().connector;
     connector.observe('before execute', function(ctx, next) {
       ctx.req.command.should.be.String();
       ctx.req.params.should.be.Array();
@@ -1140,7 +1141,7 @@ describe('mongodb connector', function() {
       });
     });
 
-    var describeMongo26 = describe;
+    let describeMongo26 = describe;
     if (
       process.env.MONGODB_VERSION &&
       !semver.satisfies(process.env.MONGODB_VERSION, '~2.6.0')
@@ -1312,7 +1313,7 @@ describe('mongodb connector', function() {
 
       it('should be possible to enable using options - even if globally disabled', function(done) {
         User.dataSource.settings.allowExtendedOperators = false;
-        var options = {allowExtendedOperators: true};
+        const options = {allowExtendedOperators: true};
         User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(
           err1,
           createdusers1
@@ -1343,7 +1344,7 @@ describe('mongodb connector', function() {
 
       it('should be possible to disable using options - even if globally disabled', function(done) {
         User.dataSource.settings.allowExtendedOperators = true;
-        var options = {allowExtendedOperators: false};
+        const options = {allowExtendedOperators: false};
         User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(
           err1,
           createdusers1
@@ -1667,7 +1668,7 @@ describe('mongodb connector', function() {
     Product.create(
       {name: 'bread', price: 100, pricehistory: [{'2014-11-11': 90}]},
       function(err, product) {
-        var newattributes = {
+        const newattributes = {
           $set: {description: 'goes well with butter'},
           $addToSet: {pricehistory: {'2014-12-12': 110}},
         };
@@ -1746,7 +1747,7 @@ describe('mongodb connector', function() {
         pricehistory: [{'2014-11-11': 90}, {'2014-10-10': 80}],
       },
       function(err, product) {
-        var newattributes = {
+        const newattributes = {
           $set: {description: 'goes well with butter'},
           $addToSet: {pricehistory: {'2014-12-12': 110}},
         };
@@ -1781,7 +1782,7 @@ describe('mongodb connector', function() {
         ],
       },
       function(err, product) {
-        var newattributes = {
+        const newattributes = {
           $set: {description: 'goes well with butter'},
           $addToSet: {pricehistory: 1},
         };
@@ -1845,7 +1846,7 @@ describe('mongodb connector', function() {
     Product.create(
       {name: 'bread', price: 100, pricehistory: [70, 80, 90, 100]},
       function(err, product) {
-        var newattributes = {
+        const newattributes = {
           $set: {description: 'goes well with butter'},
           $pull: {pricehistory: {$gte: 90}},
         };
@@ -1895,7 +1896,7 @@ describe('mongodb connector', function() {
     Product.create(
       {name: 'bread', price: 100, pricehistory: [70, 80, 90, 100]},
       function(err, product) {
-        var newattributes = {
+        const newattributes = {
           $set: {description: 'goes well with butter'},
           $pullAll: {pricehistory: [80, 100]},
         };
@@ -1950,7 +1951,7 @@ describe('mongodb connector', function() {
         pricehistory: [{'2014-11-11': 90}, {'2014-10-10': 80}],
       },
       function(err, product) {
-        var newattributes = {
+        const newattributes = {
           $set: {description: 'goes well with butter'},
           $push: {pricehistory: {'2014-10-10': 80}},
         };
@@ -2177,7 +2178,7 @@ describe('mongodb connector', function() {
   });
 
   it('updateOrCreate should create a new instance if it does not exist', function(done) {
-    var post = {id: '123', title: 'a', content: 'AAA'};
+    const post = {id: '123', title: 'a', content: 'AAA'};
     Post.updateOrCreate(post, function(err, p) {
       should.not.exist(err);
       p.title.should.be.equal(post.title);
@@ -2239,7 +2240,7 @@ describe('mongodb connector', function() {
   });
 
   it('save should create a new instance if it does not exist', function(done) {
-    var post = new Post({id: '123', title: 'a', content: 'AAA'});
+    const post = new Post({id: '123', title: 'a', content: 'AAA'});
     post.save(post, function(err, p) {
       should.not.exist(err);
       p.title.should.be.equal(post.title);
@@ -2258,7 +2259,7 @@ describe('mongodb connector', function() {
     });
   });
   it('all should return object with an id, which is instanceof ObjectID, but not mongodb _id', function(done) {
-    var post = new Post({title: 'a', content: 'AAA'});
+    const post = new Post({title: 'a', content: 'AAA'});
     post.save(function(err, post) {
       Post.all({where: {title: 'a'}}, function(err, posts) {
         should.not.exist(err);
@@ -2275,7 +2276,7 @@ describe('mongodb connector', function() {
   });
 
   it('all return should honor filter.fields', function(done) {
-    var post = new Post({title: 'b', content: 'BBB'});
+    const post = new Post({title: 'b', content: 'BBB'});
     post.save(function(err, post) {
       db.connector.all(
         'Post',
@@ -2297,8 +2298,8 @@ describe('mongodb connector', function() {
   });
 
   it('create should convert id from ObjectID to string', function(done) {
-    var oid = new db.ObjectID();
-    var sid = oid.toString();
+    const oid = new db.ObjectID();
+    const sid = oid.toString();
     PostWithStringId.create({id: oid, title: 'c', content: 'CCC'}, function(
       err,
       post
@@ -2315,8 +2316,8 @@ describe('mongodb connector', function() {
   });
 
   it('create should convert id from string to ObjectID', function(done) {
-    var oid = new db.ObjectID();
-    var sid = oid.toString();
+    const oid = new db.ObjectID();
+    const sid = oid.toString();
     Post.create({id: sid, title: 'c', content: 'CCC'}, function(err, post) {
       post.id.should.be.an.instanceOf(db.ObjectID);
       Post.findById(sid, function(err, post) {
@@ -2351,7 +2352,7 @@ describe('mongodb connector', function() {
   });
 
   it('create should support renamed column names (using property syntax first)', function(done) {
-    var oid = new db.ObjectID().toString();
+    const oid = new db.ObjectID().toString();
     PostWithStringId.create({id: oid, title: 'c', content: 'CCC'}, function(
       err,
       post
@@ -2372,7 +2373,7 @@ describe('mongodb connector', function() {
   });
 
   it('create should support renamed column names (using db syntax first)', function(done) {
-    var oid = new db.ObjectID().toString();
+    const oid = new db.ObjectID().toString();
     PostWithStringIdAndRenamedColumns.create(
       {
         id: oid,
@@ -2397,10 +2398,10 @@ describe('mongodb connector', function() {
   });
 
   describe('geo queries', function() {
-    var geoDb, PostWithLocation, createLocationPost;
+    let geoDb, PostWithLocation, createLocationPost;
 
     before(function() {
-      var config = JSON.parse(JSON.stringify(global.config)); // clone config
+      const config = JSON.parse(JSON.stringify(global.config)); // clone config
       config.enableGeoIndexing = true;
 
       geoDb = global.getDataSource(config);
@@ -2410,7 +2411,7 @@ describe('mongodb connector', function() {
         location: {type: GeoPoint, index: true},
       });
       createLocationPost = function(far) {
-        var point;
+        let point;
         if (far) {
           point = new GeoPoint({
             lat: 31.230416,
@@ -2433,7 +2434,7 @@ describe('mongodb connector', function() {
     });
 
     it('create should convert geopoint to geojson', function(done) {
-      var point = new GeoPoint({lat: 1.243, lng: 20.4});
+      const point = new GeoPoint({lat: 1.243, lng: 20.4});
 
       PostWithLocation.create({location: point}, function(err, post) {
         should.not.exist(err);
@@ -2445,11 +2446,11 @@ describe('mongodb connector', function() {
     });
 
     it('find should be able to query by location', function(done) {
-      var coords = {lat: 1.25, lng: 20.2};
+      const coords = {lat: 1.25, lng: 20.2};
 
       geoDb.autoupdate(function(err) {
-        var createPost = function(callback) {
-          var point = new GeoPoint({
+        const createPost = function(callback) {
+          const point = new GeoPoint({
             lat: Math.random() * 180 - 90,
             lng: Math.random() * 360 - 180,
           });
@@ -2479,9 +2480,9 @@ describe('mongodb connector', function() {
                 should.not.exist(err);
                 should.exist(results);
 
-                var dist = 0;
+                let dist = 0;
                 results.forEach(function(result) {
-                  var currentDist = testUtils.getDistanceBetweenPoints(
+                  const currentDist = testUtils.getDistanceBetweenPoints(
                     coords,
                     result.location
                   );
@@ -2498,11 +2499,11 @@ describe('mongodb connector', function() {
     });
 
     it('find should be queryable using locations with deep/multiple keys', function(done) {
-      var coords = {lat: 1.25, lng: 20.2};
+      const coords = {lat: 1.25, lng: 20.2};
 
       geoDb.autoupdate(function(err) {
-        var heroNumber = 0;
-        var powers = ['fly', 'lasers', 'strength', 'drink'];
+        let heroNumber = 0;
+        const powers = ['fly', 'lasers', 'strength', 'drink'];
 
         function createSuperheroWithLocation(callback) {
           heroNumber++;
@@ -2553,9 +2554,9 @@ describe('mongodb connector', function() {
 
                 results.should.have.length(1);
 
-                var dist = 0;
+                let dist = 0;
                 results.forEach(function(result) {
-                  var currentDist = testUtils.getDistanceBetweenPoints(coords, {
+                  const currentDist = testUtils.getDistanceBetweenPoints(coords, {
                     lng: result.location.geometry.coordinates[0],
                     lat: result.location.geometry.coordinates[1],
                   });
@@ -2572,7 +2573,7 @@ describe('mongodb connector', function() {
     });
 
     it('find should be able to query by location via near with maxDistance', function(done) {
-      var coords = {lat: 30.274085, lng: 120.15507000000002};
+      const coords = {lat: 30.274085, lng: 120.15507000000002};
 
       geoDb.autoupdate(function(err) {
         async.parallel(
@@ -2597,9 +2598,9 @@ describe('mongodb connector', function() {
               function(err, results) {
                 if (err) return done(err);
                 results.length.should.be.equal(3);
-                var dist = 0;
+                let dist = 0;
                 results.forEach(function(result) {
-                  var currentDist = testUtils.getDistanceBetweenPoints(
+                  const currentDist = testUtils.getDistanceBetweenPoints(
                     coords,
                     result.location
                   );
@@ -2616,7 +2617,7 @@ describe('mongodb connector', function() {
     });
 
     it('find should be able to query by location via near with minDistance set', function(done) {
-      var coords = {lat: 30.274085, lng: 120.15507000000002};
+      const coords = {lat: 30.274085, lng: 120.15507000000002};
       geoDb.autoupdate(function(err) {
         async.parallel(
           [
@@ -2640,9 +2641,9 @@ describe('mongodb connector', function() {
               function(err, results) {
                 if (err) return done(err);
                 results.length.should.be.equal(1);
-                var dist = 0;
+                let dist = 0;
                 results.forEach(function(result) {
-                  var currentDist = testUtils.getDistanceBetweenPoints(
+                  const currentDist = testUtils.getDistanceBetweenPoints(
                     coords,
                     result.location
                   );
@@ -2658,10 +2659,10 @@ describe('mongodb connector', function() {
     });
 
     it('find should be able to set unit when query location via near', function(done) {
-      var coords = {lat: 30.274085, lng: 120.15507000000002};
+      const coords = {lat: 30.274085, lng: 120.15507000000002};
 
       geoDb.autoupdate(function(err) {
-        var queryLocation = function(
+        const queryLocation = function(
           distance,
           unit,
           distanceInMeter,
@@ -2682,7 +2683,7 @@ describe('mongodb connector', function() {
                 if (err) return done(err);
                 results.length.should.be.equal(numOfResult);
                 results.forEach(function(result) {
-                  var currentDist = testUtils.getDistanceBetweenPoints(
+                  const currentDist = testUtils.getDistanceBetweenPoints(
                     coords,
                     result.location
                   );
@@ -3131,31 +3132,31 @@ describe('mongodb connector', function() {
   });
 
   it('should export the MongoDB function', function() {
-    var module = require('../');
+    const module = require('../');
     module.MongoDB.should.be.an.instanceOf(Function);
   });
 
   it('should export the ObjectID function', function() {
-    var module = require('../');
+    const module = require('../');
     module.ObjectID.should.be.an.instanceOf(Function);
   });
 
   it('should export the generateMongoDBURL function', function() {
-    var module = require('../');
+    const module = require('../');
     module.generateMongoDBURL.should.be.an.instanceOf(Function);
   });
 
   describe('Test generateMongoDBURL function', function() {
-    var module = require('../');
+    const module = require('../');
     context('should return correct mongodb url ', function() {
       it('when only passing in database', function() {
-        var options = {
+        const options = {
           database: 'fakeDatabase',
         };
         module.generateMongoDBURL(options).should.be.eql('mongodb://127.0.0.1:27017/fakeDatabase');
       });
       it('when protocol is mongodb and no username/password', function() {
-        var options = {
+        const options = {
           protocol: 'mongodb',
           hostname: 'fakeHostname',
           port: 9999,
@@ -3164,7 +3165,7 @@ describe('mongodb connector', function() {
         module.generateMongoDBURL(options).should.be.eql('mongodb://fakeHostname:9999/fakeDatabase');
       });
       it('when protocol is mongodb and has username/password', function() {
-        var options = {
+        const options = {
           protocol: 'mongodb',
           hostname: 'fakeHostname',
           port: 9999,
@@ -3175,7 +3176,7 @@ describe('mongodb connector', function() {
         module.generateMongoDBURL(options).should.be.eql('mongodb://fakeUsername:fakePassword@fakeHostname:9999/fakeDatabase');
       });
       it('when protocol is mongodb+srv and no username/password', function() {
-        var options = {
+        const options = {
           protocol: 'mongodb+srv',
           hostname: 'fakeHostname',
           port: 9999,
@@ -3185,7 +3186,7 @@ describe('mongodb connector', function() {
         module.generateMongoDBURL(options).should.be.eql('mongodb+srv://fakeHostname/fakeDatabase');
       });
       it('when protocol is mongodb+srv and has username/password', function() {
-        var options = {
+        const options = {
           protocol: 'mongodb+srv',
           hostname: 'fakeHostname',
           port: 9999,
@@ -3200,7 +3201,7 @@ describe('mongodb connector', function() {
   });
 
   context('fieldsArrayToObj', function() {
-    var fieldsArrayToObj = require('../').fieldsArrayToObj;
+    const fieldsArrayToObj = require('../').fieldsArrayToObj;
     it('should export the fieldsArrayToObj function', function() {
       fieldsArrayToObj.should.be.an.instanceOf(Function);
     });

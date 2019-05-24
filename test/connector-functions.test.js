@@ -6,10 +6,10 @@
 'use strict';
 
 // This test written in mocha+should.js
-var should = require('./init.js');
+const should = require('./init.js');
 
 describe('connector function - findById', function() {
-  var db, TestAlias, sampleId;
+  let db, TestAlias, sampleId;
   before(function(done) {
     db = global.getDataSource();
     TestAlias = db.define('TestAlias', {foo: {type: String}});

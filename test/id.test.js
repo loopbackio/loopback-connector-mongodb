@@ -6,10 +6,10 @@
 'use strict';
 
 require('./init.js');
-var ds = global.getDataSource();
+const ds = global.getDataSource();
 
 describe('mongodb custom id name', function() {
-  var Customer = ds.createModel(
+  const Customer = ds.createModel(
     'customer',
     {
       seq: {type: Number, id: true},
@@ -66,7 +66,7 @@ describe('mongodb custom id name', function() {
 });
 
 describe('mongodb string id', function() {
-  var Customer = ds.createModel(
+  const Customer = ds.createModel(
     'customer2',
     {
       seq: {type: String, id: true},
@@ -76,7 +76,7 @@ describe('mongodb string id', function() {
     },
     {forceId: false}
   );
-  var customer1, customer2;
+  let customer1, customer2;
 
   before(function(done) {
     Customer.deleteAll(done);
@@ -93,7 +93,7 @@ describe('mongodb string id', function() {
       function(err, customer) {
         customer.seq.should.equal('1');
         customer1 = customer;
-        var customer2Id = new ds.ObjectID().toString();
+        const customer2Id = new ds.ObjectID().toString();
         Customer.create(
           {
             seq: customer2Id,
@@ -140,7 +140,7 @@ describe('mongodb string id', function() {
 });
 
 describe('mongodb default id type', function() {
-  var Account = ds.createModel(
+  const Account = ds.createModel(
     'account',
     {
       seq: {id: true, generated: true},
@@ -155,7 +155,7 @@ describe('mongodb default id type', function() {
     Account.deleteAll(done);
   });
 
-  var id;
+  let id;
   it('should generate id value for create', function(done) {
     Account.create(
       {
@@ -197,7 +197,7 @@ describe('mongodb default id type', function() {
 });
 
 describe('mongodb default id name', function() {
-  var Customer1 = ds.createModel(
+  const Customer1 = ds.createModel(
     'customer1',
     {name: String, emails: [String], age: Number},
     {forceId: false}

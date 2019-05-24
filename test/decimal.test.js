@@ -9,12 +9,12 @@ require('./init.js');
 const promisify = require('bluebird').promisify;
 const Decimal128 = require('mongodb').Decimal128;
 
-var db, OrderDecimal;
+let db, OrderDecimal;
 
 describe('model with decimal property', function() {
   before(function(done) {
     db = global.getDataSource();
-    var propertyDef = {
+    const propertyDef = {
       count: {
         type: String,
         mongodb: {
@@ -118,14 +118,14 @@ describe('model with decimal property', function() {
           updateOnLoad: true,
         });
 
-        var createData = {
+        const createData = {
           'randomReview': [
             '3.5',
             '4.5',
             '4.0',
           ],
         };
-        var updateData = {
+        const updateData = {
           'randomReview': [
             '5.5',
             '5.5',

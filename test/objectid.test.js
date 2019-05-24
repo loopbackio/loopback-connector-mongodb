@@ -7,7 +7,7 @@
 
 require('./init.js');
 
-var ds, Book, Chapter;
+let ds, Book, Chapter;
 
 describe('ObjectID', function() {
   before(function() {
@@ -32,26 +32,26 @@ describe('ObjectID', function() {
   });
 
   it('should convert 24 byte hex string as ObjectID', function() {
-    var ObjectID = ds.connector.getDefaultIdType();
-    var str = '52fcef5c0325ace8dcb7a0bd';
+    const ObjectID = ds.connector.getDefaultIdType();
+    const str = '52fcef5c0325ace8dcb7a0bd';
     ObjectID(str).should.be.an.instanceOf(ds.ObjectID);
   });
 
   it('should not convert 12 byte string as ObjectID', function() {
-    var ObjectID = ds.connector.getDefaultIdType();
-    var str = 'line-by-line';
+    const ObjectID = ds.connector.getDefaultIdType();
+    const str = 'line-by-line';
     ObjectID(str).should.be.equal(str);
   });
 
   it('should keep mongodb ObjectID as is', function() {
-    var ObjectID = ds.connector.getDefaultIdType();
-    var id = new ds.ObjectID();
+    const ObjectID = ds.connector.getDefaultIdType();
+    const id = new ds.ObjectID();
     ObjectID(id).should.be.an.instanceOf(ds.ObjectID);
   });
 
   it('should keep non-string id as it', function() {
-    var ObjectID = ds.connector.getDefaultIdType();
-    var id = 123;
+    const ObjectID = ds.connector.getDefaultIdType();
+    const id = 123;
     ObjectID(id).should.be.equal(123);
   });
 
