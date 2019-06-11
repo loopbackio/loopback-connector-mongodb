@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-mongodb",
-  "version": "4.2.0",
+  "version": "5.0.0-1",
   "description": "The official MongoDB connector for the LoopBack framework.",
   "engines": {
     "node": ">=8"
@@ -10,6 +10,7 @@
   "scripts": {
     "benchmarks": "make benchmarks",
     "leak-detection": "make leak-detection",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test": "mocha test/*.test.js node_modules/juggler-v3/test.js node_modules/juggler-v4/test.js",
     "lint": "eslint .",
     "posttest": "npm run lint"
