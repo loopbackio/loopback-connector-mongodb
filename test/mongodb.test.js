@@ -3200,6 +3200,38 @@ describe('mongodb connector', function() {
     });
   });
 
+  describe('Test encodeMongoDBURL function', function() {
+    const module = require('../');
+
+    context('mongodb protocol', function() {
+      it('when username:password is provided', function() {
+        const url = 'mongodb://@$/! +=*%:@$/! +=*%@host:999/db';
+        const encodedUrl = module.encodeMongoDBURL(url);
+        encodedUrl.should.be.eql('mongodb://%40%24%2F%21%20%2B%3D%2A%25:%40%24%2F%21%20%2B%3D%2A%25@host:999/db');
+      });
+
+      it('when username:password is not provided', function() {
+        const url = 'mongodb://host:999/db';
+        const encodedUrl = module.encodeMongoDBURL(url);
+        encodedUrl.should.be.eql('mongodb://host:999/db');
+      });
+    });
+
+    context('mongodb+srv protocol', function() {
+      it('when username:password is provided', function() {
+        const url = 'mongodb+srv://@$/! +=*%:@$/! +=*%@host/db';
+        const encodedUrl = module.encodeMongoDBURL(url);
+        encodedUrl.should.be.eql('mongodb+srv://%40%24%2F%21%20%2B%3D%2A%25:%40%24%2F%21%20%2B%3D%2A%25@host/db');
+      });
+
+      it('when username:password is not provided', function() {
+        const url = 'mongodb+srv://host/db';
+        const encodedUrl = module.encodeMongoDBURL(url);
+        encodedUrl.should.be.eql('mongodb+srv://host/db');
+      });
+    });
+  });
+
   context('fieldsArrayToObj', function() {
     const fieldsArrayToObj = require('../').fieldsArrayToObj;
     it('should export the fieldsArrayToObj function', function() {
