@@ -16,3 +16,5 @@ addons:
       - mongodb-org-shell
 services:
   - mongodb
+
+after_success: npm run coverage
