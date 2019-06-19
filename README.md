@@ -40,6 +40,21 @@ The entry in the application's `/server/datasources.json` will look like this:
 
 Edit `datasources.json` to add any other additional properties that you require.
 
+If your username or password contains special characters like `@`, `$` etc, encode the whole
+username or password using [percent-encoding](https://tools.ietf.org/html/rfc3986#section-2.1).
+
+Here is a function to help you generate percent-encoded string:
+
+```js
+function percentEncode(string) {
+  let encoded = '';
+  string.split('').forEach(function(char) {
+    encoded += '%' + char.charCodeAt(0).toString(16).toUpperCase();
+  });
+  return encoded;
+}
+```
+
 ### Connection properties
 
 | Property | Type&nbsp;&nbsp; | Description |
