@@ -127,4 +127,71 @@ describe('ObjectID', function() {
       found.xid.should.be.an.instanceOf(ds.ObjectID);
     });
   });
+
+  context('nested ObjectID property', function() {
+    // NOTE: need to update loopback-datasource-juggler/lib/list.js to make this work
+    context('in an array', function() {
+      const Article = ds.createModel(
+        'ArticleD',
+        {
+          xids: {type: [String], mongodb: {dataType: 'objectid'}},
+          title: String,
+        }
+      );
+
+      beforeEach(function(done) {
+        Article.deleteAll(done);
+      });
+
+      it('should throw if value is not an ObjectID-like string', async function() {
+        try {
+          await Article.create({xids: ['a'], title: 'abc'});
+        } catch (e) {
+          e.message.should.match(/not an ObjectID string/);
+        }
+      });
+
+      it('should save as ObjectID', async function() {
+        await Article.create({xids: [objectIDLikeString], title: 'abc'});
+        const found = await Article.findOne({where: {title: 'abc'}});
+        found.xids[0].should.be.an.instanceOf(ds.ObjectID);
+      });
+    });
+
+    // NOTE: need to update something in loopback-datasource-juggler to make this work
+    context('in an object', function() {
+      const Article = ds.createModel(
+        'ArticleE',
+        {
+          obj: {
+            type: {
+              name: String,
+              xid: {
+                type: String, mongodb: {dataType: 'objectid'}
+              }
+            }
+          },
+          title: String,
+        }
+      );
+
+      beforeEach(function(done) {
+        Article.deleteAll(done);
+      });
+
+      it('should throw if value is not an ObjectID-like string', async function() {
+        try {
+          await Article.create({obj: {name: 'apple', xid: 'x' }, title: 'abc'});
+        } catch (e) {
+          e.message.should.match(/not an ObjectID string/);
+        }
+      });
+
+      it('should save as ObjectID', async function() {
+        await Article.create({obj: {name: 'apple', xid: objectIDLikeString}, title: 'abc'});
+        const found = await Article.findOne({where: {title: 'abc'}});
+        found.obj.xid.should.be.an.instanceOf(ds.ObjectID);
+      });
+    });
+  });
 });
