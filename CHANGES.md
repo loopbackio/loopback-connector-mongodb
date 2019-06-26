@@ -1,4 +1,26 @@
-2019-05-04, Version 4.2.0
+2019-06-26, Version 5.0.0
+=========================
+
+ * chore: add coverage (Hage Yaapa)
+
+ * fix: ObjectID data type preservation (Hage Yaapa)
+
+ * feat: add mongodb.dataType to property definition (Hage Yaapa)
+
+ * chore: replace var with let and const (Hage Yaapa)
+
+ * chore: meaningful variable names (Hage Yaapa)
+
+ * Run shared tests from both v3 and v4 of juggler (Miroslav Bajtoš)
+
+ * Fix tests to correctly assert on MongoNetworkError (Miroslav Bajtoš)
+
+ * Add Node.js 12 to Travis CI platforms (Miroslav Bajtoš)
+
+ * specify downstreamIgnoreList in CI (Diana Lau)
+
+
+2019-05-03, Version 4.2.0
 =========================
 
  * fix: edge cases to coerce nested decimal props (biniam)
