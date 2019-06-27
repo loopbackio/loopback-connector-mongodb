@@ -32,7 +32,7 @@ let Superhero,
   WithEmbeddedProperties,
   WithEmbeddedBinaryProperties;
 
-describe('lazyConnect', function() {
+describe('connect', function() {
   it('should skip connect phase (lazyConnect = true)', function(done) {
     const ds = global.getDataSource({
       host: '127.0.0.1',
@@ -60,6 +60,19 @@ describe('lazyConnect', function() {
       should.exist(err);
       err.name.should.equal('MongoNetworkError');
       err.message.should.match(/ECONNREFUSED/);
+      done();
+    });
+  });
+
+  it('should report url parsing error', function(done) {
+    const ds = global.getDataSource({
+      url: 'mongodb://xyz:@127.0.0.1:4/xyz_dev_db',
+    });
+
+    ds.on('error', function(err) {
+      should.exist(err);
+      err.name.should.equal('MongoNetworkError');
+      err.message.should.match(/failed to connect to server/);
       done();
     });
   });
