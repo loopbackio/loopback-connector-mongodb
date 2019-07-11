@@ -1032,6 +1032,27 @@ describe('mongodb connector', function() {
   });
 
   describe('updateAll', function() {
+    it('should not mutate the input data object', async function() {
+      const user = await User.create({name: 'Al', age: 31, email: 'al@strongloop'});
+      const userId = user.id;
+      const userData = user.toObject();
+      userData.age = 100;
+
+      await User.update(userData);
+      userData.should.have.property('id', userId);
+    });
+
+    it('should not mutate the input model instance', async function() {
+      const user = await User.create({name: 'Al', age: 31, email: 'al@strongloop'});
+      const userId = user.id;
+      user.age = 100;
+      user.name = 'Albert';
+
+      await User.update(user);
+      user.should.have.property('id', userId);
+      user.should.have.property('name', 'Albert');
+    });
+
     it('should update the instance matching criteria', function(done) {
       User.create({name: 'Al', age: 31, email: 'al@strongloop'}, function(
         err1,
