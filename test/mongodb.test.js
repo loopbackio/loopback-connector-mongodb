@@ -54,12 +54,13 @@ describe('connect', function() {
       host: '127.0.0.1',
       port: 4,
       lazyConnect: false,
+      serverSelectionTimeoutMS: 1000,
     });
 
     ds.on('error', function(err) {
       should.exist(err);
-      err.name.should.equal('MongoNetworkError');
-      err.message.should.match(/ECONNREFUSED/);
+      err.name.should.equalOneOf('MongoNetworkError', 'MongoTimeoutError');
+      err.message.should.match(/Server selection timed out/);
       done();
     });
   });
@@ -67,12 +68,13 @@ describe('connect', function() {
   it('should report url parsing error', function(done) {
     const ds = global.getDataSource({
       url: 'mongodb://xyz:@127.0.0.1:4/xyz_dev_db',
+      serverSelectionTimeoutMS: 1000,
     });
 
     ds.on('error', function(err) {
       should.exist(err);
-      err.name.should.equal('MongoNetworkError');
-      err.message.should.match(/failed to connect to server/);
+      err.name.should.equalOneOf('MongoNetworkError', 'MongoTimeoutError');
+      err.message.should.match(/Server selection timed out/);
       done();
     });
   });
@@ -120,21 +122,25 @@ describe('connect', function() {
       'insertOne',
       {value: 'test value'},
       function(err, success) {
-        if (err) done(err);
+        if (err) return done(err);
         const id = success.insertedId;
         ds.connector.should.have.property('db');
         ds.connector.db.should.have.property('topology');
         ds.connector.db.topology.should.have.property('isDestroyed');
         ds.connector.db.topology.isDestroyed().should.be.False();
-        ds.connector.disconnect();
-        ds.connector.db.topology.isDestroyed().should.be.True();
-        ds.connector.execute('TestLazy', 'findOne', {_id: id}, function(
-          err,
-          data
-        ) {
-          if (err) done(err);
-          ds.connector.db.topology.isDestroyed().should.be.False();
-          done();
+        ds.connector.disconnect(function(err) {
+          if (err) return done(err);
+          // [NOTE] isDestroyed() is not implemented by NativeTopology
+          // When useUnifiedTopology is true
+          // ds.connector.db.topology.isDestroyed().should.be.True();
+          ds.connector.execute('TestLazy', 'findOne', {_id: id}, function(
+            err,
+            data
+          ) {
+            if (err) return done(err);
+            // ds.connector.db.topology.isDestroyed().should.be.False();
+            done();
+          });
         });
       }
     );
@@ -374,11 +380,12 @@ describe('mongodb connector', function() {
       const ds = global.getDataSource({
         host: 'localhost',
         port: 4, // unassigned by IANA
+        serverSelectionTimeoutMS: 1000,
       });
       ds.ping(function(err) {
         should.exist(err);
-        err.name.should.equal('MongoNetworkError');
-        err.message.should.match(/ECONNREFUSED/);
+        err.name.should.equalOneOf('MongoNetworkError', 'MongoTimeoutError');
+        err.message.should.match(/Server selection timed out/);
         done();
       });
     });
@@ -872,7 +879,7 @@ describe('mongodb connector', function() {
       Post.create({title: 'Post2', content: 'Post2 content'}, (err2, p2) => {
         Post.create({title: 'Post3', content: 'Post3 data'}, (err3, p3) => {
           Post.find(
-            {where: {$where: 'function() {return this.content.contains("content")}'}},
+            {where: {$where: 'function() {return this.content.includes("content")}'}},
             {disableSanitization: true},
             (err, p) => {
               should.not.exist(err);
@@ -886,7 +893,7 @@ describe('mongodb connector', function() {
   });
 
   it('does not execute a nested `$where` when extended operators are allowed', function(done) {
-    const nestedWhereFilter = {where: {content: {$where: 'function() {return this.content.contains("content")}'}}};
+    const nestedWhereFilter = {where: {content: {$where: 'function() {return this.content.includes("content")}'}}};
     Post.create({title: 'Post1', content: 'Post1 content'}, (err, p1) => {
       Post.create({title: 'Post2', content: 'Post2 content'}, (err2, p2) => {
         Post.create({title: 'Post3', content: 'Post3 data'}, (err3, p3) => {
