@@ -1,4 +1,4 @@
-# loopback-connector-mongodb
+# loopback-connector-mongodb 
 
 The official MongoDB connector for the LoopBack framework.
 
