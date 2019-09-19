@@ -1,3 +1,13 @@
+2019-09-19, Version 5.0.1
+=========================
+
+ * fix: preserve id on update (Hage Yaapa)
+
+ * fix: call toDatabase update and upsert (alexandreferreira)
+
+ * docs: special characters in username and password (Hage Yaapa)
+
+
 2019-06-26, Version 5.0.0
 =========================
 
