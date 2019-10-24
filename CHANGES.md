@@ -1,3 +1,11 @@
+2019-10-24, Version 5.1.0
+=========================
+
+ * Resolve issue #540 for v4.2.0 (Herberts Cruz)
+
+ * Callback with url parsing error (Raymond Feng)
+
+
 2019-09-19, Version 5.0.1
 =========================
 
