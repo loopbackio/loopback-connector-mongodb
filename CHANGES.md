@@ -1,3 +1,13 @@
+2019-10-25, Version 5.2.0
+=========================
+
+ * Remove db.unref as it's not implemented (Raymond Feng)
+
+ * fixed linting errors (Louis Beullens)
+
+ * implicitNullType + tests (Louis Beullens)
+
+
 2019-10-24, Version 5.1.0
 =========================
 
