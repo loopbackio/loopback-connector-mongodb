@@ -34,14 +34,14 @@ describe('connector function - findById', function() {
 
 describe('find (implicitNullType)', function() {
   let db, TestAlias, sampleId;
-  let implicitNullType=false
+  let implicitNullType = false;
   beforeEach(function(done) {
     db = global.getDataSource({
       host: '127.0.0.1',
       port: global.config.port,
       implicitNullType,
     });
-    implicitNullType = !implicitNullType
+    implicitNullType = !implicitNullType;
     TestAlias = db.define('TestAlias', {foo: {type: String}});
     db.automigrate(function(err) {
       if (err) return done(err);
@@ -57,7 +57,7 @@ describe('find (implicitNullType)', function() {
     db.connector.all('TestAlias', {where: {id: sampleId, deletedAt: null}}, {}, function(err, r) {
       if (err) return done(err);
       if (r.length) {
-        return done(new Error('all should not have found the TestAlias document'))
+        return done(new Error('all should not have found the TestAlias document'));
       }
       done();
     });
