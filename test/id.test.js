@@ -17,7 +17,7 @@ describe('mongodb custom id name', function() {
       emails: [String],
       age: Number,
     },
-    {forceId: false}
+    {forceId: false},
   );
   before(function(done) {
     Customer.deleteAll(done);
@@ -43,9 +43,9 @@ describe('mongodb custom id name', function() {
           function(err, customer) {
             customer.seq.should.equal(2);
             done(err, customer);
-          }
+          },
         );
-      }
+      },
     );
   });
 
@@ -74,7 +74,7 @@ describe('mongodb string id', function() {
       emails: [String],
       age: Number,
     },
-    {forceId: false}
+    {forceId: false},
   );
   let customer1, customer2;
 
@@ -105,9 +105,9 @@ describe('mongodb string id', function() {
             customer2 = customer;
             customer.seq.toString().should.eql(customer2Id);
             done(err, customer);
-          }
+          },
         );
-      }
+      },
     );
   });
 
@@ -129,7 +129,7 @@ describe('mongodb string id', function() {
   it('should allow inq with find - test 2', function(done) {
     Customer.find({where: {seq: {inq: [customer2.seq]}}}, function(
       err,
-      customers
+      customers,
     ) {
       customers.length.should.equal(1);
       // seq is now a string
@@ -148,7 +148,7 @@ describe('mongodb default id type', function() {
       emails: [String],
       age: Number,
     },
-    {forceId: false}
+    {forceId: false},
   );
 
   before(function(done) {
@@ -173,7 +173,7 @@ describe('mongodb default id type', function() {
           account.should.have.property('seq');
           done(err, account1);
         });
-      }
+      },
     );
   });
 
@@ -200,7 +200,7 @@ describe('mongodb default id name', function() {
   const Customer1 = ds.createModel(
     'customer1',
     {name: String, emails: [String], age: Number},
-    {forceId: false}
+    {forceId: false},
   );
 
   before(function(done) {
@@ -218,7 +218,7 @@ describe('mongodb default id name', function() {
       function(err, customer) {
         customer.id.should.equal(1);
         done(err, customer);
-      }
+      },
     );
   });
 
@@ -242,7 +242,7 @@ describe('mongodb default id name', function() {
           customer1.id.should.eql(customer.id);
           done(err, customer);
         });
-      }
+      },
     );
   });
 });
@@ -257,7 +257,7 @@ describe('strictObjectIDCoercion', function() {
       {
         id: {type: String, id: true},
         name: String,
-      }
+      },
     );
 
     beforeEach(function(done) {
@@ -300,7 +300,7 @@ describe('strictObjectIDCoercion', function() {
         id: {type: String, id: true},
         name: String,
       },
-      {strictObjectIDCoercion: true}
+      {strictObjectIDCoercion: true},
     );
 
     beforeEach(function(done) {
@@ -342,7 +342,7 @@ describe('strictObjectIDCoercion', function() {
         id: {type: String, id: true, mongodb: {dataType: 'ObjectID'}},
         name: String,
       },
-      {strictObjectIDCoercion: true}
+      {strictObjectIDCoercion: true},
     );
 
     const User1 = ds.createModel(
@@ -351,7 +351,7 @@ describe('strictObjectIDCoercion', function() {
         id: {type: String, id: true, mongodb: {dataType: 'objectid'}},
         name: String,
       },
-      {strictObjectIDCoercion: true}
+      {strictObjectIDCoercion: true},
     );
 
     beforeEach(function(done) {

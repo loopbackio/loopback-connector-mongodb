@@ -63,7 +63,7 @@ describe('ObjectID', function() {
         {
           xid: String,
           title: String,
-        }
+        },
       );
 
       beforeEach(function(done) {
@@ -84,7 +84,7 @@ describe('ObjectID', function() {
           xid: String,
           title: String,
         },
-        {strictObjectIDCoercion: true}
+        {strictObjectIDCoercion: true},
       );
 
       beforeEach(function(done) {
@@ -106,7 +106,7 @@ describe('ObjectID', function() {
         xid: {type: String, mongodb: {dataType: 'objectid'}},
         title: String,
       },
-      {strictObjectIDCoercion: true}
+      {strictObjectIDCoercion: true},
     );
 
     beforeEach(function(done) {

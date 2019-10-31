@@ -47,14 +47,14 @@ Customer.destroyAll(function(err) {
         function(err, customer2) {
           Customer.find({where: {'emails.email': 'john@x.com'}}, function(
             err,
-            customers
+            customers,
           ) {
             g.log('{{Customers}} matched by {{emails.email}} %s', customers);
           });
 
           Customer.find({where: {'emails.0.label': 'work'}}, function(
             err,
-            customers
+            customers,
           ) {
             g.log('{{Customers}} matched by {{emails.0.label}} %s', customers);
           });
@@ -80,8 +80,8 @@ Customer.destroyAll(function(err) {
               ds.disconnect();
             });
           });
-        }
+        },
       );
-    }
+    },
   );
 });
