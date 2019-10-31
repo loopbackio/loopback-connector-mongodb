@@ -28,9 +28,9 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^3.1.0",
     "bson": "^1.0.6",
-    "debug": "^3.1.0",
+    "debug": "^4.1.0",
     "loopback-connector": "^4.5.0",
     "mongodb": "^3.2.4",
     "strong-globalize": "^4.1.1"
@@ -44,12 +44,12 @@
     "juggler-v3": "file:./deps/juggler-v3",
     "juggler-v4": "file:./deps/juggler-v4",
     "loopback-datasource-juggler": "^3.0.0 || ^4.0.0",
-    "mocha": "^5.2.0",
+    "mocha": "^6.2.0",
     "nyc": "^14.1.1",
     "rc": "^1.2.8",
-    "semver": "^5.5.1",
+    "semver": "^6.3.0",
     "should": "^13.2.1",
-    "sinon": "^6.1.3"
+    "sinon": "^7.5.0"
   },
   "ci": {
     "downstreamIgnoreList": [
