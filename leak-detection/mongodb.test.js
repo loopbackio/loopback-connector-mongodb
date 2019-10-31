@@ -55,7 +55,7 @@ describe('mongodb', function() {
           {content: 'Buy milk'},
           {content: 'Buy cheese'},
         ],
-        done
+        done,
       );
     });
 
@@ -86,7 +86,7 @@ describe('mongodb', function() {
           {content: 'Buy milk'},
           {content: 'Buy cheese'},
         ],
-        done
+        done,
       );
     });
   });
