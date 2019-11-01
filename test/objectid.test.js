@@ -104,6 +104,7 @@ describe('ObjectID', function() {
       'ArticleC',
       {
         xid: {type: String, mongodb: {dataType: 'objectid'}},
+        xidArr: {type: [String], mongodb: {dataType: 'objectid'}},
         title: String,
       },
       {strictObjectIDCoercion: true},
@@ -127,6 +128,16 @@ describe('ObjectID', function() {
       found.xid.should.be.an.instanceOf(ds.ObjectID);
     });
 
+    it('should properly save an array of ObjectIDs', async () => {
+      await Article.create({
+        xid: objectIDLikeString,
+        xidArr: [objectIDLikeString],
+        title: 'abcWithArr',
+      });
+      const found = await Article.findOne({where: {title: 'abcWithArr'}});
+      found.xidArr.should.be.an.Array().which.containDeep([new ds.ObjectID(objectIDLikeString)]);
+    });
+
     it('handles auto-generated PK properties defined in LB4 style', async () => {
       const Note = ds.createModel('NoteLB4', {
         id: {
@@ -143,6 +154,38 @@ describe('ObjectID', function() {
 
       const result = await Note.create({title: 'hello'});
       // the test passes when this call does not throw
+    });
+  });
+
+  context('ObjectID as a constructor', function() {
+    const Article = ds.createModel(
+      'ArticleC2',
+      {
+        xid: {type: ds.ObjectID},
+        xidArr: {type: [ds.ObjectID]},
+        title: String,
+      },
+      {strictObjectIDCoercion: true},
+    );
+
+    beforeEach(function(done) {
+      Article.deleteAll(done);
+    });
+
+    it('should save as ObjectID regardless of strictObjectIDCoercion: true', async function() {
+      await Article.create({xid: objectIDLikeString, title: 'abc'});
+      const found = await Article.findOne({where: {title: 'abc'}});
+      found.xid.should.be.an.instanceOf(ds.ObjectID);
+    });
+
+    it('should properly save an array of ObjectIDs', async () => {
+      await Article.create({
+        xid: objectIDLikeString,
+        xidArr: [objectIDLikeString],
+        title: 'abcWithArr',
+      });
+      const found = await Article.findOne({where: {title: 'abcWithArr'}});
+      found.xidArr.should.be.an.Array().which.containDeep([new ds.ObjectID(objectIDLikeString)]);
     });
   });
 });
