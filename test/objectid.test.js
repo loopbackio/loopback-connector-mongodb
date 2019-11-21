@@ -126,5 +126,23 @@ describe('ObjectID', function() {
       const found = await Article.findOne({where: {title: 'abc'}});
       found.xid.should.be.an.instanceOf(ds.ObjectID);
     });
+
+    it('handles auto-generated PK properties defined in LB4 style', async () => {
+      const Note = ds.createModel('NoteLB4', {
+        id: {
+          type: 'string',
+          id: true,
+          generated: true,
+          mongodb: {dataType: 'ObjectID'},
+        },
+        title: {
+          type: 'string',
+          required: true,
+        },
+      });
+
+      const result = await Note.create({title: 'hello'});
+      // the test passes when this call does not throw
+    });
   });
 });
