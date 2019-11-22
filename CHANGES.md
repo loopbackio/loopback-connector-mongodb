@@ -1,3 +1,15 @@
+2019-11-22, Version 5.2.1
+=========================
+
+ * fix creation of LB4 models with auto-generated id (Miroslav Bajtoš)
+
+ * chore: improve issue and PR templates (Nora)
+
+ * feat: update dependenies (Francois)
+
+ * feat: upgrade to eslint v6 (Francois)
+
+
 2019-10-25, Version 5.2.0
 =========================
 
