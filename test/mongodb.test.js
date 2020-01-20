@@ -59,8 +59,8 @@ describe('connect', function() {
 
     ds.on('error', function(err) {
       should.exist(err);
-      err.name.should.equalOneOf('MongoNetworkError', 'MongoTimeoutError');
-      err.message.should.match(/Server selection timed out/);
+      err.name.should.equalOneOf('MongoServerSelectionError', 'MongoNetworkError', 'MongoTimeoutError');
+      err.message.should.match(/connect ECONNREFUSED/);
       done();
     });
   });
@@ -73,8 +73,8 @@ describe('connect', function() {
 
     ds.on('error', function(err) {
       should.exist(err);
-      err.name.should.equalOneOf('MongoNetworkError', 'MongoTimeoutError');
-      err.message.should.match(/Server selection timed out/);
+      err.name.should.equalOneOf('MongoServerSelectionError', 'MongoNetworkError', 'MongoTimeoutError');
+      err.message.should.match(/connect ECONNREFUSED/);
       done();
     });
   });
@@ -384,8 +384,8 @@ describe('mongodb connector', function() {
       });
       ds.ping(function(err) {
         should.exist(err);
-        err.name.should.equalOneOf('MongoNetworkError', 'MongoTimeoutError');
-        err.message.should.match(/Server selection timed out/);
+        err.name.should.equalOneOf('MongoServerSelectionError', 'MongoNetworkError', 'MongoTimeoutError');
+        err.message.should.match(/connect ECONNREFUSED/);
         done();
       });
     });
