@@ -1,7 +1,7 @@
 // Copyright IBM Corp. 2019. All Rights Reserved.
-// Node module: loopback-connector-postgresql
-// This file is licensed under the Artistic License 2.0.
-// License text available at https://opensource.org/licenses/Artistic-2.0
+// Node module: loopback-connector-mongodb
+// This file is licensed under the MIT License.
+// License text available at https://opensource.org/licenses/MIT
 
 'use strict';
 
