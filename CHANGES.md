@@ -1,3 +1,15 @@
+2020-02-10, Version 5.2.2
+=========================
+
+ * chore: update copyright year (Diana Lau)
+
+ * chore: update CODEOWNERS (Diana Lau)
+
+ * coerce property value defined as array of ObjectID (=)
+
+ * fix: update the error message and name (#561) (Janny)
+
+
 2019-11-22, Version 5.2.1
 =========================
 
