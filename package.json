@@ -15,6 +15,13 @@
     "lint": "eslint .",
     "posttest": "npm run lint"
   },
+  "files": [
+    "intl",
+    "lib",
+    "docs.json",
+    "index.js",
+    "setup.sh"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/strongloop/loopback-connector-mongodb.git"
