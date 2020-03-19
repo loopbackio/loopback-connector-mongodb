@@ -1,3 +1,9 @@
+2020-03-19, Version 5.2.3
+=========================
+
+ * Exclude 'deps' and '.github' from npm publish (Dominique Emond)
+
+
 2020-02-10, Version 5.2.2
 =========================
 
