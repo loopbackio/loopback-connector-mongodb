@@ -1,7 +1,8 @@
 language: node_js
 node_js:
-  - "12"
   - "10"
+  - "12"
+  - "13"
 
 env:
   - CXX=g++-4.8
