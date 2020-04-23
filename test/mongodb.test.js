@@ -30,7 +30,8 @@ let Superhero,
   Employee,
   PostWithDisableDefaultSort,
   WithEmbeddedProperties,
-  WithEmbeddedBinaryProperties;
+  WithEmbeddedBinaryProperties,
+  WithInvalidCustomIdFieldName;
 
 describe('connect', function() {
   it('should skip connect phase (lazyConnect = true)', function(done) {
@@ -341,6 +342,18 @@ describe('mongodb connector', function() {
             rawImg: Buffer,
           },
         },
+      },
+    );
+
+    WithInvalidCustomIdFieldName = db.define(
+      'WithInvalidCustomIdFieldName',
+      {
+        id: {
+          type: String,
+          id: true,
+          mongodb: {fieldName: 'rejected'},
+        },
+        content: {type: String},
       },
     );
 
@@ -2438,6 +2451,22 @@ describe('mongodb connector', function() {
         done();
       });
     });
+  });
+
+  it('should get rejected if the id property has a custom field name', function(done) {
+    const oid = new db.ObjectID().toString();
+    try {
+      WithInvalidCustomIdFieldName.create({id: oid, content: 'should be rejected'}
+        , function(
+          err,
+          post,
+        ) {
+          should.exist(err);
+        });
+    } catch (e) {
+      e.message.should.match('custom id field name \'rejected\' is not allowed in model WithInvalidCustomIdFieldName');
+    }
+    done();
   });
 
   it('create should support renamed column names (using db syntax first)', function(done) {
