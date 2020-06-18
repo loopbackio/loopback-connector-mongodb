@@ -62,6 +62,7 @@
     "downstreamIgnoreList": [
       "bluemix-metering",
       "bluemix-service-broker",
+      "bluemix-security",
       "plan-manager"
     ]
   }
