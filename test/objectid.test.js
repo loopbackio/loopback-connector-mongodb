@@ -10,6 +10,7 @@ require('./init.js');
 let Book, Chapter;
 const ds = global.getDataSource();
 const objectIDLikeString = '7cd2ad46ffc580ba45d3cb1f';
+const objectIDLikeString2 = '7cd2ad46ffc580ba45d3cb1e';
 
 describe('ObjectID', function() {
   before(function() {
@@ -131,11 +132,15 @@ describe('ObjectID', function() {
     it('should properly save an array of ObjectIDs', async () => {
       await Article.create({
         xid: objectIDLikeString,
-        xidArr: [objectIDLikeString],
+        xidArr: [objectIDLikeString, objectIDLikeString2],
         title: 'arrayOfObjectID',
       });
       const found = await Article.findOne({where: {title: 'arrayOfObjectID'}});
-      found.xidArr.should.be.an.Array().which.containDeep([new ds.ObjectID(objectIDLikeString)]);
+      // the type of the returned array is actually string even it's stored as ObjectIds in the db as expected
+      found.xidArr.should.be.an.Array().which.containDeep([
+        new ds.ObjectID(objectIDLikeString),
+        new ds.ObjectID(objectIDLikeString2),
+      ]);
     });
 
     it('handles auto-generated PK properties defined in LB4 style', async () => {
