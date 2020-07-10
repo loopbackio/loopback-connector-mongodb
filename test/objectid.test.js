@@ -10,6 +10,8 @@ require('./init.js');
 let Book, Chapter;
 const ds = global.getDataSource();
 const objectIDLikeString = '7cd2ad46ffc580ba45d3cb1f';
+const objectIDLikeString2 = '7cd2ad46ffc580ba45d3cb1e';
+const promisify = require('bluebird').promisify;
 
 describe('ObjectID', function() {
   before(function() {
@@ -131,11 +133,19 @@ describe('ObjectID', function() {
     it('should properly save an array of ObjectIDs', async () => {
       await Article.create({
         xid: objectIDLikeString,
-        xidArr: [objectIDLikeString],
+        xidArr: [objectIDLikeString, objectIDLikeString2],
         title: 'arrayOfObjectID',
       });
-      const found = await Article.findOne({where: {title: 'arrayOfObjectID'}});
-      found.xidArr.should.be.an.Array().which.containDeep([new ds.ObjectID(objectIDLikeString)]);
+      const found = await Article.find({where: {title: 'arrayOfObjectID'}});
+      // the type of the returned array is actually string even it's stored as ObjectIds in the db as expected
+      found[0].xidArr.should.containDeep([
+        new ds.ObjectID(objectIDLikeString),
+        new ds.ObjectID(objectIDLikeString2),
+      ]);
+      // check if the array is stored in ObjectId
+      const raw = await findRawModelDataAsync('ArticleC', found[0].id);
+      raw.xidArr[0].should.be.an.instanceOf(ds.ObjectID);
+      raw.xidArr[1].should.be.an.instanceOf(ds.ObjectID);
     });
 
     it('handles auto-generated PK properties defined in LB4 style', async () => {
@@ -188,4 +198,8 @@ describe('ObjectID', function() {
       found.xidArr.should.be.an.Array().which.containDeep([new ds.ObjectID(objectIDLikeString)]);
     });
   });
+  function findRawModelData(modelName, id, cb) {
+    ds.connector.execute(modelName, 'findOne', {_id: {$eq: id}}, {safe: true}, cb);
+  }
+  const findRawModelDataAsync = promisify(findRawModelData);
 });
