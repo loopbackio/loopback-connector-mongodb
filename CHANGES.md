@@ -1,3 +1,31 @@
+2020-07-10, Version 5.2.4
+=========================
+
+ * fix: sanitize extra dollar signs for operators (Agnes Lin)
+
+ * fix: fix (Agnes Lin)
+
+ * fix: allow arrays to be stored in type ObjecId (Agnes Lin)
+
+ * fix: fix sections order (Agnes Lin)
+
+ * chore: add bluemix security to the ci ignore list (Agnes Lin)
+
+ * docs: update Mongo connector readme with lb4 style (Agnes Lin)
+
+ * Update README.md (VusalIs)
+
+ * fix: throws when the custom id field name is set (Agnes Lin)
+
+ * Update strong-globalize to ^6.0 (Miroslav Bajtoš)
+
+ * Add Node.js 13.x to Travis matrix (Miroslav Bajtoš)
+
+ * Drop support for Node 8.x (Miroslav Bajtoš)
+
+ * chore: update strong-globalize version (Diana Lau)
+
+
 2020-03-19, Version 5.2.3
 =========================
 
