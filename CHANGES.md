@@ -1,6 +1,6 @@
 
 
-2020-07-10, Version 5.2.4
+2020-07-10, Version 5.3.0
 =========================
 
  * fix: sanitize extra dollar signs for operators (Agnes Lin)
