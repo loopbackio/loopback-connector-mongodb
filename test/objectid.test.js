@@ -101,12 +101,12 @@ describe('ObjectID', function() {
     });
   });
 
-  context("mongodb: {dataType: 'objectid'}", function() {
+  context("mongodb: {dataType: 'objectID'}", function() {
     const Article = ds.createModel(
       'ArticleC',
       {
-        xid: {type: String, mongodb: {dataType: 'objectid'}},
-        xidArr: {type: [String], mongodb: {dataType: 'objectid'}},
+        xid: {type: String, mongodb: {dataType: 'objectID'}},
+        xidArr: {type: [String], mongodb: {dataType: 'objectID'}},
         title: String,
       },
       {strictObjectIDCoercion: true},
