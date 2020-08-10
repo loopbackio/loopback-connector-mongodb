@@ -43,7 +43,7 @@ describe.only('New ObjectID', function() {
   });
 
   // Manual review of the datatype in the database
-  it('should identify ObjectID and ObjectID-like non-ObjectID types', async () => {
+  it('should identify ObjectID declaration', async () => {
     const created = await Book.create({
       oId: objectIDLikeString,
       oIds: [objectIDLikeString, objectIDLikeString2],
