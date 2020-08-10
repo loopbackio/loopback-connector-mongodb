@@ -52,29 +52,28 @@ describe.only('New ObjectID', function() {
       sIds: [objectIDLikeString, objectIDLikeString2]
     });
 
-    console.log(created)
-
+    // TODO: fix this
     // (created.id.constructor.name).should.equal('String');
-    // (created.oId.constructor.name).should.equal('String');
-    // created.oIds.forEach(oId => {
-    //   (created.oId.constructor.name).should.equal('String');
-    // });
-    // (created.sId.constructor.name).should.equal('String');
-    // created.sIds.forEach(sId => {
-    //   (created.sId.constructor.name).should.equal('String');
-    // });
+    (created.oId.constructor.name).should.equal('String');
+    created.oIds.forEach(oId => {
+      (created.oId.constructor.name).should.equal('String');
+    });
+    (created.sId.constructor.name).should.equal('String');
+    created.sIds.forEach(sId => {
+      (created.sId.constructor.name).should.equal('String');
+    });
   });
 
-  // it('should identify ObjectID in relations', async () => {
-  //   const author = await Author.create({ name: 'Bob'});
-  //   console.log(author.id.constructor);
-  //   const book = await Book.create({authorId: author.id, title: 'XYS'});
-  //   console.log(book);
-  //   const foundBook = await Book.findById(book.id);
-  //   console.log(foundBook);
-  //   const foundBooksByAuthor = await Book.all({authorId: author.id});
-  //   console.log(foundBooksByAuthor);
-  // });
-
+  it.only('should identify ObjectID in relations', async () => {
+    const author = await Author.create({ name: 'Bob'});
+    (author.id.constructor.name).should.equal('String');
+    const book = await Book.create({authorId: author.id, title: 'XYS'});
+    (book.authorId.constructor.name).should.equal('String');
+    const foundBook = await Book.findById(book.id);
+    (foundBook.id.constructor.name).should.equal('String');
+    const foundBooksByAuthor = await Book.all({authorId: author.id});
+    (foundBooksByAuthor[0].id.constructor.name).should.equal('String');
+    (foundBooksByAuthor[0].authorId.constructor.name).should.equal('String');
+  });
 
 });
