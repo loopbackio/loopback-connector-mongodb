@@ -53,7 +53,7 @@ describe.only('New ObjectID', function() {
     });
 
     // TODO: fix this
-    // (created.id.constructor.name).should.equal('String');
+    (created.id.constructor.name).should.equal('String');
     (created.oId.constructor.name).should.equal('String');
     created.oIds.forEach(oId => {
       (created.oId.constructor.name).should.equal('String');
