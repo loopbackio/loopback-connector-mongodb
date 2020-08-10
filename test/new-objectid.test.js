@@ -52,11 +52,10 @@ describe.only('New ObjectID', function() {
       sIds: [objectIDLikeString, objectIDLikeString2]
     });
 
-    // TODO: fix this
     (created.id.constructor.name).should.equal('String');
     (created.oId.constructor.name).should.equal('String');
     created.oIds.forEach(oId => {
-      (created.oId.constructor.name).should.equal('String');
+      (oId.constructor.name).should.equal('String');
     });
     (created.sId.constructor.name).should.equal('String');
     created.sIds.forEach(sId => {

@@ -28,6 +28,7 @@ We are dealing with two perspectives:
 
 ## Follow-up Tasks
 
+- Refactor - points noted randomly below
 - Identify all input points and perform string to ObjectID conversion after ensuring the input string is a valid ObjectID string
 - Identify all result points and perform ObjectID to string conversion in the result object
 - Get rid of `coerceId()` and implement a generic peoperty coercion method, all properties should use the same method
@@ -36,6 +37,7 @@ We are dealing with two perspectives:
   - `coerceFromObjectIds()` - for sending to user
 - Get rid of `typeIsObjectId()` - since ObjectID type should now be declared explicitly
 - Replaced functions like `coercePropertyValue()` and `toDatabase()` with 
+- all database results should be run through the same post-processing - eg: `.create()` has its down, 
 
 ## Notes
 
