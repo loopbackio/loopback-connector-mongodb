@@ -43,7 +43,7 @@ describe.only('New ObjectID', function() {
   });
 
   // Manual review of the datatype in the database
-  it.only('should identify ObjectID and ObjectID-like non-ObjectID types', async () => {
+  it('should identify ObjectID and ObjectID-like non-ObjectID types', async () => {
     const created = await Book.create({
       oId: objectIDLikeString,
       oIds: [objectIDLikeString, objectIDLikeString2],
@@ -64,7 +64,7 @@ describe.only('New ObjectID', function() {
     });
   });
 
-  it.skip('should identify ObjectID in relations', async () => {
+  it('should identify ObjectID in relations', async () => {
     const author = await Author.create({ name: 'Bob'});
     (author.id.constructor.name).should.equal('String');
     const book = await Book.create({authorId: author.id, title: 'XYS'});
