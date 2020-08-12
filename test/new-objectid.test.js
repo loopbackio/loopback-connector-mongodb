@@ -42,7 +42,6 @@ describe.only('New ObjectID', function() {
     Book.belongsTo('author');
   });
 
-  // Manual review of the datatype in the database
   it('should identify ObjectID declaration', async () => {
     const created = await Book.create({
       oId: objectIDLikeString,
@@ -67,6 +66,7 @@ describe.only('New ObjectID', function() {
     const author = await Author.create({ name: 'Bob'});
     (author.id.constructor.name).should.equal('String');
     const book = await Book.create({authorId: author.id, title: 'XYS'});
+    (book.id.constructor.name).should.equal('String');
     (book.authorId.constructor.name).should.equal('String');
     const foundBook = await Book.findById(book.id);
     (foundBook.id.constructor.name).should.equal('String');

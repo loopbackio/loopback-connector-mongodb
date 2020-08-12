@@ -38,6 +38,7 @@ We are dealing with two perspectives:
 - Get rid of `typeIsObjectId()` - since ObjectID type should now be declared explicitly
 - Replaced functions like `coercePropertyValue()` and `toDatabase()` with 
 - all database results should be run through the same post-processing - eg: `.create()` has its down, 
+- result object should be created from database result - for consistency
 
 ## Notes
 
