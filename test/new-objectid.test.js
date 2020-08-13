@@ -65,7 +65,7 @@ describe.only('New ObjectID', function() {
   it('should identify ObjectID in relations', async () => {
     const author = await Author.create({ name: 'Bob'});
     (author.id.constructor.name).should.equal('String');
-    const book = await Book.create({authorId: author.id, title: 'XYS'});
+    const book = await Book.create({authorId: author.id, title: 'The Jungle'});
     (book.id.constructor.name).should.equal('String');
     (book.authorId.constructor.name).should.equal('String');
     const foundBook = await Book.findById(book.id);
@@ -73,6 +73,8 @@ describe.only('New ObjectID', function() {
     const foundBooksByAuthor = await Book.all({authorId: author.id});
     (foundBooksByAuthor[0].id.constructor.name).should.equal('String');
     (foundBooksByAuthor[0].authorId.constructor.name).should.equal('String');
+    const replaced = await Book.replaceById(book.id, {title: 'The Book'});
+    (replaced.id.constructor.name).should.equal('String');
   });
 
 });
