@@ -72,7 +72,18 @@ property as an `ObjectID`.
 
 ## Developer Notes
 
-
+- The tests in `test/new-objectid.test.js` is a demonstration of the `mongodb: {dataType: 'ObjectID'}` property.
+- Changes are required in `loopback-connector-mongodb/lib/mongodb.js` and `loopback-datasource-juggler/lib/dao.js`.
+- Changes in `loopback-connector-mongodb/lib/mongodb.js`:
+  - 
+  - 
+- Changes in `loopback-datasource-juggler/lib/dao.js`:
+  - All helper functions and properties like `typeIsObjectId()`, `strictObjectIDCoercion` etc. related to previous behavior of `ObjectId` should be removed or refactored.
+  - 
+- Refactoring suggestions:
+  - 
+  - 
+- In the time assigned for this spike I could not go deeper in the 
 
 ## Follow-up Tasks
 
