@@ -25,6 +25,7 @@ Examples of bad experiences:
 2. Unless `strictObjectIDCoercion` is set to `true`, any string
 that looks like an `ObjectID` will automatically get converted to `ObjectID` and you won't be able to find the object if you
 tried searching the database by that string, because it is not a string any more.
+3. To add to the confusion, this behavior can be configured at model and property levels.
 
 Complexity is sometimes unavoidable, but a less complex state is always the desired state. It creates better experience for
 the consumers, and makes development and maintenance a more pleasant experience for the creators.

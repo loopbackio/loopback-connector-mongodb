@@ -277,124 +277,34 @@ clause." %}
 
 ## Handling ObjectId
 
-MongoDB uses `ObjectId` for its primary key, which is an object instead of a
-string. In queries, string values must be cast to `ObjectId`, otherwise they are
-not considered as the same value. Therefore, you might want to specify the data
-type of properties to enforce `ObjectId` coercion. Such coercion would make sure
-the property value converts from ObjectId-like string to `ObjectId` when it
-accesses to the database and converts `ObjectId` to ObjectId-like string when
-the app gets back the value. (An ObjectId-like string is a string that has length 12 or 24 and has the format of an `ObjectId` i.e /^[0-9a-fA-F]{24}\$/.)
-
-LoopBack provides two scopes to handle such coercion: per model or per property. Please check the following to see which configuration meets your requirements.
-
-{% include important.html content="please make sure you are using `loopback-connector-mongodb` package version 5.2.1
-or above to handle `ObjectId` properly." %}
-
-- No `ObjectId` coercion: CRUD operations can be operated with non-ObjectId-like
-  string or ObjectId-like string ids.
-
-- Enforce `ObjectId` coercion: the property value can only be `ObjectId` or
-  ObjectId-like string, otherwise it will be rejected.
-
-Enforcing `ObjectId` coercion can be done by setting the flag
-`strictObjectIDCoercion` in the **model definition** or by specifying
-`dataType: ObjecId` in the **property definition**.
-
-### Model scope
-
-This scope would do the conversion for all properties in the model.
+You will only be interacting with the string version of `ObjectId`. The only time you need to think of literal `ObjectID` is when definining model properties - any model property that should be treated as `ObjectID` must be defined with `mongodb: {dataType: 'ObjectId'}`, else it will be treated as a regular string even if te value looks like an `ObjectID`.
 
 ```ts
-@model({settings: {
-  strictObjectIDCoercion: true
-}})
-export class User extends Entity {
 @property({
-    type: 'string',
-    id: true,
-  })
-  id: string;
-...
+  type: 'string',
+  id: true,
+  mongodb: {dataType: 'ObjectId'}
 }
+xid: string;
 ```
 
 <details><summary markdown="span"><strong>For LoopBack 3 users</strong></summary>
 
 ```js
-{
-  "name": "User",
-  "base": "PersistedModel",
-  "idInjection": false,
-  "options": {
-    "validateUpsert": true,
-    "strictObjectIDCoercion": true
-  },
-...
+"properties": {
+  {
+    "xid": {
+      "type": "String",
+      "id": true,
+      "required":true,
+      "mongodb": {"dataType":"ObjectId"}
+    },
+    // ..
+  }
 }
 ```
 
 </details>
-
-### Property scope
-
-This scope would only convert an ObjectId-like string to `ObjectId` with a certain property in the model.
-
-```ts
-@property({
-    type: 'string',
-    id: true,
-    mongodb: {dataType: 'ObjectId'}
-  }
-  id: string;
-```
-
-<details><summary markdown="span"><strong>For LoopBack 3 users</strong></summary>
-
-```js
-  "properties": {
-    {
-      "id": {
-        "type": "String",
-        "id": true,
-        "required":true,
-        "mongodb": {"dataType":"ObjectId"}
-      },
-      // ..
-    }
-  }
-```
-
-</details>
-
-Also notice that for RELATIONS, if the primary key/source key has set to enforce ObjectId coercion
-(no matter by `strictObjectIDCoercion: true` or `dataType: 'ObjectId'`). The corresponding foreign key will need to have it
-set as well to make sure relations work smoothly.
-
-```ts
-@model()
-export class User extends Entity {
-// source key
-@property({
-    type: 'string',
-    id: true,
-    mongodb: {dataType: 'ObjectId'}
-  })
-  id: string;
-...
-}
-
-@model(// )
-export class Address extends Entity {
-  ...
-  // foreign key
-  @belongsTo(() => User,
-   {}, //relation metadata goes in here
-   {// property definition goes in here
-    mongodb: {dataType: 'ObjectId'}
-  })
-  UserId: string;
-}
-```
 
 ## Customize collection/field names
 
