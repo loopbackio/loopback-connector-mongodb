@@ -88,6 +88,7 @@ In the time assigned for this spike I could find out the behavior of all the que
 
 - Database-specific connectors should provide their coercion function to DAO.
 - DAO should apply the coercion function on the result object and return it to the user without changing the Model's actual properties.
+- Discover foreign key type without users needing to add anything more than `customerId: string`. Implementation may not be easy, but it is not impossible either. 
 
 ## Follow-up Tasks
 
