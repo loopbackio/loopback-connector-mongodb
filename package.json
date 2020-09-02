@@ -36,9 +36,9 @@
   "license": "MIT",
   "dependencies": {
     "async": "^3.1.0",
-    "bson": "^1.0.6",
+    "bson": "^1.1.5",
     "debug": "^4.1.0",
-    "loopback-connector": "^4.5.0",
+    "loopback-connector": "^5.0.0",
     "mongodb": "^3.2.4",
     "strong-globalize": "^6.0.0"
   },
@@ -54,7 +54,7 @@
     "mocha": "^6.2.0",
     "nyc": "^14.1.1",
     "rc": "^1.2.8",
-    "semver": "^6.3.0",
+    "semver": "^7.3.2",
     "should": "^13.2.1",
     "sinon": "^7.5.0"
   },
