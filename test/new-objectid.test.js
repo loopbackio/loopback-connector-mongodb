@@ -23,7 +23,8 @@ describe.only('New ObjectID', function() {
       oIds: {type: [String], mongodb: {dataType: 'objectID'}},
       title: String,
       strId: String,
-      strIds: [String]
+      strIds: [String],
+      authorId: {type: [String], mongodb: {dataType: 'objectID'}}
     }
   );
 
