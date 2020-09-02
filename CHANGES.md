@@ -1,6 +1,25 @@
+2020-09-02, Version 5.4.0
+=========================
+
+ * fix: allow to include options to mongodb connector (Jamil Omar)
+
+ * Update loopback-connector to 5.x (Miroslav Bajtoš)
+
+ * chore: switch to DCO (Diana Lau)
+
+ * docs: update loopback types link (Agnes Lin)
+
+ * chore: add Node.js 14 to travis (Diana Lau)
+
+ * Extract function that map db data to model entity (=)
 
 
 2020-07-10, Version 5.3.0
+=========================
+
+
+
+2020-07-10, Version 5.2.4
 =========================
 
  * fix: sanitize extra dollar signs for operators (Agnes Lin)
