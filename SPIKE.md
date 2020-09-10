@@ -13,8 +13,9 @@ Ref: https://github.com/strongloop/loopback-next/issues/3456
 
 ## The Problem
 
-`ObjectID` is a native MongoDB datatype, which is used as the datatype of its primary key (_id_) field; other fields
-can also be of `ObjectID` type.
+`ObjectID` is a native MongoDB datatype, which is used as the datatype of its primary key (_id_) field; other fields can also be of `ObjectID` type.
+
+MongoDB distinguishes between id values that are a `strin` and an `ObjectID`. A query using a `string` value does not match records having `ObjectID` value and vice versa. This is especially important for foreign keys, e.g. when `Order` property `customerId` is referencing an `id` of a `Customer`, then both properties must always hold `ObjectID` values. If one of the property (typically `customerId`) is stored as a `string`, then LB relations stop working.
 
 In the current version of Juggler, the interpretation of `ObjectID` field is a sub-optimal experience supported by a complex
 determination process in an already complex codebase.
@@ -32,10 +33,15 @@ the consumers, and makes development and maintenance a more pleasant experience 
 
 ## Proposed Solution
 
-"Do not interpret any property not set with `mongodb: {dataType: 'ObjectID'}` as an `ObjectID`. Use string values for `ObjectID`
-in public APIs and manage the coercion processes for the user."
+Database-specific types like `ObjectID` and `Decimal128` should be considered as an implementation detail of a database connector.
 
-That sums up the proposed solution. Users will no longer have to deal with `ObjectID` anywhere in their experience with
+Values of these types must not leak from the connector to Juggler and user code, code outside the connector should see a database-agnostic type like a `string`. The connector must always convert incoming values (property values, filtering queries) from database-agnostic type to database-specific type on input, and convert database-specific types back to database-agnostic type on output.
+
+Specifically for `ObjectID`:
+- Properties that should be stored as `ObjectID` in MongoDB must be defined as `{type: 'string', mongodb: {dataType: 'ObjectID'}}`.
+- There will be no auto-magic coercion from `string` to `Object` for other properties (those defined without `dataType: 'ObjectID'`).
+
+Users will no longer have to deal with `ObjectID` anywhere in their experience with
 LoopBack/Juggler except only in one location - the model file.
 
 ## Approaches
@@ -68,7 +74,7 @@ we will end up with a really huge list.
 ### 2. mongodb: {dataType: 'objectID'}
 
 Setting a property to `mongodb: {dataType: 'ObjectID'}`, as it is already being done, is the better approach for marking the 
-property as an `ObjectID`.
+property as an `ObjectID`. The same approach is also used for `Decimal128` -  `mongodb: {dataType: 'decimal128'}`.
 
 ## Proof of concept
 
@@ -86,6 +92,12 @@ All changes are limited to `loopback-connetor-mongodb` only, Juggler is not affe
   - Walk through the data object and convert all properties defined as `mongodb: {dataType: 'ObjectID'}` to `String`
 - Remove or refactor all helper functions and properties like `typeIsObjectId()`, `strictObjectIDCoercion` etc., related to previous behavior of `ObjectId`.
 - There are some pieces of code that can be refactored, which involves the new changes. I think we should refactor it now now, than accumulate tech debt.
+
+
+## Notes
+
+- The changes will break compatibility with LB 3.x. Which is fine, we just need to clearly document it and remove `juggler@3` from the test suite.
+- Add a "Long Term Support" section to README (see [strongloop/loopback](https://github.com/strongloop/loopback#module-long-term-support-policy) for inspiration) and also explain which connector versions are compatible with which LoopBack versions.
 
 ## Follow-up Tasks
 
