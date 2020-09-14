@@ -39,7 +39,7 @@ Values of these types must not leak from the connector to Juggler and user code,
 
 Specifically for `ObjectID`:
 - Properties that should be stored as `ObjectID` in MongoDB must be defined as `{type: 'string', mongodb: {dataType: 'ObjectID'}}`.
-- There will be no auto-magic coercion from `string` to `Object` for other properties (those defined without `dataType: 'ObjectID'`).
+- There will be no auto-magic coercion from `string` to `ObjectID` for other properties (those defined without `dataType: 'ObjectID'`).
 
 Users will no longer have to deal with `ObjectID` anywhere in their experience with
 LoopBack/Juggler except only in one location - the model file.
@@ -74,7 +74,7 @@ we will end up with a really huge list.
 ### 2. mongodb: {dataType: 'objectID'}
 
 Setting a property to `mongodb: {dataType: 'ObjectID'}`, as it is already being done, is the better approach for marking the 
-property as an `ObjectID`. The same approach is also used for `Decimal128` -  `mongodb: {dataType: 'decimal128'}`.
+property as an `ObjectID`. The same approach is also already used by `Decimal128` -  `mongodb: {dataType: 'decimal128'}`.
 
 ## Proof of concept
 
@@ -85,12 +85,12 @@ The tests in `test/new-objectid.test.js` is a demonstration of the behavior of t
 All changes are limited to `loopback-connetor-mongodb` only, Juggler is not affected.
 
 - Before querying database:
-  - Convert `id` value to `ObjectID`.
   - Walk through the data object and convert all properties defined as `mongodb: {dataType: 'ObjectID'}`.
 - When receiving data from database
-  - Convert `id` value to `String`:
   - Walk through the data object and convert all properties defined as `mongodb: {dataType: 'ObjectID'}` to `String`
-- Remove or refactor all helper functions and properties like `typeIsObjectId()`, `strictObjectIDCoercion` etc., related to previous behavior of `ObjectId`.
+- Primary key:
+  - if not specified, will be interpreted as `mongodb: {dataType: 'ObjectID'}`
+  - if specified with `{id: true}`, need not add `mongodb: {dataType: 'ObjectID'}` (it will be automatically inferred)
 - There are some pieces of code that can be refactored, which involves the new changes. I think we should refactor it now now, than accumulate tech debt.
 
 
