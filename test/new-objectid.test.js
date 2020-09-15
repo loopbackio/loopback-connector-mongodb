@@ -14,7 +14,7 @@ const objectIDLikeString2 = '7cd2ad46ffc580ba45d3cb1e';
 const promisify = require('bluebird').promisify;
 
 
-describe.only('New ObjectID', function() {
+describe.skip('New ObjectID', function() {
 
   const Book = ds.createModel(
     'Book',
@@ -125,7 +125,7 @@ describe.only('New ObjectID', function() {
     found.id.should.equal(pet.id);
   });
 
-  it.only('should create/update instance for deeply nested ObjectID props', async () => {
+  it('should create/update instance for deeply nested ObjectID props', async () => {
     const createData = {
       innerObj: {
         innerObj: {
@@ -205,5 +205,51 @@ describe.only('New ObjectID', function() {
     });
 
   });
+});
+
+
+describe.only('non-ObjectID id property', function() {
+
+  context('auto-generated id', () => {
+    const User = ds.createModel('User', {
+      id: {type: 'string', id: true, generated: true },
+      email: {type: 'string'}
+    });
+
+    beforeEach(async () => {
+      await User.deleteAll();
+    });
+
+    it('should generate non-ObjectID id property', async () => {
+      const user = await User.create({name: 'Carro'});
+      const found = await User.findById(user.id);
+      user.id.should.equal(found.id);
+    });
+
+    // it('should throw if id is specified', async () => {
+    //   await User.create({id: 'a', name: 'Carro'}).should.be.rejected();
+    // });
+  });
+
+  // context('specified id', () => {
+  //   const User = ds.createModel('User', {
+  //     id: {type: 'string', id: true},
+  //     email: {type: 'string'}
+  //   });
+
+  //   beforeEach(async () => {
+  //     await User.deleteAll();
+  //   });
+
+  //   it('should use non-ObjectID id property', async () => {
+  //     const user = await User.create({id: 'a', name: 'Carro'});
+  //     const found = await User.findById(user.id);
+  //     user.id.should.equal(found.id);
+  //   });
+
+  //   it('should throw if id is not specified', async () => {
+  //     await User.create({name: 'Carro'}).should.be.rejected();
+  //   });
+  // });
 
 });
