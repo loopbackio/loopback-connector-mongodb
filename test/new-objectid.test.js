@@ -14,7 +14,7 @@ const objectIDLikeString2 = '7cd2ad46ffc580ba45d3cb1e';
 const promisify = require('bluebird').promisify;
 
 
-describe.skip('New ObjectID', function() {
+describe.only('New ObjectID', function() {
 
   const Book = ds.createModel(
     'Book',
@@ -226,30 +226,32 @@ describe.only('non-ObjectID id property', function() {
       user.id.should.equal(found.id);
     });
 
-    // it('should throw if id is specified', async () => {
-    //   await User.create({id: 'a', name: 'Carro'}).should.be.rejected();
-    // });
+    it('should throw if id is specified', async () => {
+      await User.create({id: 'a', name: 'Carro'}).should.be.rejected();
+    });
   });
 
-  // context('specified id', () => {
-  //   const User = ds.createModel('User', {
-  //     id: {type: 'string', id: true},
-  //     email: {type: 'string'}
-  //   });
+  context('specified id', () => {
+    const User = ds.createModel('User', {
+      id: {type: 'string', id: true},
+      email: {type: 'string'}
+    });
 
-  //   beforeEach(async () => {
-  //     await User.deleteAll();
-  //   });
+    beforeEach(async () => {
+      await User.deleteAll();
+    });
 
-  //   it('should use non-ObjectID id property', async () => {
-  //     const user = await User.create({id: 'a', name: 'Carro'});
-  //     const found = await User.findById(user.id);
-  //     user.id.should.equal(found.id);
-  //   });
+    it('should use non-ObjectID id property', async () => {
+      const user = await User.create({id: 'a', name: 'Carro'});
+      const found = await User.findById(user.id);
+      user.id.should.equal(found.id);
+    });
 
-  //   it('should throw if id is not specified', async () => {
-  //     await User.create({name: 'Carro'}).should.be.rejected();
-  //   });
-  // });
+    // NOTE: this unexpected behavior is on `master` too
+    // Will not be fixing in the spike, just a note
+    it('should throw if id is not specified', async () => {
+      await User.create({name: 'Carro'}).should.be.rejected();
+    });
+  });
 
 });
