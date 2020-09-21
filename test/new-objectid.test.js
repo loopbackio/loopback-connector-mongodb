@@ -12,7 +12,7 @@ const ds = global.getDataSource();
 const objectIDLikeString = '7cd2ad46ffc580ba45d3cb1f';
 const objectIDLikeString2 = '7cd2ad46ffc580ba45d3cb1e';
 const promisify = require('bluebird').promisify;
-
+const ObjectID = require('../lib/mongodb').ObjectID;
 
 describe.only('New ObjectID', function() {
 
@@ -79,10 +79,6 @@ describe.only('New ObjectID', function() {
     Book.belongsTo('author');
   });
 
-
-  // SPIKE: in these tests there is no way of knowing if objectID-like strings are actually stored
-  // SPIKE: as real strings in the db. Manual verification is the easiest way to confirm.
-  // Should we add tests to verify they are actually stored as real strings in the implementation?
   it('should identify ObjectID declaration', async () => {
     const created = await Book.create({
       oId: objectIDLikeString,
@@ -100,6 +96,18 @@ describe.only('New ObjectID', function() {
     created.sIds.forEach(sId => {
       created.sId.should.be.instanceOf(String);
     });
+  });
+
+  it('should store data in specified formats in the database', async () => {
+    const created = await Book.create({
+      oId: objectIDLikeString,
+      sId: objectIDLikeString
+    });
+
+    const found = await findRawModelDataAsync('Book', ObjectID(created.id));
+    found.sId.should.be.instanceOf(String);
+    found._id.constructor.name.should.equal('ObjectID');
+    found.oId.constructor.name.should.equal('ObjectID');
   });
 
   it('should identify ObjectID in relations', async () => {
@@ -255,3 +263,9 @@ describe.only('non-ObjectID id property', function() {
   });
 
 });
+
+function findRawModelData(modelName, id, cb) {
+  ds.connector.execute(modelName, 'findOne', {_id: {$eq: id}}, {safe: true}, cb);
+}
+const findRawModelDataAsync = promisify(findRawModelData);
+
