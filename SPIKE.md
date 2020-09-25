@@ -101,10 +101,11 @@ All changes are limited to `loopback-connetor-mongodb` only, Juggler is not affe
 
 ## Follow-up Tasks
 
-1. [ObjectID string interface](https://github.com/strongloop/loopback-connector-mongodb/issues/598)
-2. [SPIKE: Connector level model validation](https://github.com/strongloop/loopback-connector-mongodb/issues/599)
-3. [Primary key property not validated in `.create()`](https://github.com/strongloop/loopback-datasource-juggler/issues/1868)
-4. [Refactor DAO methods](https://github.com/strongloop/loopback-datasource-juggler/issues/1867)
+1. [Remove MongoDB.prototype.getDefaultIdType](https://github.com/strongloop/loopback-connector-mongodb/issues/600)
+2. [ObjectID string interface](https://github.com/strongloop/loopback-connector-mongodb/issues/598)
+3. [SPIKE: Connector level model validation](https://github.com/strongloop/loopback-connector-mongodb/issues/599)
+4. [Primary key property not validated in `.create()`](https://github.com/strongloop/loopback-datasource-juggler/issues/1868)
+5. [Refactor DAO methods](https://github.com/strongloop/loopback-datasource-juggler/issues/1867)
 
-3 and 4 are somewhat related but not a requirement, they were discovered and created out of the [first spike](https://github.com/strongloop/loopback-next/issues/3456#issuecomment-673421592).
+4 and 5 are somewhat related but not a requirement, they were discovered and created out of the [first spike](https://github.com/strongloop/loopback-next/issues/3456#issuecomment-673421592).
 
