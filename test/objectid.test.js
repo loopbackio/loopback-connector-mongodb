@@ -7,15 +7,13 @@
 
 require('./init.js');
 
-let Book, Chapter;
 const ds = global.getDataSource();
 const objectIDLikeString = '7cd2ad46ffc580ba45d3cb1f';
 const objectIDLikeString2 = '7cd2ad46ffc580ba45d3cb1e';
 const promisify = require('bluebird').promisify;
 const ObjectID = require('../lib/mongodb').ObjectID;
 
-describe.only('New ObjectID', function() {
-
+describe('ObjectID property definition', function() {
   const Book = ds.createModel(
     'Book',
     {
@@ -25,16 +23,16 @@ describe.only('New ObjectID', function() {
       title: String,
       strId: String,
       strIds: [String],
-      authorId: {type: [String], mongodb: {dataType: 'objectID'}}
-    }
+      authorId: {type: [String], mongodb: {dataType: 'objectID'}},
+    },
   );
 
   const Author = ds.createModel(
     'Author',
     {
       id: {id: true, type: String, mongodb: {dataType: 'objectID'}},
-      name: String
-    }
+      name: String,
+    },
   );
 
   const Deep = ds.createModel(
@@ -46,10 +44,10 @@ describe.only('New ObjectID', function() {
           innerObj: {
             innerObj: {
               sid: String,
-              oid: {type: String, mongodb: {dataType: 'objectID'}}
-            }
-          }
-        }
+              oid: {type: String, mongodb: {dataType: 'objectID'}},
+            },
+          },
+        },
       },
       innerArray: [
         {
@@ -57,17 +55,17 @@ describe.only('New ObjectID', function() {
           oid: {type: String, mongodb: {dataType: 'objectID'}},
           objInsideAnArray: {
             sid: String,
-            oid: {type: String, mongodb: {dataType: 'objectID'}}
+            oid: {type: String, mongodb: {dataType: 'objectID'}},
           },
           nested: [
             {
               sid: String,
-              oid: {type: String, mongodb: {dataType: 'objectID'}}
-            }
-          ]
-        }
-      ]
-    }
+              oid: {type: String, mongodb: {dataType: 'objectID'}},
+            },
+          ],
+        },
+      ],
+    },
   );
 
   beforeEach(async () => {
@@ -85,7 +83,7 @@ describe.only('New ObjectID', function() {
       oIds: [objectIDLikeString, objectIDLikeString2],
       title: 'abc',
       sId: objectIDLikeString,
-      sIds: [objectIDLikeString, objectIDLikeString2]
+      sIds: [objectIDLikeString, objectIDLikeString2],
     });
     created.id.should.be.instanceOf(String);
     created.oId.should.be.instanceOf(String);
@@ -101,7 +99,7 @@ describe.only('New ObjectID', function() {
   it('should store data in specified formats in the database', async () => {
     const created = await Book.create({
       oId: objectIDLikeString,
-      sId: objectIDLikeString
+      sId: objectIDLikeString,
     });
 
     const found = await findRawModelDataAsync('Book', ObjectID(created.id));
@@ -140,10 +138,10 @@ describe.only('New ObjectID', function() {
           innerObj: {
             innerObj: {
               oid: objectIDLikeString,
-              sid: objectIDLikeString
-            }
-          }
-        }
+              sid: objectIDLikeString,
+            },
+          },
+        },
       },
       innerArray: [
         {
@@ -151,16 +149,16 @@ describe.only('New ObjectID', function() {
           sid: objectIDLikeString,
           objInsideAnArray: {
             oid: objectIDLikeString,
-            sid: objectIDLikeString
+            sid: objectIDLikeString,
           },
           nested: [
             {
               oid: objectIDLikeString,
-              sid: objectIDLikeString
-            }
-          ]
-        }
-      ]
+              sid: objectIDLikeString,
+            },
+          ],
+        },
+      ],
     };
 
     const updateData = {
@@ -169,10 +167,10 @@ describe.only('New ObjectID', function() {
           innerObj: {
             innerObj: {
               oid: objectIDLikeString2,
-              sid: objectIDLikeString2
-            }
-          }
-        }
+              sid: objectIDLikeString2,
+            },
+          },
+        },
       },
       innerArray: [
         {
@@ -180,16 +178,16 @@ describe.only('New ObjectID', function() {
           sid: objectIDLikeString2,
           objInsideAnArray: {
             oid: objectIDLikeString2,
-            sid: objectIDLikeString2
+            sid: objectIDLikeString2,
           },
           nested: [
             {
               oid: objectIDLikeString2,
-              sid: objectIDLikeString2
-            }
-          ]
-        }
-      ]
+              sid: objectIDLikeString2,
+            },
+          ],
+        },
+      ],
     };
 
     let instanceId;
@@ -205,23 +203,20 @@ describe.only('New ObjectID', function() {
       found.innerArray[0].oid.should.be.instanceOf(String);
       return Deep.updateAll({id: found.id}, updateData);
     }).then(() => {
-      return Deep.findById(instanceId);    
+      return Deep.findById(instanceId);
     }).then(updated => {
       updated.id.should.be.instanceOf(String);
       updated.innerObj.innerObj.innerObj.innerObj.oid.should.be.instanceOf(String);
       updated.innerArray[0].oid.should.be.instanceOf(String);
     });
-
   });
 });
 
-
-describe.only('non-ObjectID id property', function() {
-
+describe('non-ObjectID id property', function() {
   context('auto-generated id', () => {
     const User = ds.createModel('User', {
-      id: {type: 'string', id: true, generated: true },
-      email: {type: 'string'}
+      id: {type: 'string', id: true, generated: true},
+      email: {type: 'string'},
     });
 
     beforeEach(async () => {
@@ -242,7 +237,7 @@ describe.only('non-ObjectID id property', function() {
   context('specified id', () => {
     const User = ds.createModel('User', {
       id: {type: 'string', id: true},
-      email: {type: 'string'}
+      email: {type: 'string'},
     });
 
     beforeEach(async () => {
@@ -255,7 +250,6 @@ describe.only('non-ObjectID id property', function() {
       user.id.should.equal(found.id);
     });
   });
-
 });
 
 function findRawModelData(modelName, id, cb) {
