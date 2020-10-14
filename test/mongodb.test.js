@@ -13,7 +13,7 @@ const async = require('async');
 const sinon = require('sinon');
 const sanitizeFilter = require('../lib/mongodb').sanitizeFilter;
 const trimLeadingDollarSigns = require('../lib/mongodb').trimLeadingDollarSigns;
-
+const bson = require('bson');
 const GeoPoint = require('loopback-datasource-juggler').GeoPoint;
 
 let Superhero,
@@ -149,7 +149,7 @@ describe('connect', function() {
   });
 });
 
-describe('mongodb connector', function() {
+describe.only('mongodb connector', function() {
   before(function() {
     db = global.getDataSource();
 
@@ -845,7 +845,7 @@ describe('mongodb connector', function() {
     ) {
       Post.dataSource.connector.db
         .collection('PostCollection')
-        .findOne({_id: post.id}, function(err, p) {
+        .findOne({_id: bson.ObjectId(post.id)}, function(err, p) {
           should.not.exist(err);
           should.exist(p);
           done();
@@ -1057,9 +1057,8 @@ describe('mongodb connector', function() {
     ) {
       Post.findById(post.id, function(err, post) {
         should.not.exist(err);
-        post.id.should.be.an.instanceOf(db.ObjectID);
+        post.id.should.be.an.instanceOf(String);
         should.not.exist(post._id);
-
         done();
       });
     });
