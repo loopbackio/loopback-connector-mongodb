@@ -2552,7 +2552,6 @@ describe.only('mongodb connector', function() {
         point.lng.should.be.equal(post.location.lng);
 
         post.location = newPoint;
-
         PostWithLocation.updateOrCreate(post, function(err, p) {
           should.not.exist(err);
           p._id.should.be.equal(post._id);
