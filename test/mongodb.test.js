@@ -278,7 +278,7 @@ describe.only('mongodb connector', function() {
 
     Category = db.define('Category', {
       title: {type: String, length: 255, index: true},
-      posts: {type: [db.ObjectID], index: true},
+      posts: {type: [String], index: true},
     }, {
       indexes: {
         'title_case_insensitive': {
@@ -2348,7 +2348,7 @@ describe.only('mongodb connector', function() {
         post = posts[0];
         post.should.have.property('title', 'a');
         post.should.have.property('content', 'AAA');
-        post.id.should.be.an.instanceOf(db.ObjectID);
+        post.id.should.be.an.instanceOf(String);
         should.not.exist(post._id);
 
         done();
@@ -2396,34 +2396,34 @@ describe.only('mongodb connector', function() {
     });
   });
 
-  it('create should convert id from string to ObjectID', function(done) {
+  it('create should not convert id from string to ObjectID', function(done) {
     const oid = new db.ObjectID();
     const sid = oid.toString();
     Post.create({id: sid, title: 'c', content: 'CCC'}, function(err, post) {
-      post.id.should.be.an.instanceOf(db.ObjectID);
+      post.id.should.be.an.instanceOf(String);
       Post.findById(sid, function(err, post) {
         should.not.exist(err);
         should.not.exist(post._id);
-        post.id.should.be.an.instanceOf(db.ObjectID);
-        post.id.should.be.eql(oid);
+        post.id.should.be.an.instanceOf(String);
+        post.id.should.be.eql(sid);
 
         done();
       });
     });
   });
 
-  it('create should convert id from string to ObjectID - Array property', function(done) {
+  it('create should not convert id from string to ObjectID - Array property', function(done) {
     Post.create({title: 'c', content: 'CCC'}, function(err, post) {
-      Category.create({title: 'a', posts: [String(post.id)]}, function(
+      Category.create({title: 'a', posts: [post.id]}, function(
         err,
         category,
       ) {
-        category.id.should.be.an.instanceOf(db.ObjectID);
-        category.posts[0].should.be.an.instanceOf(db.ObjectID);
+        category.id.should.be.an.instanceOf(String);
+        category.posts[0].should.be.an.instanceOf(String);
         Category.findOne({where: {posts: post.id}}, function(err, c) {
           should.not.exist(err);
-          c.id.should.be.an.instanceOf(db.ObjectID);
-          c.posts[0].should.be.an.instanceOf(db.ObjectID);
+          c.id.should.be.an.instanceOf(String);
+          c.posts[0].should.be.an.instanceOf(String);
           c.id.should.be.eql(category.id);
 
           done();
