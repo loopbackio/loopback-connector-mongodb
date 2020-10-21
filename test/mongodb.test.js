@@ -757,7 +757,7 @@ describe.only('mongodb connector', function() {
     });
   });
 
-  it('should properly retrieve embedded model properties', function(done) {
+  it.only('should properly retrieve embedded model properties', function(done) {
     const data = {name: 'Mitsos', location: {city: 'Volos', country: 'Greece'}};
     WithEmbeddedProperties.create(data, function(err, createdModel) {
       if (err) return done(err);
