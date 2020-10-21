@@ -994,7 +994,7 @@ describe.only('mongodb connector', function() {
     );
   });
 
-  it('should allow to find by number id using where inq', function(done) {
+  it.only('should allow to find by number id using where inq', function(done) {
     PostWithNumberId.create(
       {id: 1, title: 'Post1', content: 'Post1 content'},
       function(err, p1) {
@@ -2396,7 +2396,7 @@ describe.only('mongodb connector', function() {
     });
   });
 
-  it.only('create should not convert id from string to ObjectID', function(done) {
+  it('create should not convert id from string to ObjectID', function(done) {
     const oid = new db.ObjectID();
     const sid = oid.toString();
     Post.create({id: sid, title: 'c', content: 'CCC'}, function(err, post) {
