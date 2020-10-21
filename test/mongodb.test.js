@@ -259,7 +259,7 @@ describe.only('mongodb connector', function() {
     });
 
     PostWithObjectId = db.define('PostWithObjectId', {
-      _id: {type: db.ObjectID, id: true},
+      _id: {type: String, mongodb: { dataType: 'ObjectID' }, id: true},
       title: {type: String, length: 255, index: true},
       content: {type: String},
     });
@@ -591,7 +591,7 @@ describe.only('mongodb connector', function() {
 
   it('should have created models with correct _id types', function(done) {
     PostWithObjectId.definition.properties._id.type.should.be.equal(
-      db.ObjectID,
+      String,
     );
     should.not.exist(PostWithObjectId.definition.properties.id);
     PostWithNumberUnderscoreId.definition.properties._id.type.should.be.equal(
@@ -645,18 +645,18 @@ describe.only('mongodb connector', function() {
         should.not.exist(err);
         post = p[0];
         should.exist(post);
-        post._id.should.be.an.instanceOf(db.ObjectID);
+        post._id.should.be.an.instanceOf(String);
 
         done();
       });
     });
   });
 
-  it('find with `_id` as defined id should return an object with _id instanceof ObjectID', function(done) {
+  it('find with `_id` as defined id should return an object with _id instanceof String', function(done) {
     PostWithObjectId.create(function(err, post) {
       PostWithObjectId.findById(post._id, function(err, post) {
         should.not.exist(err);
-        post._id.should.be.an.instanceOf(db.ObjectID);
+        post._id.should.be.an.instanceOf(String);
 
         done();
       });
@@ -702,7 +702,7 @@ describe.only('mongodb connector', function() {
         post = posts[0];
         post.should.have.property('title', 'a');
         post.should.have.property('content', 'AAA');
-        post._id.should.be.an.instanceOf(db.ObjectID);
+        post._id.should.be.an.instanceOf(String);
 
         done();
       });
@@ -740,7 +740,7 @@ describe.only('mongodb connector', function() {
           post = posts[0];
           should.not.exist(post.title);
           post.should.have.property('content', 'AAA');
-          post._id.should.be.an.instanceOf(db.ObjectID);
+          post._id.should.be.an.instanceOf(String);
 
           done();
         },
@@ -2378,14 +2378,14 @@ describe.only('mongodb connector', function() {
     });
   });
 
-  it('create should convert id from ObjectID to string', function(done) {
+  it('create should store string id', function(done) {
     const oid = new db.ObjectID();
     const sid = oid.toString();
-    PostWithStringId.create({id: oid, title: 'c', content: 'CCC'}, function(
+    PostWithStringId.create({id: sid, title: 'c', content: 'CCC'}, function(
       err,
       post,
     ) {
-      PostWithStringId.findById(oid, function(err, post) {
+      PostWithStringId.findById(sid, function(err, post) {
         should.not.exist(err);
         should.not.exist(post._id);
         post.id.should.be.a.String();
@@ -2396,7 +2396,7 @@ describe.only('mongodb connector', function() {
     });
   });
 
-  it('create should not convert id from string to ObjectID', function(done) {
+  it.only('create should not convert id from string to ObjectID', function(done) {
     const oid = new db.ObjectID();
     const sid = oid.toString();
     Post.create({id: sid, title: 'c', content: 'CCC'}, function(err, post) {
