@@ -102,7 +102,7 @@ describe('ObjectID property definition', function() {
       sId: objectIDLikeString,
     });
 
-    const found = await findRawModelDataAsync('Book', ObjectID(created.id));
+    const found = await findRawModelDataAsync('Book', created.id);
     found.sId.should.be.instanceOf(String);
     found._id.constructor.name.should.equal('ObjectID');
     found.oId.constructor.name.should.equal('ObjectID');
@@ -253,6 +253,7 @@ describe('non-ObjectID id property', function() {
 });
 
 function findRawModelData(modelName, id, cb) {
+  id = ds.ObjectID(id);
   ds.connector.execute(modelName, 'findOne', {_id: {$eq: id}}, {safe: true}, cb);
 }
 const findRawModelDataAsync = promisify(findRawModelData);

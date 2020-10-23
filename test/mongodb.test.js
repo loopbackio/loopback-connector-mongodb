@@ -149,7 +149,7 @@ describe('connect', function() {
   });
 });
 
-describe.only('mongodb connector', function() {
+describe('mongodb connector', function() {
   before(function() {
     db = global.getDataSource();
 
