@@ -291,6 +291,7 @@ describe.only('mongodb connector', function() {
     PostWithStringIdAndRenamedColumns = db.define(
       'PostWithStringIdAndRenamedColumns',
       {
+        id: {type: String, id: true},
         renamedTitle: {
           type: String,
           length: 255,
@@ -812,7 +813,6 @@ describe.only('mongodb connector', function() {
       err,
       post,
     ) {
-      // console.log('create should', err, post);
       should.not.exist(err);
       should.exist(post.id);
       should.not.exist(post._id);
@@ -2429,15 +2429,15 @@ describe.only('mongodb connector', function() {
   });
 
   it('create should support renamed column names (using property syntax first)', function(done) {
-    const oid = new db.ObjectID().toString();
-    PostWithStringId.create({id: oid, title: 'c', content: 'CCC'}, function(
+    const sid = new db.ObjectID().toString();
+    PostWithStringId.create({id: sid, title: 'c', content: 'CCC'}, function(
       err,
       post,
     ) {
-      PostWithStringIdAndRenamedColumns.findById(oid, function(err, post) {
+      PostWithStringIdAndRenamedColumns.findById(sid, function(err, post) {
         should.not.exist(err);
         should.not.exist(post._id);
-        post.id.should.be.equal(oid);
+        post.id.should.be.equal(sid);
 
         should.exist(post.renamedTitle);
         should.exist(post.renamedContent);
@@ -2500,7 +2500,7 @@ describe.only('mongodb connector', function() {
       geoDb = global.getDataSource(config);
 
       PostWithLocation = geoDb.define('PostWithLocation', {
-        _id: {type: geoDb.ObjectID, id: true},
+        _id: {type: String, mongodb: { dataType: 'ObjectID' }, id: true},
         location: {type: GeoPoint, index: true},
       });
       createLocationPost = function(far) {
