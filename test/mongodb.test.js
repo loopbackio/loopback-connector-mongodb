@@ -291,7 +291,6 @@ describe.only('mongodb connector', function() {
     PostWithStringIdAndRenamedColumns = db.define(
       'PostWithStringIdAndRenamedColumns',
       {
-        id: {type: String, id: true},
         renamedTitle: {
           type: String,
           length: 255,
@@ -310,7 +309,6 @@ describe.only('mongodb connector', function() {
     PostWithDisableDefaultSort = db.define(
       'PostWithDisableDefaultSort',
       {
-        id: {type: String, id: true},
         title: {type: String, length: 255, index: true},
         content: {type: String},
       },
@@ -322,7 +320,6 @@ describe.only('mongodb connector', function() {
     WithEmbeddedProperties = db.define(
       'WithEmbeddedProperties',
       {
-        id: {type: String, id: true},
         name: {type: String},
         location: {
           type: {
@@ -757,10 +754,9 @@ describe.only('mongodb connector', function() {
     });
   });
 
-  it.only('should properly retrieve embedded model properties', function(done) {
+  it('should properly retrieve embedded model properties', function(done) {
     const data = {name: 'Mitsos', location: {city: 'Volos', country: 'Greece'}};
     WithEmbeddedProperties.create(data, function(err, createdModel) {
-      if (err) return done(err);
       WithEmbeddedProperties.findById(createdModel.id, function(err, dbModel) {
         if (err) return done(err);
         const modelObj = dbModel.toJSON();
