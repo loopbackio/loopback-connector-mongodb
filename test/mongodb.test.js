@@ -259,7 +259,7 @@ describe('mongodb connector', function() {
     });
 
     PostWithObjectId = db.define('PostWithObjectId', {
-      _id: {type: String, mongodb: {dataType: 'ObjectID'}, id: true},
+      _id: {type: String, mongodb: {dataType: 'ObjectID'}, generated: true, id: true},
       title: {type: String, length: 255, index: true},
       content: {type: String},
     });
