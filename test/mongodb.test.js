@@ -259,7 +259,7 @@ describe.only('mongodb connector', function() {
     });
 
     PostWithObjectId = db.define('PostWithObjectId', {
-      _id: {type: String, mongodb: { dataType: 'ObjectID' }, id: true},
+      _id: {type: String, mongodb: {dataType: 'ObjectID'}, id: true},
       title: {type: String, length: 255, index: true},
       content: {type: String},
     });
@@ -310,6 +310,7 @@ describe.only('mongodb connector', function() {
     PostWithDisableDefaultSort = db.define(
       'PostWithDisableDefaultSort',
       {
+        id: {type: String, id: true},
         title: {type: String, length: 255, index: true},
         content: {type: String},
       },
@@ -1637,7 +1638,7 @@ describe.only('mongodb connector', function() {
         return Post.findOrCreate(query, postData);
       })
       .then(function(result) {
-        const foundPost = result[0]
+        const foundPost = result[0];
         const created = result[1];
         created.should.be.false();
         should.not.exist(foundPost.title);
@@ -2500,7 +2501,7 @@ describe.only('mongodb connector', function() {
       geoDb = global.getDataSource(config);
 
       PostWithLocation = geoDb.define('PostWithLocation', {
-        _id: {type: String, mongodb: { dataType: 'ObjectID' }, id: true},
+        _id: {type: String, mongodb: {dataType: 'ObjectID'}, id: true},
         location: {type: GeoPoint, index: true},
       });
       createLocationPost = function(far) {
