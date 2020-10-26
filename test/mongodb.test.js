@@ -2318,14 +2318,14 @@ describe('mongodb connector', function() {
   });
 
   it('save should create a new instance if it does not exist', function(done) {
-    const post = new Post({id: '123', title: 'a', content: 'AAA'});
+    const post = new PostWithStringId({id: '123', title: 'a', content: 'AAA'});
     post.save(post, function(err, p) {
       should.not.exist(err);
       p.title.should.be.equal(post.title);
       p.content.should.be.equal(post.content);
       p.id.should.be.equal(post.id);
 
-      Post.findById(p.id, function(err, p) {
+      PostWithStringId.findById(p.id, function(err, p) {
         p.id.should.be.equal(post.id);
         should.not.exist(p._id);
         p.content.should.be.equal(post.content);
@@ -2396,9 +2396,9 @@ describe('mongodb connector', function() {
   it('create should not convert id from string to ObjectID', function(done) {
     const oid = new db.ObjectID();
     const sid = oid.toString();
-    Post.create({id: sid, title: 'c', content: 'CCC'}, function(err, post) {
+    PostWithStringId.create({id: sid, title: 'c', content: 'CCC'}, function(err, post) {
       post.id.should.be.an.instanceOf(String);
-      Post.findById(sid, function(err, post) {
+      PostWithStringId.findById(sid, function(err, post) {
         should.not.exist(err);
         should.not.exist(post._id);
         post.id.should.be.an.instanceOf(String);
@@ -2982,10 +2982,11 @@ describe('mongodb connector', function() {
   });
 
   it('should allow to find using like with renamed columns', function(done) {
-    PostWithStringId.create({title: 'My Post', content: 'Hello'}, function(
+    PostWithStringId.create({id: 'a', title: 'My Post', content: 'Hello'}, function(
       err,
       post,
     ) {
+      should.not.exist(err);
       PostWithStringIdAndRenamedColumns.find(
         {where: {renamedTitle: {like: 'M.+st'}}},
         function(err, posts) {
@@ -2999,8 +3000,9 @@ describe('mongodb connector', function() {
 
   it('should allow to find using like with renamed columns (inverse create order)', function(done) {
     PostWithStringIdAndRenamedColumns.create(
-      {renamedTitle: 'My Post', renamedContent: 'Hello'},
+      {id: 'b', renamedTitle: 'My Post', renamedContent: 'Hello'},
       function(err, post) {
+        should.not.exist(err);
         PostWithStringId.find({where: {title: {like: 'M.+st'}}}, function(
           err,
           posts,
@@ -3229,7 +3231,7 @@ describe('mongodb connector', function() {
     'should support where for count (using renamed columns in deep filter ' +
     'criteria)',
     function(done) {
-      PostWithStringId.create({title: 'My Post', content: 'Hello'}, function(
+      PostWithStringId.create({id: 'a', title: 'My Post', content: 'Hello'}, function(
         err,
         post,
       ) {
