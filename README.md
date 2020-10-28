@@ -294,7 +294,6 @@ For example:
 ## Primary key
 
 The recommended property definition of the primary key is `{type: String, mongodb: {dataType: 'ObjectId'}, id: true, generated: true}`.
-`generated` is optional, it defaults to `true`.
 
 ```ts
 {
@@ -303,11 +302,11 @@ The recommended property definition of the primary key is `{type: String, mongod
 }
 ```
 
-Since `generated: true` will generate `ObjectId` ids, you can further simplify it by removing `mongodb: {dataType: 'ObjectId'}`.
+Since `generated: true` will generate `ObjectId` ids, you can further simplify it by removing `type: String` and `mongodb: {dataType: 'ObjectId'}`.
 
 ```ts
 {
-  serial: {type: String, id: true, generated: true},
+  serial: {id: true, generated: true},
   name: String
 }
 ```
@@ -322,18 +321,18 @@ You can also simply omit the primary key definition. It will assume `id` as the 
 ```
 
 If you want to use an `ObjectId` primary key but want to set its value by yourself, you can define it as
-`{type: String, mongodb: {dataType: 'ObjectId'}, id: true, generated: false}`. You must specify an id value
+`{type: String, mongodb: {dataType: 'ObjectId'}, id: true}`, `generated` defaults to `false`. You must specify an id value
 while creating the model, else an error will be thrown.
 
 ```ts
 {
-  serial: {type: String, mongodb: {dataType: 'ObjectId'}, id: true, generated: false},
+  serial: {type: String, mongodb: {dataType: 'ObjectId'}, id: true},
   name: String
 }
 ```
 
 ## Handling ObjectId
-
+s
 MongoDB uses `ObjectId` for its primary key, which is an object instead of a
 string. In queries, string values must be cast to `ObjectId`, otherwise they are
 not considered as the same value. Therefore, you might want to specify the data
