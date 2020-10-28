@@ -17,7 +17,7 @@ describe('ObjectID property definition', function() {
   const Book = ds.createModel(
     'Book',
     {
-      d: {id: true, type: String, mongodb: {dataType: 'objectID'}},
+      d: {id: true, type: String, mongodb: {dataType: 'objectID'}, generated: true},
       oId: {type: String, mongodb: {dataType: 'objectID'}},
       oIds: {type: [String], mongodb: {dataType: 'objectID'}},
       title: String,
@@ -30,7 +30,7 @@ describe('ObjectID property definition', function() {
   const Author = ds.createModel(
     'Author',
     {
-      id: {id: true, type: String, mongodb: {dataType: 'objectID'}},
+      id: {id: true, type: String, mongodb: {dataType: 'objectID'}, generated: true},
       name: String,
     },
   );
@@ -38,7 +38,7 @@ describe('ObjectID property definition', function() {
   const Deep = ds.createModel(
     'Deep',
     {
-      id: {id: true, type: String, mongodb: {dataType: 'objectID'}},
+      id: {id: true, type: String, mongodb: {dataType: 'objectID'}, generated: true},
       innerObj: {
         innerObj: {
           innerObj: {
@@ -214,7 +214,7 @@ describe('ObjectID property definition', function() {
 
 describe('non-ObjectID id property', function() {
   context('auto-generated id', () => {
-    const User = ds.createModel('User', {
+    const User = ds.createModel('User1', {
       id: {type: 'string', id: true, generated: true},
       email: {type: 'string'},
     });
@@ -235,7 +235,7 @@ describe('non-ObjectID id property', function() {
   });
 
   context('specified id', () => {
-    const User = ds.createModel('User', {
+    const User = ds.createModel('User2', {
       id: {type: 'string', id: true},
       email: {type: 'string'},
     });
