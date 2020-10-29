@@ -2501,7 +2501,7 @@ describe('mongodb connector', function() {
       geoDb = global.getDataSource(config);
 
       PostWithLocation = geoDb.define('PostWithLocation', {
-        _id: {type: String, mongodb: {dataType: 'ObjectID'}, id: true},
+        _id: {type: String, mongodb: {dataType: 'ObjectID'}, id: true, generated: true},
         location: {type: GeoPoint, index: true},
       });
       createLocationPost = function(far) {
