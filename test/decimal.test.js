@@ -466,6 +466,7 @@ describe('model with decimal property', function() {
     });
 
     function findRawModelData(modelName, id, cb) {
+      id = db.ObjectID(id);
       db.connector.execute(modelName, 'findOne', {_id: {$eq: id}}, {safe: true}, cb);
     }
     const findRawModelDataAsync = promisify(findRawModelData);

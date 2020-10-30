@@ -277,6 +277,62 @@ clause." %}
 
 ## Handling ObjectId
 
+You will not be dealing with `ObjectId` directly, the connector provides a string interface to it.
+Whether a value is treated as a literal `ObjectId` or string is determined by the property definition.
+
+Any property that should be stored as `ObjectId` in the database must be defined as `{type: String, mongodb: {dataType: 'objectID'}`.
+
+For example:
+
+```ts
+{
+  friendId: {type: String, mongodb: {dataType: 'objectId'},
+  likedPosts: {type: [String], mongodb: {dataType: 'objectId'}}
+}
+```
+
+## Primary key
+
+The recommended property definition of the primary key is `{type: String, mongodb: {dataType: 'ObjectId'}, id: true, generated: true}`.
+
+```ts
+{
+  serial: {type: String, mongodb: {dataType: 'ObjectId'}, id: true, generated: true},
+  name: String
+}
+```
+
+Since `generated: true` will generate `ObjectId` ids, you can further simplify it by removing `type: String` and `mongodb: {dataType: 'ObjectId'}`.
+
+```ts
+{
+  serial: {id: true, generated: true},
+  name: String
+}
+```
+
+You can also simply omit the primary key definition. It will assume `id` as the primary key name, and 
+`{type: String, mongodb: {dataType: 'ObjectId'}, id: true, generated: true}` as its definition.
+
+```ts
+{
+  name: String
+}
+```
+
+If you want to use an `ObjectId` primary key but want to set its value by yourself, you can define it as
+`{type: String, mongodb: {dataType: 'ObjectId'}, id: true}`, `generated` defaults to `false`. You must specify an id value
+while creating the model, else an error will be thrown.
+
+```ts
+{
+  serial: {type: String, mongodb: {dataType: 'ObjectId'}, id: true},
+  name: String
+}
+```
+
+## Handling ObjectId
+
 MongoDB uses `ObjectId` for its primary key, which is an object instead of a
 string. In queries, string values must be cast to `ObjectId`, otherwise they are
 not considered as the same value. Therefore, you might want to specify the data

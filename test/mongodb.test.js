@@ -13,7 +13,7 @@ const async = require('async');
 const sinon = require('sinon');
 const sanitizeFilter = require('../lib/mongodb').sanitizeFilter;
 const trimLeadingDollarSigns = require('../lib/mongodb').trimLeadingDollarSigns;
-
+const bson = require('bson');
 const GeoPoint = require('loopback-datasource-juggler').GeoPoint;
 
 let Superhero,
@@ -259,7 +259,7 @@ describe('mongodb connector', function() {
     });
 
     PostWithObjectId = db.define('PostWithObjectId', {
-      _id: {type: db.ObjectID, id: true},
+      _id: {type: String, mongodb: {dataType: 'ObjectID'}, generated: true, id: true},
       title: {type: String, length: 255, index: true},
       content: {type: String},
     });
@@ -278,7 +278,7 @@ describe('mongodb connector', function() {
 
     Category = db.define('Category', {
       title: {type: String, length: 255, index: true},
-      posts: {type: [db.ObjectID], index: true},
+      posts: {type: [String], index: true},
     }, {
       indexes: {
         'title_case_insensitive': {
@@ -322,7 +322,6 @@ describe('mongodb connector', function() {
     WithEmbeddedProperties = db.define(
       'WithEmbeddedProperties',
       {
-        id: {type: String, id: true},
         name: {type: String},
         location: {
           type: {
@@ -591,7 +590,7 @@ describe('mongodb connector', function() {
 
   it('should have created models with correct _id types', function(done) {
     PostWithObjectId.definition.properties._id.type.should.be.equal(
-      db.ObjectID,
+      String,
     );
     should.not.exist(PostWithObjectId.definition.properties.id);
     PostWithNumberUnderscoreId.definition.properties._id.type.should.be.equal(
@@ -645,18 +644,18 @@ describe('mongodb connector', function() {
         should.not.exist(err);
         post = p[0];
         should.exist(post);
-        post._id.should.be.an.instanceOf(db.ObjectID);
+        post._id.should.be.an.instanceOf(String);
 
         done();
       });
     });
   });
 
-  it('find with `_id` as defined id should return an object with _id instanceof ObjectID', function(done) {
+  it('find with `_id` as defined id should return an object with _id instanceof String', function(done) {
     PostWithObjectId.create(function(err, post) {
       PostWithObjectId.findById(post._id, function(err, post) {
         should.not.exist(err);
-        post._id.should.be.an.instanceOf(db.ObjectID);
+        post._id.should.be.an.instanceOf(String);
 
         done();
       });
@@ -702,7 +701,7 @@ describe('mongodb connector', function() {
         post = posts[0];
         post.should.have.property('title', 'a');
         post.should.have.property('content', 'AAA');
-        post._id.should.be.an.instanceOf(db.ObjectID);
+        post._id.should.be.an.instanceOf(String);
 
         done();
       });
@@ -740,7 +739,7 @@ describe('mongodb connector', function() {
           post = posts[0];
           should.not.exist(post.title);
           post.should.have.property('content', 'AAA');
-          post._id.should.be.an.instanceOf(db.ObjectID);
+          post._id.should.be.an.instanceOf(String);
 
           done();
         },
@@ -760,7 +759,6 @@ describe('mongodb connector', function() {
   it('should properly retrieve embedded model properties', function(done) {
     const data = {name: 'Mitsos', location: {city: 'Volos', country: 'Greece'}};
     WithEmbeddedProperties.create(data, function(err, createdModel) {
-      if (err) return done(err);
       WithEmbeddedProperties.findById(createdModel.id, function(err, dbModel) {
         if (err) return done(err);
         const modelObj = dbModel.toJSON();
@@ -816,7 +814,6 @@ describe('mongodb connector', function() {
       err,
       post,
     ) {
-      // console.log('create should', err, post);
       should.not.exist(err);
       should.exist(post.id);
       should.not.exist(post._id);
@@ -845,7 +842,7 @@ describe('mongodb connector', function() {
     ) {
       Post.dataSource.connector.db
         .collection('PostCollection')
-        .findOne({_id: post.id}, function(err, p) {
+        .findOne({_id: bson.ObjectId(post.id)}, function(err, p) {
           should.not.exist(err);
           should.exist(p);
           done();
@@ -1057,9 +1054,8 @@ describe('mongodb connector', function() {
     ) {
       Post.findById(post.id, function(err, post) {
         should.not.exist(err);
-        post.id.should.be.an.instanceOf(db.ObjectID);
+        post.id.should.be.an.instanceOf(String);
         should.not.exist(post._id);
-
         done();
       });
     });
@@ -2322,14 +2318,14 @@ describe('mongodb connector', function() {
   });
 
   it('save should create a new instance if it does not exist', function(done) {
-    const post = new Post({id: '123', title: 'a', content: 'AAA'});
+    const post = new PostWithStringId({id: '123', title: 'a', content: 'AAA'});
     post.save(post, function(err, p) {
       should.not.exist(err);
       p.title.should.be.equal(post.title);
       p.content.should.be.equal(post.content);
       p.id.should.be.equal(post.id);
 
-      Post.findById(p.id, function(err, p) {
+      PostWithStringId.findById(p.id, function(err, p) {
         p.id.should.be.equal(post.id);
         should.not.exist(p._id);
         p.content.should.be.equal(post.content);
@@ -2349,7 +2345,7 @@ describe('mongodb connector', function() {
         post = posts[0];
         post.should.have.property('title', 'a');
         post.should.have.property('content', 'AAA');
-        post.id.should.be.an.instanceOf(db.ObjectID);
+        post.id.should.be.an.instanceOf(String);
         should.not.exist(post._id);
 
         done();
@@ -2379,14 +2375,14 @@ describe('mongodb connector', function() {
     });
   });
 
-  it('create should convert id from ObjectID to string', function(done) {
+  it('create should store string id', function(done) {
     const oid = new db.ObjectID();
     const sid = oid.toString();
-    PostWithStringId.create({id: oid, title: 'c', content: 'CCC'}, function(
+    PostWithStringId.create({id: sid, title: 'c', content: 'CCC'}, function(
       err,
       post,
     ) {
-      PostWithStringId.findById(oid, function(err, post) {
+      PostWithStringId.findById(sid, function(err, post) {
         should.not.exist(err);
         should.not.exist(post._id);
         post.id.should.be.a.String();
@@ -2397,34 +2393,34 @@ describe('mongodb connector', function() {
     });
   });
 
-  it('create should convert id from string to ObjectID', function(done) {
+  it('create should not convert id from string to ObjectID', function(done) {
     const oid = new db.ObjectID();
     const sid = oid.toString();
-    Post.create({id: sid, title: 'c', content: 'CCC'}, function(err, post) {
-      post.id.should.be.an.instanceOf(db.ObjectID);
-      Post.findById(sid, function(err, post) {
+    PostWithStringId.create({id: sid, title: 'c', content: 'CCC'}, function(err, post) {
+      post.id.should.be.an.instanceOf(String);
+      PostWithStringId.findById(sid, function(err, post) {
         should.not.exist(err);
         should.not.exist(post._id);
-        post.id.should.be.an.instanceOf(db.ObjectID);
-        post.id.should.be.eql(oid);
+        post.id.should.be.an.instanceOf(String);
+        post.id.should.be.eql(sid);
 
         done();
       });
     });
   });
 
-  it('create should convert id from string to ObjectID - Array property', function(done) {
+  it('create should not convert id from string to ObjectID - Array property', function(done) {
     Post.create({title: 'c', content: 'CCC'}, function(err, post) {
-      Category.create({title: 'a', posts: [String(post.id)]}, function(
+      Category.create({title: 'a', posts: [post.id]}, function(
         err,
         category,
       ) {
-        category.id.should.be.an.instanceOf(db.ObjectID);
-        category.posts[0].should.be.an.instanceOf(db.ObjectID);
+        category.id.should.be.an.instanceOf(String);
+        category.posts[0].should.be.an.instanceOf(String);
         Category.findOne({where: {posts: post.id}}, function(err, c) {
           should.not.exist(err);
-          c.id.should.be.an.instanceOf(db.ObjectID);
-          c.posts[0].should.be.an.instanceOf(db.ObjectID);
+          c.id.should.be.an.instanceOf(String);
+          c.posts[0].should.be.an.instanceOf(String);
           c.id.should.be.eql(category.id);
 
           done();
@@ -2434,15 +2430,15 @@ describe('mongodb connector', function() {
   });
 
   it('create should support renamed column names (using property syntax first)', function(done) {
-    const oid = new db.ObjectID().toString();
-    PostWithStringId.create({id: oid, title: 'c', content: 'CCC'}, function(
+    const sid = new db.ObjectID().toString();
+    PostWithStringId.create({id: sid, title: 'c', content: 'CCC'}, function(
       err,
       post,
     ) {
-      PostWithStringIdAndRenamedColumns.findById(oid, function(err, post) {
+      PostWithStringIdAndRenamedColumns.findById(sid, function(err, post) {
         should.not.exist(err);
         should.not.exist(post._id);
-        post.id.should.be.equal(oid);
+        post.id.should.be.equal(sid);
 
         should.exist(post.renamedTitle);
         should.exist(post.renamedContent);
@@ -2505,7 +2501,7 @@ describe('mongodb connector', function() {
       geoDb = global.getDataSource(config);
 
       PostWithLocation = geoDb.define('PostWithLocation', {
-        _id: {type: geoDb.ObjectID, id: true},
+        _id: {type: String, mongodb: {dataType: 'ObjectID'}, id: true, generated: true},
         location: {type: GeoPoint, index: true},
       });
       createLocationPost = function(far) {
@@ -2553,7 +2549,6 @@ describe('mongodb connector', function() {
         point.lng.should.be.equal(post.location.lng);
 
         post.location = newPoint;
-
         PostWithLocation.updateOrCreate(post, function(err, p) {
           should.not.exist(err);
           p._id.should.be.equal(post._id);
@@ -2987,10 +2982,11 @@ describe('mongodb connector', function() {
   });
 
   it('should allow to find using like with renamed columns', function(done) {
-    PostWithStringId.create({title: 'My Post', content: 'Hello'}, function(
+    PostWithStringId.create({id: 'a', title: 'My Post', content: 'Hello'}, function(
       err,
       post,
     ) {
+      should.not.exist(err);
       PostWithStringIdAndRenamedColumns.find(
         {where: {renamedTitle: {like: 'M.+st'}}},
         function(err, posts) {
@@ -3004,8 +3000,9 @@ describe('mongodb connector', function() {
 
   it('should allow to find using like with renamed columns (inverse create order)', function(done) {
     PostWithStringIdAndRenamedColumns.create(
-      {renamedTitle: 'My Post', renamedContent: 'Hello'},
+      {id: 'b', renamedTitle: 'My Post', renamedContent: 'Hello'},
       function(err, post) {
+        should.not.exist(err);
         PostWithStringId.find({where: {title: {like: 'M.+st'}}}, function(
           err,
           posts,
@@ -3234,7 +3231,7 @@ describe('mongodb connector', function() {
     'should support where for count (using renamed columns in deep filter ' +
     'criteria)',
     function(done) {
-      PostWithStringId.create({title: 'My Post', content: 'Hello'}, function(
+      PostWithStringId.create({id: 'a', title: 'My Post', content: 'Hello'}, function(
         err,
         post,
       ) {
