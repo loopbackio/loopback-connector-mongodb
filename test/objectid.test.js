@@ -137,12 +137,12 @@ describe('ObjectID', function() {
         title: 'arrayOfObjectID',
       });
       const found = await Article.find({where: {title: 'arrayOfObjectID'}});
-      // the type of the returned array is actually string even it's stored as ObjectIds in the db as expected
+      // the type of the returned array is actually string even though they are stored as ObjectIds in the db
       found[0].xidArr.should.containDeep([
-        new ds.ObjectID(objectIDLikeString),
-        new ds.ObjectID(objectIDLikeString2),
+        objectIDLikeString,
+        objectIDLikeString2,
       ]);
-      // check if the array is stored in ObjectId
+      // check if the array is stored as ObjectId in the db
       const raw = await findRawModelDataAsync('ArticleC', found[0].id);
       raw.xidArr[0].should.be.an.instanceOf(ds.ObjectID);
       raw.xidArr[1].should.be.an.instanceOf(ds.ObjectID);
