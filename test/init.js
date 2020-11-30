@@ -47,4 +47,5 @@ global.connectorCapabilities = {
   ilike: false,
   nilike: false,
   nestedProperty: true,
+  atomicUpsertWithWhere: true,
 };
