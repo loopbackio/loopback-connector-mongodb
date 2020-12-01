@@ -2,6 +2,11 @@
 
 The official MongoDB connector for the LoopBack framework.
 
+> We are working on a new major release 6.0. The `master` branch contains
+> unreleased changes breaking backwards compatibility. Until 6.0 is released,
+> we will be back-porting backwards compatible changes to `5.x` branch and
+> publishing new releases from there.
+
 ## Installation
 
 In your application root directory, enter this command to install the connector:
