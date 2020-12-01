@@ -1,3 +1,9 @@
+2020-12-01, Version 5.5.0
+=========================
+
+ * atomic upsertWithWhere (#563) (Matteo Padovano)
+
+
 2020-09-02, Version 5.4.0
 =========================
 
