@@ -196,6 +196,56 @@ describe('mongodb default id type', function() {
   });
 });
 
+describe('mongodb short id type', function() {
+  const Car = ds.createModel(
+    'car',
+    {
+      seq: {      
+        id: true,
+        type: 'string',
+        defaultFn: 'shortid',
+        required: true,
+        description: 'Short Id is automatically generated'
+      },
+      name: String,
+    },
+    {forceId: false},
+  );
+
+  before(function(done) {
+    Car.deleteAll(done);
+  });
+
+  let id;
+  it('should generate id value for create', function(done) {
+    Car.create(
+      {
+        name: 'Car1',
+      },
+      function(err, car) {
+        if (err) return done(err);
+        car.should.have.property('seq');
+        id = car.seq;
+        Car.findById(id, function(err, car1) {
+          if (err) return done(err);
+          car1.seq.should.eql(car.seq);
+          done(err, car1);
+        });
+      },
+    );
+  });
+
+  it('should be able to upsertWithWhere', function(done) {
+    Car.upsertWithWhere(
+      {name: 'car2'}, 
+      {name: 'car2'}, 
+      function(err, created) {
+      if (err) return done(err);
+      created.should.have.property('seq');
+    });
+  });
+});
+
 describe('mongodb default id name', function() {
   const Customer1 = ds.createModel(
     'customer1',
