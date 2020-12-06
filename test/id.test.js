@@ -242,6 +242,7 @@ describe('mongodb short id type', function() {
       function(err, created) {
       if (err) return done(err);
       created.should.have.property('seq');
+      done();
     });
   });
 });
