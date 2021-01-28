@@ -30,9 +30,7 @@ jobs:
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
 
-
     - run: npm install
     - run: npm test
-    # - run: npm run coverage
       env:
         CI: true
