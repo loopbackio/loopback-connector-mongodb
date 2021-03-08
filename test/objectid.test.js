@@ -165,6 +165,41 @@ describe('ObjectID', function() {
       const result = await Note.create({title: 'hello'});
       // the test passes when this call does not throw
     });
+
+    context('where clause', () => {
+      it('should properly convert an array of ObjectIDs - implicit equal operator', async () => {
+        await Article.create({
+          xid: objectIDLikeString,
+          xidArr: [objectIDLikeString, objectIDLikeString2],
+          title: 'arrayOfObjectID',
+        });
+        const found = await Article.find({where: {xidArr: [objectIDLikeString, objectIDLikeString2]}});
+
+        found[0].xidArr.should.containDeep([objectIDLikeString, objectIDLikeString2]);
+        // check if the array is stored in ObjectId
+        const raw = await findRawModelDataAsync('ArticleC', found[0].id);
+        raw.xidArr[0].should.be.an.instanceOf(ds.ObjectID);
+        raw.xidArr[1].should.be.an.instanceOf(ds.ObjectID);
+      });
+
+      it('should properly convert an array of ObjectIDs - extended operator', async () => {
+        await Article.create({
+          xid: objectIDLikeString,
+          xidArr: [objectIDLikeString, objectIDLikeString2],
+          title: 'arrayOfObjectID2',
+        });
+        const found = await Article.find(
+          {where: {xidArr: {$all: [objectIDLikeString, objectIDLikeString2]}}},
+          {allowExtendedOperators: true},
+        );
+
+        found[0].xidArr.should.containDeep([objectIDLikeString, objectIDLikeString2]);
+        // check if the array is stored in ObjectId
+        const raw = await findRawModelDataAsync('ArticleC', found[0].id);
+        raw.xidArr[0].should.be.an.instanceOf(ds.ObjectID);
+        raw.xidArr[1].should.be.an.instanceOf(ds.ObjectID);
+      });
+    });
   });
 
   context('ObjectID as a constructor', function() {
