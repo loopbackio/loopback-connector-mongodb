@@ -1,3 +1,17 @@
+2021-03-22, Version 6.0.0
+=========================
+
+ * coerce values of array defined as ObjectID type (=)
+
+ * Update mongodb to ^3.6.4 (wolrajhti)
+
+ * ci: convert from Travis to Github action ci (Agnes Lin)
+
+ * README: mention our work on 6.0 (Miroslav Bajtoš)
+
+ * [SEMVER-MAJOR] Drop support for LoopBack 3.x (Yaapa Hage)
+
+
 2020-12-01, Version 5.5.0
 =========================
 
