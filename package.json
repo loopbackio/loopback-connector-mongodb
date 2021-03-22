@@ -1,6 +1,9 @@
 {
   "name": "loopback-connector-mongodb",
   "version": "5.5.0",
+  "publishConfig": {
+    "tag": "lts"
+  },
   "description": "The official MongoDB connector for the LoopBack framework.",
   "engines": {
     "node": ">=10"
