@@ -2379,6 +2379,28 @@ describe('mongodb connector', function() {
     });
   });
 
+  it('should allow to use filters with customized field names', function(done) {
+    const post = new PostWithStringIdAndRenamedColumns({renamedTitle: 'b', renamedContent: 'BBB'});
+    post.save(function(err, post) {
+      db.connector.all(
+        'PostWithStringIdAndRenamedColumns',
+        {fields: ['renamedTitle', 'renamedContent']},
+        {},
+        function(err, posts) {
+          should.not.exist(err);
+          posts.should.have.lengthOf(1);
+          post = posts[0];
+          post.should.have.property('renamedTitle', 'b');
+          post.should.have.property('renamedContent', 'BBB');
+          should.not.exist(post.content);
+          should.not.exist(post._id);
+          should.not.exist(post.id);
+          done();
+        },
+      );
+    });
+  });
+
   it('create should convert id from ObjectID to string', function(done) {
     const oid = new db.ObjectID();
     const sid = oid.toString();
