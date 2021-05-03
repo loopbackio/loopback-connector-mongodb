@@ -1,3 +1,11 @@
+2021-05-03, Version 6.0.1
+=========================
+
+ * fix: allows fields filter with custom field name (louis.nguyen)
+
+ * README: update notes about 6.0 (Miroslav Bajtoš)
+
+
 2021-03-22, Version 6.0.0
 =========================
 
