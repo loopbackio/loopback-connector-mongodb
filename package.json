@@ -24,13 +24,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/strongloop/loopback-connector-mongodb.git"
+    "url": "git://github.com/loopbackio/loopback-connector-mongodb.git"
   },
   "keywords": [
     "connector",
     "datasource",
     "loopback",
-    "strongloop",
     "mongodb"
   ],
   "license": "MIT",

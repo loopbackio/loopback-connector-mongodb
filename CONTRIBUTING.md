@@ -1,7 +1,6 @@
 ### Contributing ###
 
-Thank you for your interest in `loopback-connector-mongodb`, an open source project
-administered by StrongLoop.
+Thank you for your interest in `loopback-connector-mongodb`, an open source project as part of LoopBack.
 
 Contributing to `loopback-connector-mongodb` is easy. In a few simple steps:
 
@@ -14,7 +13,7 @@ Contributing to `loopback-connector-mongodb` is easy. In a few simple steps:
   * Adhere to code style outlined in the [Google C++ Style Guide][] and
     [Google Javascript Style Guide][].
 
-  * Sign the [Contributor License Agreement](https://cla.strongloop.com/agreements/strongloop/loopback-connector-mongodb)
+  * Sign the [Developer Certificate of Origin](#developer-certificate-of-origin)
 
   * Submit a pull request through Github.
 
