@@ -1,35 +1,61 @@
-name: Continuous Integration (master branch)
+name: CI
 
 on:
   push:
     branches:
     - master
+    - 5.x
   pull_request:
     branches:
     - master
+    - 5.x
+  schedule:
+    - cron: '0 2 * * 1' # At 02:00 on Monday
 
 jobs:
-  build:
+  test:
+    name: Test
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       matrix:
-        node-version: [10, 12, 14]
-        mongodb-version: [4.4] # the latest stable version
-
+        node-version: [10, 12, 14, 16]
+        mongodb-version: [4.4]
+      fail-fast: false
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.6.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+      - name: Bootstrap project
+        run: npm ci --ignore-scripts
+      - name: Update NPM
+        run: npm install --global npm
+      - name: Run tests
+        run: npm test --ignore-scripts
+      - name: Publish coverage report to Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: run-${{ matrix.os }}-node@${{ matrix.node-version }}
+          path-to-lcov: ${{ github.workspace }}/coverage/lcov.info
+          parallel: true
 
-    - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.3.0
+  posttest:
+    name: Post-Test
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls finished
+      uses: coverallsapp/github-action@master
       with:
-        mongodb-version: ${{ matrix.mongodb-version }}
-
-    - run: npm install
-    - run: npm test
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true
 
   code-lint:
     name: Code Lint
@@ -41,7 +67,7 @@ jobs:
         with:
           node-version: 14
       - name: Bootstrap project
-        run: npm install --ignore-scripts
+        run: npm ci --ignore-scripts
       - name: Verify code linting
         run: npm run lint
 
@@ -57,9 +83,9 @@ jobs:
         with:
           node-version: 14
       - name: Bootstrap project
-        run: npm install
+        run: npm ci --ignore-scripts
       - name: Verify commit linting
-        run: npx commitlint --from origin/master --to HEAD --verbose
+        run: npx --no-install commitlint --from origin/master --to HEAD --verbose
 
   codeql:
     name: CodeQL

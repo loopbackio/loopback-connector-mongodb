@@ -1,0 +1,26 @@
+branches:
+  only: master
+arch: arm64
+services: docker
+language: node_js
+node_js:
+  - 10
+  - 12
+  - 14
+  - 16
+before_install: |
+  docker run --name=mongodb --publish=27017:27017 --detach mongo:4.4
+  until docker exec --tty mongodb mongo --port=27017 --eval='db.serverStatus()'
+  do
+    sleep 1
+    echo "."
+    TIMER=$((TIMER + 1))
+    if [ $TIMER -eq 20 ]; then
+      echo "MongoDB did not initialize within 20 seconds. Exiting."
+      exit 2
+    fi
+  done
+install:
+  - npm install --global npm
+  - npm ci --ignore-scripts
+script: npm test --ignore-scripts
