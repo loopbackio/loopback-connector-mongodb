@@ -1,3 +1,15 @@
+2021-09-07, Version 6.1.0
+=========================
+
+ * ci: misc updates (Rifa Achrinza)
+
+ * feat: add transaction support (Sergey Nosenko)
+
+ * ci: align gh actions workflow with 5.x (Rifa Achrinza)
+
+ * chore: move repo to loopbackio org (Diana Lau)
+
+
 2021-05-03, Version 6.0.1
 =========================
 
