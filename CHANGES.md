@@ -1,3 +1,10 @@
+2021-09-08, Version 5.6.0
+=========================
+
+ * feat: add transaction support (Sergey Nosenko)
+
+ * ci: add worflow for 5.x (Rifa Achrinza)
+
 2020-12-01, Version 5.5.0
 =========================
 
