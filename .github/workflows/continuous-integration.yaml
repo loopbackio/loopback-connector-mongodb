@@ -1,4 +1,4 @@
-name: Continuous Integration (5.x branch)
+name: CI
 
 on:
   push:
