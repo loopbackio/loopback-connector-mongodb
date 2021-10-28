@@ -2379,6 +2379,36 @@ describe('mongodb connector', function() {
     });
   });
 
+  it('all return should honor filter.fields and not apply them to included relations', function(done) {
+    const user = new User({name: 'Matt'});
+    user.save(function(err, user) {
+      const post = new Post({title: 'b', content: 'BBB', userId: user.id});
+      post.save(function(err, post) {
+        db.connector.all(
+          'Post',
+          {fields: ['title', 'userId'], where: {title: 'b'}, include: 'user'},
+          {},
+          function(err, posts) {
+            should.not.exist(err);
+            posts.should.have.lengthOf(1);
+            post = posts[0];
+            post.should.have.property('title', 'b');
+            should.not.exist(post.content);
+            should.not.exist(post._id);
+            should.not.exist(post.id);
+            post.should.have.property('userId');
+            post.should.have.property('user');
+            const {user} = post;
+            user.should.have.property('id');
+            user.should.have.property('name', 'Matt');
+
+            done();
+          },
+        );
+      });
+    });
+  });
+
   it('create should convert id from ObjectID to string', function(done) {
     const oid = new db.ObjectID();
     const sid = oid.toString();
