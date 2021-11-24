@@ -20,7 +20,13 @@ before_install: |
       exit 2
     fi
   done
+  NODEJS_VERSION=$(node --version)
+  if [ 'v10' == ${NODEJS_VERSION%%.*} ]
+  then
+    npm install --global npm@7
+  else
+    npm install --global npm@8
+  fi
 install:
-  - npm install --global npm
   - npm ci --ignore-scripts
 script: npm test --ignore-scripts
