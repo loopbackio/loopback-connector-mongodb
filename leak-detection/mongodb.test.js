@@ -5,7 +5,7 @@
 
 'use strict';
 
-const memwatch = require('memwatch-next');
+const memwatch = require('@airbnb/node-memwatch');
 const sinon = require('sinon');
 const Todo = require('./fixtures/todo');
 

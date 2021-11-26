@@ -5,13 +5,7 @@
 
 'use strict';
 
-let memwatch;
-
-try {
-  memwatch = require('@airbnb/node-memwatch');
-} catch (e) {
-  memwatch = require('memwatch-next');
-}
+const memwatch = require('@airbnb/node-memwatch');
 const sinon = require('sinon');
 
 describe('leak detector', function() {

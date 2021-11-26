@@ -41,6 +41,7 @@
     "strong-globalize": "^6.0.0"
   },
   "devDependencies": {
+    "@airbnb/node-memwatch": "^2.0.0",
     "@commitlint/config-conventional": "^13.1.0",
     "benchmark": "^2.1.4",
     "bluebird": "^3.5.4",
