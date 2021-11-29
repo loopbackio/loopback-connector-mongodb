@@ -63,6 +63,26 @@ jobs:
         github-token: ${{ secrets.github_token }}
         parallel-finished: true
 
+  test-leak:
+    name: Test (Leak Detection)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js v16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.6.0
+        with:
+          mongodb-version: 4.4
+      - name: Update NPM
+        run: npm install --global npm@8
+      - name: Bootstrap project
+        run: npm ci
+      - name: Run test
+        run: make leak-detection
+
   code-lint:
     name: Code Lint
     runs-on: ubuntu-latest
