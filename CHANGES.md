@@ -1,3 +1,35 @@
+2022-03-31, Version 6.2.0
+=========================
+
+ * docs: add SECURITY.md (Diana Lau)
+
+ * chore: tls README example (d-bo)
+
+ * docs: update coc (Diana Lau)
+
+ * docs: add code of conduct (Diana Lau)
+
+ * chore: update v6 EOL (Rifa Achrinza)
+
+ * ci: fix typo (Rifa Achrinza)
+
+ * chore: update deps (Rifa Achrinza)
+
+ * feat: add tls options as of mongo 3.7 (d-bo)
+
+ * ci: update Node.js version (Rifa Achrinza)
+
+ * ci: pin NPM version (Rifa Achrinza)
+
+ * chore: add @achrinza and update CODEOWNERS (Diana Lau)
+
+ * fix: isObjectIDProperty array param check (Rifa Achrinza)
+
+ * fix: handle url default db name (Rifa Achrinza)
+
+ * ci: restrict GITHUB_TOKEN permissions (Rifa Achrinza)
+
+
 2021-09-07, Version 6.1.0
 =========================
 
