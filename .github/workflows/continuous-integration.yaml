@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        node-version: [10, 12, 14, 16, 17]
+        node-version: [10, 12, 14, 16, 17, 18]
         mongodb-version: [4.4]
       fail-fast: false
     steps:

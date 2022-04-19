@@ -1,6 +1,7 @@
 branches:
   only: master
 arch: arm64
+dist: focal
 services: docker
 language: node_js
 node_js:
@@ -9,6 +10,7 @@ node_js:
   - 14
   - 16
   - 17
+  - 18
 before_install: |
   docker run --name=mongodb --publish=27017:27017 --detach mongo:4.4
   until docker exec --tty mongodb mongo --port=27017 --eval='db.serverStatus()'
