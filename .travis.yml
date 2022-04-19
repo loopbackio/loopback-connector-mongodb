@@ -1,21 +1,27 @@
+branches:
+  only: 5.x
+arch: arm64
+services: docker
 language: node_js
 node_js:
-  - "10"
-  - "12"
-  - "14"
-
+  - 10
+  - 12
+  - 14
 env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-      - mongodb-3.2-precise
-    packages:
-      - g++-4.8
-      - mongodb-org-server
-      - mongodb-org-shell
-services:
-  - mongodb
-
-after_success: npm run coverage
+  - MONGO_VERSION=3.6
+  - MONGO_VERSION=4.4
+  - MONGO_VERSION=5.0
+before_install: |
+  docker run --name=mongodb --publish=27017:27017 --detach mongo:"$MONGO_VERSION"
+  until docker exec --tty mongodb mongo --port=27017 --eval='db.serverStatus()'
+  do
+    sleep 1
+    echo "."
+    TIMER="$(TIMER + 1)"
+    if [ "$TIMER" -eq 20 ]; then
+      echo "MongoDB did not initialize within 20 seconds. Exiting."
+      exit 2
+    fi
+  done
+install: npm ci --ignore-scripts
+script: npm run-script test:ci

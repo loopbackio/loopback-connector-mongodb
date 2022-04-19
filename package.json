@@ -14,7 +14,8 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "benchmarks": "make benchmarks",
     "leak-detection": "make leak-detection",
-    "test": "nyc mocha test/*.test.js node_modules/juggler-v3/test.js node_modules/juggler-v4/test.js",
+    "test": "npm run test:ci",
+    "test:ci": "nyc mocha test/*.test.js node_modules/juggler-v3/test.js node_modules/juggler-v4/test.js",
     "lint": "eslint .",
     "posttest": "npm run lint"
   },
