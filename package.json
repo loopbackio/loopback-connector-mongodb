@@ -54,6 +54,7 @@
     "coveralls": "^3.0.4",
     "eslint": "^6.6.0",
     "eslint-config-loopback": "^13.0.0",
+    "eslint-plugin-mocha": "^6.3.0",
     "juggler-v3": "file:./deps/juggler-v3",
     "juggler-v4": "file:./deps/juggler-v4",
     "loopback-datasource-juggler": "^3.0.0 || ^4.0.0",
