@@ -38,7 +38,7 @@
     "debug": "^4.3.4",
     "loopback-connector": "^5.0.1",
     "mongodb": "^3.7.3",
-    "strong-globalize": "^6.0.0"
+    "strong-globalize": "^6.0.5"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^13.2.0",
