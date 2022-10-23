@@ -3,12 +3,10 @@ name: CI
 on:
   push:
     branches:
-    - master
-    - 5.x
+    - 6.x
   pull_request:
     branches:
-    - master
-    - 5.x
+    - 6.x
   schedule:
     - cron: '0 2 * * 1' # At 02:00 on Monday
 
@@ -21,7 +19,7 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        node-version: [10, 12, 14, 16, 17, 18]
+        node-version: [14, 16, 17, 18]
         mongodb-version: [4.4]
       fail-fast: false
     steps:
@@ -36,14 +34,8 @@ jobs:
           mongodb-version: ${{ matrix.mongodb-version }}
       - name: Bootstrap project
         run: npm ci --ignore-scripts
-      - name: Update NPM (Node.js v10)
-        if: matrix.node-version == 10
-        run: npm install --global npm@7
-      - name: Update NPM
-        if: matrix.node-version != 10
-        run: npm install --global npm@8
       - name: Run tests
-        run: npm test --ignore-scripts
+        run: npm test
       - name: Publish coverage report to Coveralls
         uses: coverallsapp/github-action@master
         with:
