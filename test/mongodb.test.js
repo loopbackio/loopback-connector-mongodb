@@ -1331,10 +1331,13 @@ describe('mongodb connector', function() {
             function(err, updatedusers) {
               should.exist(err);
               err.name.should.equal('MongoError');
-              err.errmsg.should.equal(
-                'The dollar ($) prefixed ' +
-                "field '$rename' in '$rename' is not valid for storage.",
-              );
+              err.errmsg.should.equalOneOf(
+                ("The dollar ($) prefixed field '$rename' in '$rename' is not " +
+                  "allowed in the context of an update's replacement document. Consider using an " +
+                  'aggregation pipeline with $replaceWith.'),
+                ('The dollar ($) prefixed ' +
+                  "field '$rename' in '$rename' is not valid for storage."),
+	      );
               done();
             },
           );
@@ -1356,9 +1359,12 @@ describe('mongodb connector', function() {
             function(err, updatedusers) {
               should.exist(err);
               err.name.should.equal('MongoError');
-              err.errmsg.should.equal(
-                'The dollar ($) prefixed ' +
-                "field '$rename' in '$rename' is not valid for storage.",
+              err.errmsg.should.equalOneOf(
+                ("The dollar ($) prefixed field '$rename' in '$rename' is not " +
+                  "allowed in the context of an update's replacement document. Consider using an " +
+                  'aggregation pipeline with $replaceWith.'),
+                ('The dollar ($) prefixed ' +
+                  "field '$rename' in '$rename' is not valid for storage."),
               );
               done();
             },
@@ -1413,9 +1419,12 @@ describe('mongodb connector', function() {
             function(err, updatedusers) {
               should.exist(err);
               err.name.should.equal('MongoError');
-              err.errmsg.should.equal(
-                'The dollar ($) prefixed ' +
-                "field '$rename' in '$rename' is not valid for storage.",
+              err.errmsg.should.equalOneOf(
+                ("The dollar ($) prefixed field '$rename' in '$rename' is not " +
+                  "allowed in the context of an update's replacement document. Consider using an " +
+                  'aggregation pipeline with $replaceWith.'),
+                ('The dollar ($) prefixed ' +
+                  "field '$rename' in '$rename' is not valid for storage."),
               );
               done();
             },
