@@ -55,7 +55,7 @@
     "rc": "^1.2.8",
     "semver": "^7.3.7",
     "should": "^13.2.3",
-    "sinon": "^12.0.1"
+    "sinon": "^14.0.2"
   },
   "ci": {
     "downstreamIgnoreList": [
