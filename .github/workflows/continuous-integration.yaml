@@ -19,7 +19,7 @@ jobs:
         mongodb-version: [4.4] # the latest stable version
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
@@ -37,7 +37,7 @@ jobs:
     name: Code Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js 14
         uses: actions/setup-node@v3
         with:
@@ -51,7 +51,7 @@ jobs:
     name: Commit Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Use Node.js 14
@@ -71,7 +71,7 @@ jobs:
       security-events: write
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
