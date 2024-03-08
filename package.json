@@ -47,7 +47,7 @@
     "commitlint": "^17.1.1",
     "eslint": "^8.23.0",
     "eslint-config-loopback": "^13.1.0",
-    "eslint-plugin-mocha": "^9.0.0",
+    "eslint-plugin-mocha": "^10.4.1",
     "juggler-v4": "file:./deps/juggler-v4",
     "loopback-datasource-juggler": "^4.27.1",
     "mocha": "^9.2.2",
