@@ -1,6 +1,6 @@
 # loopback-connector-mongodb
 
-The official MongoDB connector for the LoopBack framework.
+Iterpro fork from the official MongoDB connector for the LoopBack framework.
 
 ## Installation
 

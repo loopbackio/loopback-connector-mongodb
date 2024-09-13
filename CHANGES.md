@@ -1,3 +1,8 @@
+2024-09-13, Version iterpro/loopback-connector-mongodb
+=========================
+ * fix: update function .all for compatibily with lb3 (Francesco Montaudo)
+ * docs: update README (Francesco Montaudo)
+ 
 2022-03-31, Version 6.2.0
 =========================
 
