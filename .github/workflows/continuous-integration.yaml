@@ -21,8 +21,12 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        node-version: [14, 16, 18, 19]
-        mongodb-version: [4.4]
+        node-version: [18, 19, 20, 21]
+        mongodb-version:
+          - '4.4'
+          - '5.0'
+          - '6.0'
+          - '7.0'
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
