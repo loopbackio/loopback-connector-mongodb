@@ -1,11 +1,11 @@
-{
-  "name": "loopback-connector-mongodb",
-  "version": "6.2.0",
-  "description": "The official MongoDB connector for the LoopBack framework.",
+{ 
+  "name": "iterpro-loopback-connector-mongodb",
+  "version": "1.0.0",
+  "description": "Iterpro fork from MongoDB connector for the LoopBack framework.",
   "engines": {
     "node": ">=10"
   },
-  "author": "IBM Corp.",
+  "author": "Iterpro",
   "main": "index.js",
   "scripts": {
     "benchmarks": "make benchmarks",
