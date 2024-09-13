@@ -3,7 +3,7 @@
   "version": "7.0.0-alpha.1",
   "description": "The official MongoDB connector for the LoopBack framework.",
   "engines": {
-    "node": "14 || 16 || 18"
+    "node": "18 || 20"
   },
   "author": "IBM Corp.",
   "main": "index.js",
@@ -56,13 +56,5 @@
     "semver": "^7.3.7",
     "should": "^13.2.3",
     "sinon": "^12.0.1"
-  },
-  "ci": {
-    "downstreamIgnoreList": [
-      "bluemix-metering",
-      "bluemix-service-broker",
-      "bluemix-security",
-      "plan-manager"
-    ]
   }
 }
