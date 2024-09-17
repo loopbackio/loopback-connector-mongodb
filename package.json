@@ -45,7 +45,7 @@
     "benchmark": "^2.1.4",
     "bluebird": "^3.7.2",
     "commitlint": "^17.1.1",
-    "eslint": "^8.23.0",
+    "eslint": "^8.57.1",
     "eslint-config-loopback": "^13.1.0",
     "eslint-plugin-mocha": "^9.0.0",
     "juggler-v4": "file:./deps/juggler-v4",
