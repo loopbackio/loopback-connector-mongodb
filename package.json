@@ -1,7 +1,7 @@
 { 
   "name": "@iterpro/loopback-connector-mongodb",
   "version": "1.0.0",
-  "description": "Iterpro fork from MongoDB connector for the LoopBack framework.",
+  "description": "Iterpro fork from the official Loopback v3 MongoDB connector. Based on v6.2.0, it allows compatibility for MongoDB v6 with Loopback v3.",
   "engines": {
     "node": ">=10"
   },
@@ -23,7 +23,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/Iterpro/loopback-connector-mongodb"
+    "url": "git://github.com/Iterpro/loopback-connector-mongodb.git"
   },
   "keywords": [
     "connector",

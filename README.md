@@ -1,6 +1,6 @@
 # loopback-connector-mongodb
 
-Iterpro fork from the official MongoDB connector for the LoopBack framework version 6.2.0.
+Iterpro fork from the official Loopback v3 MongoDB connector. Based on v6.2.0, it allows compatibility for MongoDB v6 with Loopback v3.
 
 ## Installation
 
