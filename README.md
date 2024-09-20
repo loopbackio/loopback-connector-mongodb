@@ -1,30 +1,40 @@
 # loopback-connector-mongodb
 
-Iterpro fork from the official MongoDB connector for the LoopBack framework.
+Iterpro fork from the official MongoDB connector for the LoopBack framework version 6.2.0.
 
 ## Installation
 
 In your application root directory, enter this command to install the connector:
 
 ```sh
-npm install loopback-connector-mongodb --save
+npm install @iterpro/loopback-connector-mongodb --save
+```
+For correctly work on your project you must install and paste this on server.js file:
+```js
+const moduleAlias = require('module-alias');
+// ? Set alias since loopback needs the original module name to work,
+// ? @iterpro/loopback-connector-mongodb contains useful modifications to make mongodb v6 work with lb3
+moduleAlias.addAlias('loopback-connector-mongodb', '@iterpro/loopback-connector-mongodb');
 ```
 
 This installs the module from npm and adds it as a dependency to the application's `package.json` file.
 
 If you create a MongoDB data source using the data source generator as described below, you don't have to do this, since the generator will run `npm install` for you.
 
-## Supported versions
+## Compatible with LoopBack 3
 
-**Starting from the version 6.0.0, this connector is no longer compatible with LoopBack 3. Please use the latest 5.x version in your LoopBack 3 applications.**
+**This connector is compatible with LoopBack 3.**
+
+**This version of the connector is compatible with LoopBack 3. **
 
 This module adopts the [Module Long Term Support (LTS)](http://github.com/CloudNativeJS/ModuleLTS) policy, with the following End Of Life (EOL) dates:
 
-| Version    | Status               | Published | EOL                  | LoopBack | Juggler  |
-| ---------- | -------------------- | --------- | -------------------- | ---------|----------|
-| 6.x        | Current              | Mar 2021  | Apr 2024 _(minimum)_ | 4        | 4.x      |
-| 5.x        | Active LTS           | Jun 2019  | Apr 2023             | 3, 4     | 3.x, 4.x |
-| 4.x        | Maintenance LTS      | Nov 2018  | Apr 2021             | 3, 4     | 3.x, 4.x |
+| Version      | Status               | Published | EOL                  | LoopBack | Juggler  |
+| ------------ | -------------------- | --------- | -------------------- | ---------|----------|
+| 1.0(@iterpro)| Current              | Sep 2024  | Apr 2024 _(minimum)_ | 3, 4     | 3.x      |
+| 6.x          | Forked               | Mar 2021  | Apr 2024 _(minimum)_ | 4        | 4.x      |
+| 5.x          | Active LTS           | Jun 2019  | Apr 2023             | 3, 4     | 3.x, 4.x |
+| 4.x          | Maintenance LTS      | Nov 2018  | Apr 2021             | 3, 4     | 3.x, 4.x |
 
 ## Creating a MongoDB data source
 
