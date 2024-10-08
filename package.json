@@ -1,68 +1,60 @@
-{ 
-  "name": "@iterpro/loopback-connector-mongodb",
-  "version": "1.0.0",
-  "description": "Iterpro fork from the official Loopback v3 MongoDB connector. Based on v6.2.0, it allows compatibility for MongoDB v6 with Loopback v3.",
-  "engines": {
-    "node": ">=10"
-  },
-  "author": "Iterpro",
-  "main": "index.js",
-  "scripts": {
-    "benchmarks": "make benchmarks",
-    "leak-detection": "make leak-detection",
-    "test": "nyc --reporter=lcov mocha --exit --timeout=5000 test/*.test.js node_modules/juggler-v4/test.js",
-    "lint": "eslint .",
-    "posttest": "npm run lint"
-  },
-  "files": [
-    "intl",
-    "lib",
-    "docs.json",
-    "index.js",
-    "setup.sh"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/Iterpro/loopback-connector-mongodb.git"
-  },
-  "keywords": [
-    "connector",
-    "datasource",
-    "loopback",
-    "mongodb"
-  ],
-  "license": "MIT",
-  "dependencies": {
-    "async": "^3.2.2",
-    "bson": "^1.0.6",
-    "debug": "^4.1.0",
-    "loopback-connector": "^5.0.0",
-    "mongodb": "^3.7.3",
-    "strong-globalize": "^6.0.0"
-  },
-  "devDependencies": {
-    "@commitlint/config-conventional": "^13.2.0",
-    "benchmark": "^2.1.4",
-    "bluebird": "^3.5.4",
-    "commitlint": "^15.0.0",
-    "eslint": "^8.3.0",
-    "eslint-config-loopback": "^13.1.0",
-    "eslint-plugin-mocha": "^9.0.0",
-    "juggler-v4": "file:./deps/juggler-v4",
-    "loopback-datasource-juggler": "^4.0.0",
-    "mocha": "^9.1.3",
-    "nyc": "^15.1.0",
-    "rc": "^1.2.8",
-    "semver": "^7.3.5",
-    "should": "^13.2.1",
-    "sinon": "^12.0.1"
-  },
-  "ci": {
-    "downstreamIgnoreList": [
-      "bluemix-metering",
-      "bluemix-service-broker",
-      "bluemix-security",
-      "plan-manager"
-    ]
-  }
+{
+	"name": "@iterpro/loopback-connector-mongodb",
+	"version": "2.0.0-rc2",
+	"description": "Iterpro fork from the official Loopback v3 MongoDB connector. Based on v6.2.0, it allows compatibility for MongoDB v6 with Loopback v3.",
+	"engines": {
+		"node": "18 || 20"
+	},
+	"author": "Iterpro",
+	"main": "index.js",
+	"scripts": {
+		"benchmarks": "make benchmarks",
+		"leak-detection": "make leak-detection",
+		"test": "nyc --reporter=lcov mocha --exit --timeout=5000 test/*.test.js node_modules/juggler-v4/test.js",
+		"lint": "eslint .",
+		"posttest": "npm run lint"
+	},
+	"files": [
+		"intl",
+		"lib",
+		"docs.json",
+		"index.js",
+		"setup.sh"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/Iterpro/loopback-connector-mongodb.git"
+	},
+	"keywords": [
+		"connector",
+		"datasource",
+		"loopback",
+		"mongodb"
+	],
+	"license": "MIT",
+	"dependencies": {
+		"async": "^3.2.4",
+		"bson": "^1.1.6",
+		"debug": "^4.3.4",
+		"loopback-connector": "^5.0.1",
+		"mongodb": "^4.6.0",
+		"strong-globalize": "^6.0.5"
+	},
+	"devDependencies": {
+		"@commitlint/config-conventional": "^17.1.0",
+		"benchmark": "^2.1.4",
+		"bluebird": "^3.7.2",
+		"commitlint": "^17.1.1",
+		"eslint": "^8.23.0",
+		"eslint-config-loopback": "^13.1.0",
+		"eslint-plugin-mocha": "^9.0.0",
+		"juggler-v4": "file:./deps/juggler-v4",
+		"loopback-datasource-juggler": "^4.27.1",
+		"mocha": "^9.2.2",
+		"nyc": "^15.1.0",
+		"rc": "^1.2.8",
+		"semver": "^7.3.7",
+		"should": "^13.2.3",
+		"sinon": "^12.0.1"
+	}
 }

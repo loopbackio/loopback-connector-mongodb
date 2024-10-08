@@ -3,6 +3,66 @@
  * fix: update function .all for compatibily with lb3 (Francesco Montaudo)
  * docs: update README (Francesco Montaudo)
  
+2022-11-20, Version 7.0.0-alpha.1
+=================================
+
+ * ci: update Node.js test matrix (Rifa Achrinza)
+
+ * chore: update Node.js engine matrix (Rifa Achrinza)
+
+ * feat: upgrade mongodb driver to version 4.x (Antonio Ramón Sánchez Morales)
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update supercharge/mongodb-github-action action to v1.8.0 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.23.0 (renovate[bot])
+
+ * chore: update commitlint monorepo to v17 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.19.0 (renovate[bot])
+
+ * chore: update github/codeql-action action to v2 (renovate[bot])
+
+ * chore: update dependency mocha to ^9.2.2 (renovate[bot])
+
+ * chore: update dependency loopback-datasource-juggler to ^4.27.1 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.18.0 (renovate[bot])
+
+ * chore: update dependency strong-globalize to ^6.0.5 (renovate[bot])
+
+ * chore: update supercharge/mongodb-github-action action to v1.7.0 (renovate[bot])
+
+ * chore: update actions/setup-node action to v3 (renovate[bot])
+
+ * chore: update actions/checkout action to v3 (renovate[bot])
+
+ * chore: update dependency semver to ^7.3.7 (renovate[bot])
+
+ * chore: update dependency should to ^13.2.3 (renovate[bot])
+
+ * chore: update dependency debug to ^4.3.4 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^5.0.1 (renovate[bot])
+
+ * chore: update dependency bson to ^1.1.6 (renovate[bot])
+
+ * chore: update dependency bluebird to ^3.7.2 (renovate[bot])
+
+ * chore: update dependency async to ^3.2.4 (renovate[bot])
+
+ * ci: add renovate config (Rifa Achrinza)
+
+ * fix(*): run autoupdate in serial to avoid conflicts (Simon Stone)
+
+ * fix: optional chaining (preussmann)
+
+ * chore: update v6 EOL (Rifa Achrinza)
+
+ * ci: test against Node.js v18 (Rifa Achrinza)
+
+
 2022-03-31, Version 6.2.0
 =========================
 
