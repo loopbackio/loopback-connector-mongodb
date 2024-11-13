@@ -1,5 +1,15 @@
+2024-11-13, Version 7.0.0-alpha.2
+=================================
+
+ * feat: always use optimized findOrCreate (Rifa Achrinza)
+
+ * chore: update Node.js and MongoDB supported versions (Rifa Achrinza)
+
+
 2022-11-20, Version 7.0.0-alpha.1
 =================================
+
+ * chore(release): v7.0.0-alpha.1 (Rifa Achrinza)
 
  * ci: update Node.js test matrix (Rifa Achrinza)
 
