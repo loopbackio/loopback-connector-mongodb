@@ -449,6 +449,80 @@ describe('mongodb connector', function() {
         });
       });
     });
+    it("should honor the settings database if url doesn't have db", function(done) {
+      const cfg = JSON.parse(JSON.stringify(global.config));
+      const testDb = cfg.database;
+      cfg.url = 'mongodb://' + cfg.host + ':' + cfg.port;
+      const ds = global.getDataSource(cfg);
+      ds.once('connected', function() {
+        const db = ds.connector.db;
+        let validationError = null;
+        try {
+          db.should.have.property('databaseName', testDb); // check the db name in the db instance
+        } catch (err) {
+          // async error
+          validationError = err;
+        }
+        ds.ping(function(err) {
+          if (err && !validationError) validationError = err;
+          ds.disconnect(function(disconnectError) {
+            if (disconnectError && !validationError)
+              validationError = disconnectError;
+            done(validationError);
+          });
+        });
+      });
+    });
+
+    it('should honor the url database if both replicaset url and settings has db', function(done) {
+      const cfg = JSON.parse(JSON.stringify(global.config));
+      const testDb = 'lb-ds-overriden-test-1';
+      cfg.url = 'mongodb://' + cfg.host + ':' + cfg.port + ',' + cfg.host + ':' + cfg.port + '/' + testDb;
+      const ds = global.getDataSource(cfg);
+      ds.once('connected', function() {
+        const db = ds.connector.db;
+        let validationError = null;
+        try {
+          db.should.have.property('databaseName', testDb); // check the db name in the db instance
+        } catch (err) {
+          // async error
+          validationError = err;
+        }
+        ds.ping(function(err) {
+          if (err && !validationError) validationError = err;
+          ds.disconnect(function(disconnectError) {
+            if (disconnectError && !validationError)
+              validationError = disconnectError;
+            done(validationError);
+          });
+        });
+      });
+    });
+
+    it("should honor the settings database if replicaset url doesn't have db has slash", function(done) {
+      const cfg = JSON.parse(JSON.stringify(global.config));
+      const testDb = cfg.database;
+      cfg.url = 'mongodb://' + cfg.host + ':' + cfg.port + ',' + cfg.host + ':' + cfg.port + '/';
+      const ds = global.getDataSource(cfg);
+      ds.once('connected', function() {
+        const db = ds.connector.db;
+        let validationError = null;
+        try {
+          db.should.have.property('databaseName', testDb); // check the db name in the db instance
+        } catch (err) {
+          // async error
+          validationError = err;
+        }
+        ds.ping(function(err) {
+          if (err && !validationError) validationError = err;
+          ds.disconnect(function(disconnectError) {
+            if (disconnectError && !validationError)
+              validationError = disconnectError;
+            done(validationError);
+          });
+        });
+      });
+    });
   });
 
   describe('order filters', function() {
@@ -1331,9 +1405,12 @@ describe('mongodb connector', function() {
             function(err, updatedusers) {
               should.exist(err);
               err.name.should.equal('MongoError');
-              err.errmsg.should.equal(
-                'The dollar ($) prefixed ' +
-                "field '$rename' in '$rename' is not valid for storage.",
+              err.errmsg.should.equalOneOf(
+                ("The dollar ($) prefixed field '$rename' in '$rename' is not " +
+                  "allowed in the context of an update's replacement document. Consider using an " +
+                  'aggregation pipeline with $replaceWith.'),
+                ('The dollar ($) prefixed ' +
+                  "field '$rename' in '$rename' is not valid for storage."),
               );
               done();
             },
@@ -1356,9 +1433,12 @@ describe('mongodb connector', function() {
             function(err, updatedusers) {
               should.exist(err);
               err.name.should.equal('MongoError');
-              err.errmsg.should.equal(
-                'The dollar ($) prefixed ' +
-                "field '$rename' in '$rename' is not valid for storage.",
+              err.errmsg.should.equalOneOf(
+                ("The dollar ($) prefixed field '$rename' in '$rename' is not " +
+                  "allowed in the context of an update's replacement document. Consider using an " +
+                  'aggregation pipeline with $replaceWith.'),
+                ('The dollar ($) prefixed ' +
+                  "field '$rename' in '$rename' is not valid for storage."),
               );
               done();
             },
@@ -1413,9 +1493,12 @@ describe('mongodb connector', function() {
             function(err, updatedusers) {
               should.exist(err);
               err.name.should.equal('MongoError');
-              err.errmsg.should.equal(
-                'The dollar ($) prefixed ' +
-                "field '$rename' in '$rename' is not valid for storage.",
+              err.errmsg.should.equalOneOf(
+                ("The dollar ($) prefixed field '$rename' in '$rename' is not " +
+                  "allowed in the context of an update's replacement document. Consider using an " +
+                  'aggregation pipeline with $replaceWith.'),
+                ('The dollar ($) prefixed ' +
+                  "field '$rename' in '$rename' is not valid for storage."),
               );
               done();
             },
@@ -3363,15 +3446,169 @@ describe('mongodb connector', function() {
           hostname: 'fakeHostname',
           port: 9999,
           database: 'fakeDatabase',
-          username: 'fakeUsername',
           password: 'fakePassword',
+          username: 'fakeUsername',
         };
         // mongodb+srv url should not have the port in it
         module.generateMongoDBURL(options).should.be.eql('mongodb+srv://fakeUsername:fakePassword@fakeHostname/fakeDatabase');
       });
     });
   });
+  describe('Test processMongoDBUrl function', function() {
+    const module = require('../');
 
+    context('should process mongodb url for default database manipulation', function() {
+      it('when no seetings db, but url has db, multiple hosts, user credentials and options', function() {
+        const url = 'mongodb://userid:password@db1.example.com:27017,db2.example.com:32667/testdb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true';
+        const database = '';
+        module.processMongoDBURL('', url).should.be.eql('mongodb://userid:password@db1.example.com:27017,db2.example.com:32667/testdb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true');
+      });
+
+      it('when settings has db, url too has db, multiple hosts, user credentials and options', function() {
+        const url = 'mongodb://userid:password@db1.example.com:27017,db2.example.com:32667/testdb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true';
+        const database = 'mydb';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://userid:password@db1.example.com:27017,db2.example.com:32667/testdb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true');
+      });
+
+      it('when settings has db, url too has db, multiple hosts, user credentials and no options', function() {
+        const url = 'mongodb://userid:password@db1.example.com:27017,db2.example.com:32667/testdb';
+        const database = 'mydb';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://userid:password@db1.example.com:27017,db2.example.com:32667/testdb');
+      });
+
+      it("when settings has db, url doesn't have db, multiple hosts, user credentials and no options", function() {
+        const url = 'mongodb://userid:password@db1.example.com:27017,db2.example.com:32667';
+        const database = 'mydb';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://userid:password@db1.example.com:27017,db2.example.com:32667/mydb');
+      });
+
+      it("when settings has db, url doesn't have db, has slash, multiple hosts, user creds and no options", function() {
+        const url = 'mongodb://userid:password@db1.example.com:27017,db2.example.com:32667/';
+        const database = 'mydb';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://userid:password@db1.example.com:27017,db2.example.com:32667/mydb');
+      });
+
+      it('when no seetings db, but url has db, user id but no passwordm multiple hosts, and options', function() {
+        const url = 'mongodb://userid:@db1.example.com:27017,db2.example.com:32667/testdb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true';
+        const database = '';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://userid:@db1.example.com:27017,db2.example.com:32667/testdb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true');
+      });
+
+      it('when no seetings db, but url has db, no user credentials, multiple hosts, and options', function() {
+        const url = 'mongodb://db1.example.com:27017,db2.example.com:32667/testdb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true';
+        const database = '';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://db1.example.com:27017,db2.example.com:32667/testdb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true');
+      });
+
+      it('when no seetings db, url too has no db, no user credentials, multiple hosts, and options', function() {
+        const url = 'mongodb://db1.example.com:27017,db2.example.com:32667/?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true';
+        const database = '';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://db1.example.com:27017,db2.example.com:32667/?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true');
+      });
+
+      it('when seetings has db, url has no db, no user credentials, multiple hosts, and options', function() {
+        const url = 'mongodb://db1.example.com:27017,db2.example.com:32667/?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true';
+        const database = 'mydb';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://db1.example.com:27017,db2.example.com:32667/mydb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true');
+      });
+
+      it('when no seetings db, lb4 url has no db, no user credentials, single host, and no options', function() {
+        const url = 'loopback-connector-mongodb://localhost:27017';
+        const database = '';
+        module.processMongoDBURL(database, url).should.be.eql('loopback-connector-mongodb://localhost:27017/');
+      });
+
+      it('when no seetings db, lb4 srv url has no db, no user credentials, single host, and no options', function() {
+        const url = 'loopback-connector-mongodb+srv://localhost:27017';
+        const database = '';
+        module.processMongoDBURL(database, url).should.be.eql('loopback-connector-mongodb+srv://localhost:27017/');
+      });
+
+      it('when it is not mongo url', function() {
+        const url = 'http://localhost:27017';
+        const database = '';
+        module.processMongoDBURL(database, url).should.be.eql('http://localhost:27017');
+      });
+
+      it('when no seetings db, url has no db, no user credentials, single host, and no options', function() {
+        const url = 'mongodb://localhost:27017';
+        const database = '';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://localhost:27017/');
+      });
+
+      it('when seetings has db, url has no db, no user credentials, single host, and no options', function() {
+        const url = 'mongodb://localhost:27017';
+        const database = 'mydb';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://localhost:27017/mydb');
+      });
+
+      it('when no seetings db, url has no db, a slash, no user credentials, single host, and no options', function() {
+        const url = 'mongodb://localhost:27017/';
+        const database = '';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://localhost:27017/');
+      });
+
+      it('when seetings has db, url has no db, a slash, no user credentials, single host, and no options', function() {
+        const url = 'mongodb://localhost:27017/';
+        const database = 'mydb';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://localhost:27017/mydb');
+      });
+
+      it('when no seetings db, url has db, no user credentials, single host, and np options', function() {
+        const url = 'mongodb://localhost:27017/yourdb';
+        const database = '';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://localhost:27017/yourdb');
+      });
+
+      it('when seetings has db, url has db, no user credentials, single host, and no options', function() {
+        const url = 'mongodb://localhost:27017/yourdb';
+        const database = 'mydb';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://localhost:27017/yourdb');
+      });
+
+      it('when no seetings db, url has db, no user credentials, single host, and options', function() {
+        const url = 'mongodb://localhost:27017/yourdb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true';
+        const database = '';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://localhost:27017/yourdb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true');
+      });
+
+      it('when seetings has db, url has db, no user credentials, single host, and options', function() {
+        const url = 'mongodb://localhost:27017/yourdb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true';
+        const database = 'mydb';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://localhost:27017/yourdb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true');
+      });
+
+      it('when seetings has db, url has no db, no user credentials, single host, and options', function() {
+        const url = 'mongodb://localhost:27017/?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true';
+        const database = 'mydb';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb://localhost:27017/mydb?authSource=admin&replicaSet=replset&readPreference=primary&ssl=true');
+      });
+
+      it('when seetings has no db, DNSSeedList url has no db, no user creds, single host, and no options', function() {
+        const url = 'mongodb+srv://server.example.com/';
+        const database = '';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb+srv://server.example.com/');
+      });
+
+      it('when seetings has db, DNSSeedList url has no db, no user creds, single host, and no options', function() {
+        const url = 'mongodb+srv://server.example.com/';
+        const database = 'mydb';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb+srv://server.example.com/mydb');
+      });
+
+      it('when seetings has no db, DNSSeedList url has no db, no user creds, single host, and options', function() {
+        const url = 'mongodb+srv://server.example.com/?connectTimeoutMS=300000&authSource=aDifferentAuthDB';
+        const database = '';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb+srv://server.example.com/?connectTimeoutMS=300000&authSource=aDifferentAuthDB');
+      });
+
+      it('when seetings has db, DNSSeedList url has no db, no user creds, single host, and optionsß', function() {
+        const url = 'mongodb+srv://server.example.com/?connectTimeoutMS=300000&authSource=aDifferentAuthDB';
+        const database = 'mydb';
+        module.processMongoDBURL(database, url).should.be.eql('mongodb+srv://server.example.com/mydb?connectTimeoutMS=300000&authSource=aDifferentAuthDB');
+      });
+    });
+  });
   context('fieldsArrayToObj', function() {
     const fieldsArrayToObj = require('../').fieldsArrayToObj;
     it('should export the fieldsArrayToObj function', function() {
