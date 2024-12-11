@@ -1,3 +1,9 @@
+2024-12-11, Version 6.3.1
+=========================
+
+ * fix: connection string seed list parsing (Manar Husrieh)
+
+
 2024-11-13, Version 6.3.0
 =========================
 
