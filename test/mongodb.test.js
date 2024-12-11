@@ -1327,7 +1327,8 @@ describe('mongodb connector', function() {
               err.name.should.equal('MongoServerError');
               err.errmsg.should.equal(
                 'The dollar ($) prefixed ' +
-                "field '$rename' in '$rename' is not valid for storage.",
+                "field '$rename' in '$rename' is not allowed in the context of an update's replacement document. " +
+                'Consider using an aggregation pipeline with $replaceWith.',
               );
               done();
             },
@@ -1352,7 +1353,8 @@ describe('mongodb connector', function() {
               err.name.should.equal('MongoServerError');
               err.errmsg.should.equal(
                 'The dollar ($) prefixed ' +
-                "field '$rename' in '$rename' is not valid for storage.",
+                "field '$rename' in '$rename' is not allowed in the context of an update's replacement document. " +
+                'Consider using an aggregation pipeline with $replaceWith.',
               );
               done();
             },
@@ -1409,7 +1411,8 @@ describe('mongodb connector', function() {
               err.name.should.equal('MongoServerError');
               err.errmsg.should.equal(
                 'The dollar ($) prefixed ' +
-                "field '$rename' in '$rename' is not valid for storage.",
+                "field '$rename' in '$rename' is not allowed in the context of an update's replacement document. " +
+                'Consider using an aggregation pipeline with $replaceWith.',
               );
               done();
             },
