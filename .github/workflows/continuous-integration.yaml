@@ -4,11 +4,11 @@ on:
   push:
     branches:
     - master
-    - 5.x
+    - 6.x
   pull_request:
     branches:
     - master
-    - 5.x
+    - 6.x
   schedule:
     - cron: '0 2 * * 1' # At 02:00 on Monday
 
@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        node-version: [18, 19, 20, 21]
+        node-version: [18, 20, 22]
         mongodb-version:
           - '4.4'
           - '5.0'
