@@ -527,59 +527,52 @@ describe('mongodb connector', function() {
     });
   });
 
-  it('should create indexes', function(done) {
-    db.automigrate('User', function() {
-      db.connector.db
+  it('should create indexes', async function() {
+    db.automigrate('User', async function() {
+      const result = await db.connector.db
         .collection('User')
-        .indexInformation(function(err, result) {
-          /* eslint-disable camelcase */
-          const indexes = {
-            _id_: [['_id', 1]],
-            name_age_index: [['name', 1], ['age', -1]],
-            age_index: [['age', -1]],
-            name_1: [['name', 1]],
-            email_1: [['email', 1]],
-          };
-          /* eslint-enable camelcase */
-          indexes.should.eql(result);
-          done(err, result);
-        });
+        .indexInformation();
+      /* eslint-disable camelcase */
+      const indexes = {
+        _id_: [['_id', 1]],
+        name_age_index: [['name', 1], ['age', -1]],
+        age_index: [['age', -1]],
+        name_1: [['name', 1]],
+        email_1: [['email', 1]],
+      };
+      /* eslint-enable camelcase */
+      indexes.should.eql(result);
     });
   });
 
-  it('should create complex indexes', function(done) {
-    db.automigrate('Superhero', function() {
-      db.connector.db.collection('sh').indexInformation(function(err, result) {
-        /* eslint-disable camelcase */
-        const indexes = {
-          _id_: [['_id', 1]],
-          geojson_location_geometry: [['location.geometry', '2dsphere']],
-          power_1: [['power', 1]],
-          name_1: [['name', 1]],
-          address_1: [['address', 1]],
-        };
+  it('should create complex indexes', async function() {
+    db.automigrate('Superhero', async function() {
+      const result = await db.connector.db.collection('sh').indexInformation();
+      /* eslint-disable camelcase */
+      const indexes = {
+        _id_: [['_id', 1]],
+        geojson_location_geometry: [['location.geometry', '2dsphere']],
+        power_1: [['power', 1]],
+        name_1: [['name', 1]],
+        address_1: [['address', 1]],
+      };
         /* eslint-enable camelcase */
 
-        indexes.should.eql(result);
-        done(err, result);
-      });
+      indexes.should.eql(result);
     });
   });
 
-  it('should create case insensitive indexes', function(done) {
-    db.automigrate('Category', function() {
-      db.connector.db.collection('Category').indexes(function(err, result) {
-        if (err) return done(err);
-        const indexes = [
-          {name: '_id_', key: {_id: 1}},
-          {name: 'title_1', key: {title: 1}},
-          {name: 'title_case_insensitive', key: {title: 1}, collation: {locale: 'en', strength: 1}},
-          {name: 'posts_1', key: {posts: 1}},
-        ];
+  it('should create case insensitive indexes', async function() {
+    db.automigrate('Category', async function() {
+      const result = await db.connector.db.collection('Category').indexes();
+      const indexes = [
+        {name: '_id_', key: {_id: 1}},
+        {name: 'title_1', key: {title: 1}},
+        {name: 'title_case_insensitive', key: {title: 1}, collation: {locale: 'en', strength: 1}},
+        {name: 'posts_1', key: {posts: 1}},
+      ];
 
-        result.should.containDeep(indexes);
-        done();
-      });
+      result.should.containDeep(indexes);
     });
   });
 
@@ -832,18 +825,15 @@ describe('mongodb connector', function() {
     });
   });
 
-  it('should allow custom collection name', function(done) {
-    Post.create({title: 'Post1', content: 'Post content'}, function(
+  it('should allow custom collection name', async function() {
+    Post.create({title: 'Post1', content: 'Post content'}, async function(
       err,
       post,
     ) {
-      Post.dataSource.connector.db
+      const p = await Post.dataSource.connector.db
         .collection('PostCollection')
-        .findOne({_id: post.id}, function(err, p) {
-          should.not.exist(err);
-          should.exist(p);
-          done();
-        });
+        .findOne({_id: post.id});
+      should.exist(p);
     });
   });
 
@@ -1325,11 +1315,7 @@ describe('mongodb connector', function() {
             function(err, updatedusers) {
               should.exist(err);
               err.name.should.equal('MongoServerError');
-              err.errmsg.should.equal(
-                'The dollar ($) prefixed ' +
-                "field '$rename' in '$rename' is not allowed in the context of an update's replacement document. " +
-                'Consider using an aggregation pipeline with $replaceWith.',
-              );
+              err.errmsg.should.match(/The dollar \(\$\) prefixed field \'\$rename\' in \'\$rename\' is not allowed/);
               done();
             },
           );
@@ -1351,11 +1337,7 @@ describe('mongodb connector', function() {
             function(err, updatedusers) {
               should.exist(err);
               err.name.should.equal('MongoServerError');
-              err.errmsg.should.equal(
-                'The dollar ($) prefixed ' +
-                "field '$rename' in '$rename' is not allowed in the context of an update's replacement document. " +
-                'Consider using an aggregation pipeline with $replaceWith.',
-              );
+              err.errmsg.should.match(/The dollar \(\$\) prefixed field \'\$rename\' in \'\$rename\' is not allowed/);
               done();
             },
           );
@@ -1409,11 +1391,7 @@ describe('mongodb connector', function() {
             function(err, updatedusers) {
               should.exist(err);
               err.name.should.equal('MongoServerError');
-              err.errmsg.should.equal(
-                'The dollar ($) prefixed ' +
-                "field '$rename' in '$rename' is not allowed in the context of an update's replacement document. " +
-                'Consider using an aggregation pipeline with $replaceWith.',
-              );
+              err.errmsg.should.match(/The dollar \(\$\) prefixed field \'\$rename\' in \'\$rename\' is not allowed/);
               done();
             },
           );

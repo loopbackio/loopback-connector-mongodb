@@ -37,8 +37,8 @@
     "bson": "^1.1.6",
     "debug": "^4.4.1",
     "loopback-connector": "^5.0.1",
-    "mongodb": "^4.6.0",
-    "strong-globalize": "^6.0.6"
+    "mongodb": "^5.9.1",
+    "strong-globalize": "^6.0.5"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.8.1",
