@@ -1,5 +1,5 @@
-2025-05-14, Version 7.0.0
-=========================
+2025-05-14, Version 7.0.0-alpha.3
+=================================
 
  * chore: remove travis & update renovate (dhmlau)
 
