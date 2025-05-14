@@ -1,3 +1,27 @@
+2025-05-14, Version 7.0.0
+=========================
+
+ * chore: remove travis & update renovate (dhmlau)
+
+ * chore: update commitlint monorepo to ^17.8.1 (renovate[bot])
+
+ * chore: update dependency mongodb to v4.17.0 [security] (renovate[bot])
+
+ * chore: update dependency async to ^3.2.6 (renovate[bot])
+
+ * chore: update dependency debug to ^4.4.1 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.57.1 (renovate[bot])
+
+ * chore: update dependency semver to ^7.7.2 (renovate[bot])
+
+ * chore: remove Node.js 18 and mongodb driver 4.4 support (dhmlau)
+
+ * fix: fix tests (dhmlau)
+
+ * fix: update node.js versions in CI (dhmlau)
+
+
 2024-11-13, Version 7.0.0-alpha.2
 =================================
 
