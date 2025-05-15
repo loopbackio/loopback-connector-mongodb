@@ -34,7 +34,7 @@
   "license": "MIT",
   "dependencies": {
     "async": "^3.2.6",
-    "bson": "^1.1.6",
+    "bson": "^6.10.3",
     "debug": "^4.4.1",
     "loopback-connector": "^5.0.1",
     "mongodb": "^4.6.0",
