@@ -37,7 +37,7 @@
     "bson": "^1.1.6",
     "debug": "^4.4.1",
     "loopback-connector": "^5.0.1",
-    "mongodb": "^4.6.0",
+    "mongodb": "^4.17.2",
     "strong-globalize": "^6.0.6"
   },
   "devDependencies": {
