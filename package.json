@@ -41,10 +41,10 @@
     "strong-globalize": "^6.0.6"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^17.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "benchmark": "^2.1.4",
     "bluebird": "^3.7.2",
-    "commitlint": "^17.8.1",
+    "commitlint": "^19.8.1",
     "eslint": "^8.57.1",
     "eslint-config-loopback": "^13.1.0",
     "eslint-plugin-mocha": "^9.0.0",
