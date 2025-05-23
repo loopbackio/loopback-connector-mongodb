@@ -49,7 +49,7 @@
     "eslint-config-loopback": "^13.1.0",
     "eslint-plugin-mocha": "^9.0.0",
     "juggler-v4": "file:./deps/juggler-v4",
-    "loopback-datasource-juggler": "^4.27.1",
+    "loopback-datasource-juggler": "^4.28.9",
     "mocha": "^9.2.2",
     "nyc": "^15.1.0",
     "rc": "^1.2.8",
