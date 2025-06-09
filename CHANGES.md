@@ -1,3 +1,55 @@
+2025-06-09, Version 7.0.0-alpha.4
+=================================
+
+ * chore: update commitlint monorepo to v19 (renovate[bot])
+
+ * chore: update dependency mocha to ^11.6.0 (renovate[bot])
+
+ * chore: update dependency mocha to v11 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^5.3.3 (renovate[bot])
+
+ * chore: update dependency nyc to v17 (renovate[bot])
+
+ * chore: update dependency sinon to v20 (renovate[bot])
+
+ * chore: renovate bot only for master branch (dhmlau)
+
+ * chore: update supercharge/mongodb-github-action action to v1.12.0 (renovate[bot])
+
+ * chore: update dependency strong-globalize to ^6.0.6 (renovate[bot])
+
+ * chore: update dependency mongodb to ^5.9.2 (renovate[bot])
+
+ * feat: upgrade mongodb driver to version 5.x (Matteo Padovano)
+
+ * chore: update actions/setup-node action to v4 (renovate[bot])
+
+ * chore: update actions/checkout action to v4 (renovate[bot])
+
+ * chore: update github/codeql-action action to v3 (renovate[bot])
+
+ * chore: remove travis & update renovate (dhmlau)
+
+ * chore: update commitlint monorepo to ^17.8.1 (renovate[bot])
+
+ * chore: update dependency mongodb to v4.17.0 [security] (renovate[bot])
+
+ * chore: update dependency async to ^3.2.6 (renovate[bot])
+
+ * chore: update dependency debug to ^4.4.1 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.57.1 (renovate[bot])
+
+ * chore: update dependency semver to ^7.7.2 (renovate[bot])
+
+ * chore: remove Node.js 18 and mongodb driver 4.4 support (dhmlau)
+
+ * fix: fix tests (dhmlau)
+
+ * fix: update node.js versions in CI (dhmlau)
+
+
 2024-11-13, Version 7.0.0-alpha.2
 =================================
 
