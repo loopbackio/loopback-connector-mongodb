@@ -1,3 +1,11 @@
+2025-08-11, Version 7.0.0-alpha.6
+=================================
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * fix: include options parameter in createIndex method (Stefan Hattrell)
+
+
 2025-07-15, Version 7.0.0-alpha.5
 =================================
 
