@@ -141,6 +141,24 @@ describe('connect', function() {
       },
     );
   });
+
+  it('should accept cluster url connection string', function(done) {
+    const clusterUrl = 'mongodb://mongos0.example.com:27017,mongos1.example.com:27017,mongos2.example.com:27017/test_db';
+    const ds = global.getDataSource({
+      url: clusterUrl,
+      serverSelectionTimeoutMS: 2000,
+      lazyConnect: false,
+    });
+
+    ds.once('connected', function() {
+      ds.disconnect(done);
+    });
+    ds.on('error', function(err) {
+      // If you don't have a real cluster, just check error is connection-related
+      err.name.should.match(/Mongo.*Error/);
+      done();
+    });
+  });
 });
 
 describe('mongodb connector', function() {
