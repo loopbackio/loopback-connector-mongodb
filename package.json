@@ -50,7 +50,7 @@
     "eslint-plugin-mocha": "^9.0.0",
     "juggler-v4": "file:./deps/juggler-v4",
     "loopback-datasource-juggler": "^4.27.1",
-    "mocha": "^11.7.1",
+    "mocha": "^11.7.2",
     "nyc": "^17.1.0",
     "rc": "^1.2.8",
     "semver": "^7.7.2",
