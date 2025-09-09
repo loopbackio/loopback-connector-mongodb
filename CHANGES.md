@@ -1,3 +1,17 @@
+2025-09-09, Version 7.0.0-alpha.7
+=================================
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency mocha to ^11.7.2 (renovate[bot])
+
+ * chore: update actions/setup-node action to v5 (renovate[bot])
+
+ * chore: update actions/checkout action to v5 (renovate[bot])
+
+ * fix: issue #663 cluster connection string (Marcio Soster Arrosi)
+
+
 2025-08-11, Version 7.0.0-alpha.6
 =================================
 
