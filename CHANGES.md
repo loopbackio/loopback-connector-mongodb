@@ -1,3 +1,23 @@
+2025-10-14, Version 7.0.0-alpha.8
+=================================
+
+ * chore: update commitlint monorepo to v20 (renovate[bot])
+
+ * chore: update dependency bson to v6 (renovate[bot])
+
+ * chore: update package.json BREAKING CHANGE: Drop Node.js 18 support (dhmlau)
+
+ * chore: update dependency debug to ^4.4.3 (renovate[bot])
+
+ * chore: update dependency mocha to ^11.7.4 (renovate[bot])
+
+ * chore: update github/codeql-action action to v4 (renovate[bot])
+
+ * chore: update dependency semver to ^7.7.3 (renovate[bot])
+
+ * chore: update actions/setup-node action to v6 (renovate[bot])
+
+
 2025-09-09, Version 7.0.0-alpha.7
 =================================
 
