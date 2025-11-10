@@ -36,7 +36,7 @@
     "async": "^3.2.6",
     "bson": "^6.10.4",
     "debug": "^4.4.3",
-    "loopback-connector": "^5.3.3",
+    "loopback-connector": "^6.2.12",
     "mongodb": "^5.9.2",
     "strong-globalize": "^6.0.6"
   },
