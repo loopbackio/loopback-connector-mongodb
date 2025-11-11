@@ -1,3 +1,15 @@
+2025-11-11, Version 7.0.0-alpha.9
+=================================
+
+ * chore: update supercharge/mongodb-github-action action to v1.12.1 (renovate[bot])
+
+ * chore: update dependency loopback-connector to v7 (renovate[bot])
+
+ * chore: update dependency bson to v7 (renovate[bot])
+
+ * chore: update dependency mocha to ^11.7.5 (renovate[bot])
+
+
 2025-10-14, Version 7.0.0-alpha.8
 =================================
 
