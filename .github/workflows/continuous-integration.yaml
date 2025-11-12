@@ -74,7 +74,7 @@ jobs:
       - name: Use Node.js 16
         uses: actions/setup-node@v6
         with:
-          node-version: 16
+          node-version: 24.11.1
       - name: Bootstrap project
         run: npm ci --ignore-scripts
       - name: Verify code linting
@@ -90,7 +90,7 @@ jobs:
       - name: Use Node.js 16
         uses: actions/setup-node@v6
         with:
-          node-version: 16
+          node-version: 24.11.1
       - name: Bootstrap project
         run: npm ci --ignore-scripts
       - name: Verify commit linting
