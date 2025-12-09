@@ -1,3 +1,13 @@
+2025-12-09, Version 7.0.0-alpha.10
+==================================
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update actions/checkout action to v6 (renovate[bot])
+
+ * chore: update commitlint monorepo to ^20.2.0 (renovate[bot])
+
+
 2025-11-11, Version 7.0.0-alpha.9
 =================================
 
