@@ -23,9 +23,8 @@ jobs:
       matrix:
         node-version: [20, 22, 24]
         mongodb-version:
-          - '5.0'
-          - '6.0'
           - '7.0'
+          - '8.0'
       fail-fast: false
     steps:
       - uses: actions/checkout@v6
@@ -71,10 +70,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Use Node.js 16
+      - name: Use Node.js 22
         uses: actions/setup-node@v6
         with:
-          node-version: 16
+          node-version: 22
       - name: Bootstrap project
         run: npm ci --ignore-scripts
       - name: Verify code linting
@@ -87,10 +86,10 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - name: Use Node.js 16
+      - name: Use Node.js 22
         uses: actions/setup-node@v6
         with:
-          node-version: 16
+          node-version: 22
       - name: Bootstrap project
         run: npm ci --ignore-scripts
       - name: Verify commit linting
