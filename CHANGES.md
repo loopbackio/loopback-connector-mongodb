@@ -1,3 +1,21 @@
+2026-01-12, Version 7.0.1
+=========================
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^7.0.2 (renovate[bot])
+
+ * chore: update dependency loopback-datasource-juggler to v6 (renovate[bot])
+
+ * chore: update commitlint monorepo to ^20.3.1 (renovate[bot])
+
+ * chore: update commitlint monorepo to ^20.3.0 (renovate[bot])
+
+ * chore: update dependency sinon to ^21.0.1 (renovate[bot])
+
+ * chore: update CI with latest mongodb version (dhmlau)
+
+
 2025-12-09, Version 7.0.0-alpha.10
 ==================================
 
