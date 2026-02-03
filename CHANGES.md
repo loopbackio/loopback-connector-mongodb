@@ -1,3 +1,85 @@
+2026-01-12, Version 7.0.1
+=========================
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^7.0.2 (renovate[bot])
+
+ * chore: update dependency loopback-datasource-juggler to v6 (renovate[bot])
+
+ * chore: update commitlint monorepo to ^20.3.1 (renovate[bot])
+
+ * chore: update commitlint monorepo to ^20.3.0 (renovate[bot])
+
+ * chore: update dependency sinon to ^21.0.1 (renovate[bot])
+
+ * chore: update CI with latest mongodb version (dhmlau)
+
+
+2025-12-09, Version 7.0.0-alpha.10
+==================================
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update actions/checkout action to v6 (renovate[bot])
+
+ * chore: update commitlint monorepo to ^20.2.0 (renovate[bot])
+
+
+2025-11-11, Version 7.0.0-alpha.9
+=================================
+
+ * chore: update supercharge/mongodb-github-action action to v1.12.1 (renovate[bot])
+
+ * chore: update dependency loopback-connector to v7 (renovate[bot])
+
+ * chore: update dependency bson to v7 (renovate[bot])
+
+ * chore: update dependency mocha to ^11.7.5 (renovate[bot])
+
+
+2025-10-14, Version 7.0.0-alpha.8
+=================================
+
+ * chore: update commitlint monorepo to v20 (renovate[bot])
+
+ * chore: update dependency bson to v6 (renovate[bot])
+
+ * chore: update package.json BREAKING CHANGE: Drop Node.js 18 support (dhmlau)
+
+ * chore: update dependency debug to ^4.4.3 (renovate[bot])
+
+ * chore: update dependency mocha to ^11.7.4 (renovate[bot])
+
+ * chore: update github/codeql-action action to v4 (renovate[bot])
+
+ * chore: update dependency semver to ^7.7.3 (renovate[bot])
+
+ * chore: update actions/setup-node action to v6 (renovate[bot])
+
+
+2025-09-09, Version 7.0.0-alpha.7
+=================================
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency mocha to ^11.7.2 (renovate[bot])
+
+ * chore: update actions/setup-node action to v5 (renovate[bot])
+
+ * chore: update actions/checkout action to v5 (renovate[bot])
+
+ * fix: issue #663 cluster connection string (Marcio Soster Arrosi)
+
+
+2025-08-11, Version 7.0.0-alpha.6
+=================================
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * fix: include options parameter in createIndex method (Stefan Hattrell)
+
+
 2025-07-15, Version 7.0.0-alpha.5
 =================================
 
