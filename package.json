@@ -1,7 +1,7 @@
 {
-  "name": "loopback-connector-mongodb",
+  "name": "@pimberly/loopback-connector-mongodb",
   "version": "7.0.1",
-  "description": "The official MongoDB connector for the LoopBack framework.",
+  "description": "The Pimberly MongoDB connector for the LoopBack framework.",
   "engines": {
     "node": "20 || 22 || 24"
   },
@@ -23,7 +23,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/loopbackio/loopback-connector-mongodb.git"
+    "url": "git@github.com:pimberly/loopback-connector-mongodb.git"
   },
   "keywords": [
     "connector",
