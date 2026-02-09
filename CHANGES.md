@@ -1,3 +1,25 @@
+2026-02-09, Version 7.0.2
+=========================
+
+ * chore: update dependency loopback-datasource-juggler to v6.0.3 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^7.0.3 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency semver to ^7.7.4 (renovate[bot])
+
+ * chore: update dependency bson to ^7.2.0 (renovate[bot])
+
+ * chore: update commitlint monorepo to ^20.4.1 (renovate[bot])
+
+ * chore: update commitlint monorepo to ^20.4.0 (renovate[bot])
+
+ * chore: update dependency bson to ^7.1.1 (renovate[bot])
+
+ * chore: update dependency node to v22.22.0 (renovate[bot])
+
+
 2026-01-12, Version 7.0.1
 =========================
 
