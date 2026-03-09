@@ -1,3 +1,21 @@
+2026-03-09, Version 7.0.3
+=========================
+
+ * chore: update dependency loopback-datasource-juggler to v6.0.4 (renovate[bot])
+
+ * chore: update dependency nyc to v18 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency node to v22.22.1 (renovate[bot])
+
+ * chore: update commitlint monorepo to ^20.4.3 (renovate[bot])
+
+ * chore: update dependency sinon to ^21.0.2 (renovate[bot])
+
+ * chore: update commitlint monorepo to ^20.4.2 (renovate[bot])
+
+
 2026-02-09, Version 7.0.2
 =========================
 
