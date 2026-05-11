@@ -1,3 +1,17 @@
+2026-05-11, Version 7.0.5
+=========================
+
+ * chore: update dependency loopback-connector to ^7.0.6 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency semver to ^7.8.0 (renovate[bot])
+
+ * chore: update commitlint monorepo to ^20.5.3 (renovate[bot])
+
+ * chore: update dependency commitlint to ^20.5.2 (renovate[bot])
+
+
 2026-04-14, Version 7.0.4
 =========================
 
