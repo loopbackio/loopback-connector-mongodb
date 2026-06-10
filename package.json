@@ -3,7 +3,7 @@
   "version": "7.0.5",
   "description": "The official MongoDB connector for the LoopBack framework.",
   "engines": {
-    "node": "20 || 22 || 24"
+    "node": "22 || 24 || 26"
   },
   "author": "IBM Corp.",
   "main": "index.js",
