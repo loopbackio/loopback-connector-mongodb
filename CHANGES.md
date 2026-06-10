@@ -1,3 +1,33 @@
+2026-06-10, Version 8.0.0
+=========================
+
+ * chore: update dependency sinon to v22 (renovate[bot])
+
+ * chore: update commitlint monorepo to v21 (renovate[bot])
+
+ * chore: update dependency loopback-connector to v8 (renovate[bot])
+
+ * chore: update dependency loopback-datasource-juggler to v7 (renovate[bot])
+
+ * chore: drop Node.js 20 support (dhmlau)
+
+ * chore: update dependency semver to ^7.8.4 (renovate[bot])
+
+ * chore: update dependency semver to ^7.8.3 (renovate[bot])
+
+ * chore: update dependency semver to ^7.8.2 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency semver to ^7.8.1 (renovate[bot])
+
+ * chore: update dependency mocha to ^11.7.6 (renovate[bot])
+
+ * chore: update dependency node to v22.22.3 (renovate[bot])
+
+ * chore: update dependency loopback-datasource-juggler to v6.0.6 (renovate[bot])
+
+
 2026-05-11, Version 7.0.5
 =========================
 
