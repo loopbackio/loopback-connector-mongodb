@@ -1,4 +1,24 @@
-2026-07-16, Version 8.0.1
+2026-08-18, Version 8.0.2
+=========================
+
+ * chore: update dependency loopback-datasource-juggler to v7.0.2 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^8.0.2 (renovate[bot])
+
+ * chore: update commitlint monorepo to ^21.2.2 (renovate[bot])
+
+ * chore: update dependency bson to ^7.3.2 (renovate[bot])
+
+ * chore: update dependency node to v22.23.2 (renovate[bot])
+
+ * chore: update dependency mocha to ^11.8.0 (renovate[bot])
+
+ * chore: update dependency sinon to ^22.1.0 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+
+2026-07-15, Version 8.0.1
 =========================
 
  * chore: update dependency loopback-connector to ^8.0.1 (renovate[bot])
