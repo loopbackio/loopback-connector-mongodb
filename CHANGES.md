@@ -1,3 +1,19 @@
+2026-11-15, Version 8.0.4
+=========================
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency semver to ^7.8.6 (renovate[bot])
+
+ * chore: update dependency node to v22.23.5 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^8.0.5 (renovate[bot])
+
+ * chore: update dependency bson to ^7.3.4 (renovate[bot])
+
+ * chore: update dependency loopback-datasource-juggler to v7.0.5 (renovate[bot])
+
+
 2026-10-21, Version 8.0.3
 =========================
 
